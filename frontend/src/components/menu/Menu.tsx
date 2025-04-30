@@ -1,8 +1,7 @@
 import React from 'react';
 import { menu } from './data';
 import MenuItem from './MenuItem';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MdSolarPower } from 'react-icons/md';
+import { Link, useLocation } from 'react-router-dom';
 import { RxEnterFullScreen, RxExitFullScreen } from 'react-icons/rx';
 import ChangeThemes from '../ChangesThemes';
 
@@ -34,7 +33,6 @@ const groupMenuItems = () => {
 const Menu: React.FC = () => {
   const [isFullScreen, setIsFullScreen] = React.useState(true);
   const element = document.getElementById('root');
-  const navigate = useNavigate();
   const location = useLocation();
   const menuGroups = groupMenuItems();
 
@@ -144,8 +142,8 @@ const Menu: React.FC = () => {
                 )}
               </a>
             </li>
-            <li onClick={() => navigate('/login')}>
-              <a className="text-white hover:bg-white/10 text-sm py-2">Log Out</a>
+            <li>
+              <Link to="/login" className="text-white hover:bg-white/10 text-sm py-2">Log Out</Link>
             </li>
           </ul>
         </div>

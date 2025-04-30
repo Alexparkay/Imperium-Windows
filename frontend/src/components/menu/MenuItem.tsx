@@ -9,7 +9,7 @@ interface MenuItemProps {
     icon: IconType;
     label: string;
     onClick?: () => void;
-    colorScheme?: 'orange' | 'purple' | 'green';
+    colorScheme?: string;
   };
   isActive: boolean;
 }
