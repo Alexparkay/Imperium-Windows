@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --dark-bg: #020305;
+    --menu-bg: #1b222a;
+    --card-bg: rgba(27, 34, 42, 0.95);
+    --card-border: rgba(249, 115, 22, 0.1);
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  
+  html, body {
+    min-height: 100vh;
+    width: 100%;
+  }
+  
+  body {
+    background-color: var(--dark-bg);
+  }
+
+  /* USA Map Styles */
+  path {
+    transition: all 0.3s ease;
+  }
+
+  path:hover {
+    filter: brightness(1.2);
+    cursor: pointer;
+    transform: translateY(-1px);
+  }
+
+  .usa-map {
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  .usa-map path {
+    stroke: rgba(249, 115, 22, 0.2);
+    stroke-width: 1;
+  }
+
+  .usa-map path:hover {
+    stroke: rgba(249, 115, 22, 0.4);
+    stroke-width: 2;
+  }
+
+  /* Make sure SVG fills entire container */
+  .usa-map svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 80px !important;
+    transform: scale(0.08) !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Enhanced dark mode */
+.dark {
+  color-scheme: dark;
+  background-color: var(--dark-bg);
+}
+
+/* Premium UI Elements */
+.premium-gradient {
+  @apply bg-gradient-to-r from-emerald-500 to-emerald-600;
+}
+
+.premium-card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300;
+}
+
+.premium-button {
+  @apply bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 
+         text-white font-medium shadow-sm hover:shadow-md transition-all rounded-lg;
+}
+
+.premium-badge {
+  @apply inline-flex items-center gap-1 py-1 px-3 rounded-full text-sm font-medium;
+}
+
+.premium-stats-card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-emerald-500 
+         hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden;
+}
+
+.premium-input {
+  @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 
+         text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all;
+}
+
+.premium-table th {
+  @apply py-3 px-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider;
+}
+
+.premium-table td {
+  @apply py-4 px-4 text-sm;
+}
+
+.premium-table tr {
+  @apply hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors;
+}
+
+.premium-section-title {
+  @apply text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center;
+}
+
+.premium-section-title:before {
+  content: "";
+  @apply w-1.5 h-6 bg-emerald-500 rounded-full mr-3;
+}
+
+/* Decorative patterns */
+.corner-pattern-top-right {
+  @apply absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-emerald-500/5 to-transparent;
+}
+
+.corner-pattern-top-left {
+  @apply absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-emerald-500/5 to-transparent;
+}
+
+.corner-pattern-bottom-right {
+  @apply absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-emerald-500/5 to-transparent;
+}
+
+.corner-pattern-bottom-left {
+  @apply absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-emerald-500/5 to-transparent;
+}
+
+/* Original CSS */
+:fullscreen::backdrop {
+    background: none !important;
+    overflow: visible;
+}
+
+:fullscreen::before & :fullscreen::after {
+    overflow: visible;
+    overflow: visible;
+}
+
+:fullscreen #rootContainer {
+    overflow: auto !important;
+}
+
+:fullscreen body {
+    overflow: auto !important;
+}
+
+:fullscreen {
+    height: auto !important;
+    overflow: auto !important;
+}
+
+/* Home */
+.home .box {
+    @apply rounded-lg xl:rounded-2xl overflow-visible border-2 border-base-300 dark:border-slate-700 p-4 xl:p-4 2xl:p-6
+}
+
+.dataGrid span, .dataGrid svg, .dataGrid button {
+    @apply text-base-content
+}
+
+.dataGrid .MuiDataGrid-columnHeaders {
+    @apply text-base-content border-base-content
+}
+
+.dataGrid .MuiDataGrid-virtualScroller {
+    @apply text-base-content border-base-content
+}
+
+.dataGrid .MuiDataGrid-row .MuiDataGrid-cell .MuiSvgIcon-root {
+    @apply text-base-content
+}
+
+.dataGrid .MuiDataGrid-footerContainer {
+    @apply text-base-content border-base-content
+}
+
+.dataGrid .MuiDataGrid-footerContainer p {
+    @apply text-base-content border-base-content
+}
+
+.dataGrid .MuiDataGrid-toolbarContainer {
+    @apply flex-row-reverse
+}
+
+.dataGrid .MuiDataGrid-toolbarContainer input {
+    @apply border-base-content text-base-content
+}
+
+.dataGrid .MuiDataGrid-toolbarContainer ::placeholder {
+    @apply text-base-content
+}
+
+.modal-action> :not([hidden])~ :not([hidden]) {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.skeleton {
+    @apply dark:bg-neutral
+}
+
+.fc .fc-header-toolbar .fc-toolbar-chunk {
+    @apply text-[10px] xl:text-base
+}
+
+.fc .fc-header-toolbar .fc-toolbar-chunk .fc-button {
+    @apply btn dark:btn-neutral
+}
+
+.fc .fc-header-toolbar .fc-toolbar-chunk .fc-button-group {
+    @apply gap-2
+}
+
+.fc .fc-header-toolbar .fc-toolbar-chunk .fc-button.fc-button-primary {
+    @apply border-none text-base-content
+}
+
+.fc .fc-header-toolbar .fc-toolbar-chunk .fc-button.fc-button-primary:disabled {
+    @apply btn-disabled opacity-50
+}
+
+#singleUser #activities ul li {
+    @apply list-none relative w-[1px] pt-[50px] bg-primary
+}
+
+#singleUser #activities ul li::after {
+    content: "";
+    @apply absolute left-[50%] bottom-0 w-[10px] h-[10px] rounded-full bg-primary -translate-x-[50%]
+}
+
+#singleProduct #activities ul li {
+    @apply list-none relative w-[1px] pt-[50px] bg-primary
+}
+
+#singleProduct #activities ul li::after {
+    content: "";
+    @apply absolute left-[50%] bottom-0 w-[10px] h-[10px] rounded-full bg-primary -translate-x-[50%]
+}
+
+@layer components {
+  .card {
+    @apply bg-white dark:bg-[var(--card-bg)] rounded-xl shadow-md dark:shadow-[var(--card-shadow)] dark:border dark:border-[var(--card-border)] hover:shadow-lg transition-all duration-300;
+  }
+
+  /* Styled components for multiple use cases */
+  .dashboard-card {
+    @apply bg-white dark:bg-[var(--card-bg)] rounded-xl shadow-md dark:shadow-[var(--card-shadow)] p-6 border-l-4 border-emerald-500 dark:border-emerald-500/20
+  }
+
+  .form-input {
+    @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[var(--menu-bg)]
+    text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all;
+  }
+
+  .th {
+    @apply py-3 px-4 text-left text-sm font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider;
+  }
+
+  .tr {
+    @apply hover:bg-gray-50 dark:hover:bg-[var(--menu-bg)] transition-colors;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center;
+  }
+}
+
+/* Add loading bar animation */
+@keyframes loadingProgress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+.animate-loadingBar {
+  animation: loadingProgress 3s ease-in-out forwards;
+}
