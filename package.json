@@ -3,8 +3,10 @@
     "apexcharts": "^4.5.0",
     "d3-geo": "^3.1.1",
     "react-apexcharts": "^1.7.0",
+    "react-globe": "^5.0.2",
     "react-simple-maps": "^3.0.0",
     "react-usa-map": "^1.5.0",
+    "three": "^0.176.0",
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {

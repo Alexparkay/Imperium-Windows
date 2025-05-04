@@ -11,7 +11,14 @@ import {
   MdOutlineAnalytics,
   MdOutlineEmail,
   MdOutlineTrackChanges,
-  MdAttachMoney
+  MdAttachMoney,
+  MdOutlineDashboard,
+  MdOutlineBusiness,
+  MdOutlineSearch,
+  MdOutlineScanner,
+  MdOutlineDataObject,
+  MdOutlineInsights,
+  MdOutlineCampaign
 } from 'react-icons/md';
 
 export const menu = [
@@ -21,15 +28,15 @@ export const menu = [
       {
         isLink: true,
         url: '/',
-        icon: HiOutlineHome,
-        label: 'dashboard',
+        icon: MdOutlineDashboard,
+        label: 'Dashboard',
         colorScheme: 'green'
       },
       {
         isLink: true,
         url: '/profile',
-        icon: HiOutlineUser,
-        label: 'company profile',
+        icon: MdOutlineBusiness,
+        label: 'Partner Profile',
         colorScheme: 'green'
       },
     ],
@@ -39,44 +46,44 @@ export const menu = [
     listItems: [
       {
         isLink: true,
-        url: '/facility-database',
-        icon: MdLocationOn,
-        label: 'facility database',
+        url: '/market-database',
+        icon: MdOutlineSearch,
+        label: 'Market Database',
         colorScheme: 'green'
       },
       {
         isLink: true,
-        url: '/facility-ai-analysis',
-        icon: MdFactory,
-        label: 'facility ai analysis',
+        url: '/signal-scanner',
+        icon: MdOutlineScanner,
+        label: 'Signal Scanner',
         colorScheme: 'green'
       },
       {
         isLink: true,
-        url: '/energy-usage-estimation',
-        icon: MdElectricBolt,
-        label: 'energy usage\nestimation',
+        url: '/data-enrichment',
+        icon: MdOutlineDataObject,
+        label: 'Data Enrichment',
         colorScheme: 'green'
       },
       {
         isLink: true,
-        url: '/solar-panel-potential',
-        icon: MdSolarPower,
-        label: 'solar panel potential',
+        url: '/migration-insights',
+        icon: MdOutlineInsights,
+        label: 'Migration Insights',
         colorScheme: 'green'
       },
       {
         isLink: true,
-        url: '/email-automation',
-        icon: MdOutlineEmail,
-        label: 'email automation',
+        url: '/outreach',
+        icon: MdOutlineCampaign,
+        label: 'Outreach',
         colorScheme: 'green'
       },
       {
         isLink: true,
         url: '/outreach-tracking',
         icon: MdOutlineTrackChanges,
-        label: 'outreach tracking',
+        label: 'Outreach Tracking',
         colorScheme: 'green'
       },
     ],

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { IconType } from 'react-icons';
+import { motion } from 'framer-motion';
 
 interface MenuItemProps {
   item: {
@@ -12,9 +13,10 @@ interface MenuItemProps {
     colorScheme?: string;
   };
   isActive: boolean;
+  tooltip?: string;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, isActive }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   const getColorScheme = () => {
@@ -90,20 +92,14 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive }) => {
         
         {/* Tooltip */}
         {isHovered && (
-          <div className={`absolute left-[calc(100%+1rem)] top-1/2 -translate-y-1/2 px-3 py-2 bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/60 to-[rgba(40,41,43,0.2)] backdrop-blur-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[120px] z-[9999] shadow-lg shadow-black/20 ${colors.border}`}>
-            {/* Enhanced gradient effects for tooltip */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${colors.hover} opacity-30 rounded-lg`}></div>
-            <div className={`absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-br ${colors.active} to-transparent rounded-full blur-xl transform rotate-12`}></div>
-            <div className={`absolute -bottom-6 -left-6 w-12 h-12 bg-gradient-to-tr ${colors.active} to-transparent rounded-full blur-lg transform -rotate-12`}></div>
-            
-            {/* Arrow */}
-            <div className={`absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gradient-to-br ${colors.hover} transform rotate-45 border-l border-t ${colors.border}`}></div>
-            
-            {/* Content */}
-            <div className="relative z-10">
-              <p className="text-white/90 text-sm whitespace-nowrap">{item.label}</p>
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[#0A0A0A] text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
+          >
+            {tooltip}
+          </motion.div>
         )}
       </div>
     );
@@ -127,13 +123,14 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive }) => {
         
         {/* Tooltip */}
         {isHovered && (
-          <div className={`absolute left-16 top-1/2 transform -translate-y-1/2 bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/60 to-[rgba(40,41,43,0.4)] text-white text-sm px-3 py-2 rounded-lg z-50 whitespace-nowrap pointer-events-none ${colors.border} shadow-lg backdrop-blur-xl`}>
-            {/* Enhanced gradient effects */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${colors.hover} opacity-30 rounded-lg`}></div>
-            <div className={`absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-br ${colors.active} to-transparent rounded-full blur-xl transform rotate-12 opacity-90`}></div>
-            <div className={`absolute -bottom-6 -left-6 w-12 h-12 bg-gradient-to-tr ${colors.active} to-transparent rounded-full blur-lg transform -rotate-12 opacity-80`}></div>
-            <span className="relative z-10">{item.label.replace('\n', ' ')}</span>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[#0A0A0A] text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
+          >
+            {tooltip}
+          </motion.div>
         )}
       </div>
     );
