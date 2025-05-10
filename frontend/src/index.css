@@ -9,7 +9,7 @@
     --dark-bg: #020305;
     --menu-bg: #1b222a;
     --card-bg: rgba(27, 34, 42, 0.95);
-    --card-border: rgba(249, 115, 22, 0.1);
+    --card-border: rgba(16, 185, 129, 0.1);
     --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
   
@@ -44,12 +44,12 @@
   }
 
   .usa-map path {
-    stroke: rgba(249, 115, 22, 0.2);
+    stroke: rgba(16, 185, 129, 0.2);
     stroke-width: 1;
   }
 
   .usa-map path:hover {
-    stroke: rgba(249, 115, 22, 0.4);
+    stroke: rgba(16, 185, 129, 0.4);
     stroke-width: 2;
   }
 
@@ -284,4 +284,23 @@
 
 .animate-loadingBar {
   animation: loadingProgress 3s ease-in-out forwards;
+}
+
+@keyframes pulse-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
 }

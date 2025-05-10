@@ -98,7 +98,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
             exit={{ opacity: 0, x: -10 }}
             className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[#0A0A0A] text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
           >
-            {tooltip}
+            {tooltip || item.label}
           </motion.div>
         )}
       </div>
@@ -129,7 +129,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
             exit={{ opacity: 0, x: -10 }}
             className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[#0A0A0A] text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
           >
-            {tooltip}
+            {tooltip || item.label}
           </motion.div>
         )}
       </div>

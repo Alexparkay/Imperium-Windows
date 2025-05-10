@@ -3,6 +3,7 @@ import { menu } from './data';
 import MenuItem from './MenuItem';
 import { Link, useLocation } from 'react-router-dom';
 import { RxEnterFullScreen, RxExitFullScreen } from 'react-icons/rx';
+import { FaDatabase, FaServer, FaCloudUploadAlt } from 'react-icons/fa';
 import ChangeThemes from '../ChangesThemes';
 
 // Group the menu items as specified
@@ -31,7 +32,7 @@ const groupMenuItems = () => {
 };
 
 const Menu: React.FC = () => {
-  const [isFullScreen, setIsFullScreen] = React.useState(true);
+  const [isFullScreen, setIsFullScreen] = React.useState(false);
   const element = document.getElementById('root');
   const location = useLocation();
   const menuGroups = groupMenuItems();
@@ -41,10 +42,31 @@ const Menu: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (isFullScreen) {
-      document.exitFullscreen();
-    } else {
-      element?.requestFullscreen({ navigationUI: 'auto' });
+    // Check if the document is already in fullscreen mode
+    const isDocumentFullScreen = !!document.fullscreenElement;
+    
+    if (isFullScreen && !isDocumentFullScreen) {
+      // Enter fullscreen
+      try {
+        if (element && element.requestFullscreen) {
+          element.requestFullscreen({ navigationUI: 'auto' }).catch(err => {
+            console.error(`Error attempting to enable fullscreen: ${err.message}`);
+          });
+        }
+      } catch (error) {
+        console.error("Error entering fullscreen:", error);
+      }
+    } else if (!isFullScreen && isDocumentFullScreen) {
+      // Exit fullscreen
+      try {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(err => {
+            console.error(`Error attempting to exit fullscreen: ${err.message}`);
+          });
+        }
+      } catch (error) {
+        console.error("Error exiting fullscreen:", error);
+      }
     }
   }, [element, isFullScreen]);
 
@@ -62,11 +84,7 @@ const Menu: React.FC = () => {
         <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-emerald-500/60 via-emerald-500/40 to-transparent rounded-full blur-xl transform rotate-12 pointer-events-none"></div>
         <Link to={'/'} className="flex flex-col items-center justify-center">
           <div className="relative bg-gradient-to-br from-emerald-500 via-emerald-500 to-emerald-600 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/20">
-            <img 
-              src="/images/Untitled design.svg" 
-              alt="Solar Logo" 
-              className="w-8 h-8 object-contain"
-            />
+            <FaDatabase className="text-white text-2xl" />
           </div>
         </Link>
       </div>
@@ -82,6 +100,7 @@ const Menu: React.FC = () => {
                   key={`${groupIndex}-${itemIndex}`}
                   item={item}
                   isActive={location.pathname === (item.url || '/')}
+                  tooltip={item.label}
                 />
               ))}
             </div>
@@ -95,11 +114,11 @@ const Menu: React.FC = () => {
           <div
             tabIndex={0}
             role="button"
-            className="relative cursor-pointer group w-14 h-14 rounded-full bg-black flex items-center justify-center text-white font-semibold shadow-lg shadow-black/30 hover:shadow-black/50 transition-all duration-300 overflow-hidden border border-white/10"
+            className="relative cursor-pointer group w-14 h-14 rounded-full bg-[#033636] flex items-center justify-center text-white font-semibold shadow-lg shadow-black/30 hover:shadow-black/50 transition-all duration-300 overflow-hidden border border-white/10"
           >
             <img 
-              src="/images/q-solar-logo-black.png" 
-              alt="Q-Solar Logo" 
+              src="/images/SAP/Imperium_logo.png" 
+              alt="Imperium Logo" 
               className="w-10 h-10 object-contain"
             />
             <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/20 to-transparent rounded-t-full pointer-events-none"></div>
@@ -116,34 +135,30 @@ const Menu: React.FC = () => {
           >
             {/* Enhanced gradient effect for dropdown */}
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-emerald-600/20 opacity-30 rounded-lg pointer-events-none"></div>
-            <Link to={'/profile'}>
-              <li>
-                <a className="text-white hover:bg-white/10 text-sm py-2">My Profile</a>
-              </li>
-            </Link>
-            <Link to={'/pricing'}>
-              <li>
-                <a className="text-white hover:bg-white/10 text-sm py-2">Pricing</a>
-              </li>
-            </Link>
+            <li>
+              <a href="/profile" className="text-white hover:bg-white/10 text-sm py-2">My Profile</a>
+            </li>
+            <li>
+              <a href="/pricing" className="text-white hover:bg-white/10 text-sm py-2">Pricing</a>
+            </li>
             <li>
               <div className="flex items-center justify-between hover:bg-white/10 p-2 text-white">
                 <span className="text-sm">Theme</span>
                 <ChangeThemes />
               </div>
             </li>
-            <li onClick={toggleFullScreen}>
-              <a className="justify-between text-white hover:bg-white/10 text-sm py-2">
+            <li>
+              <button onClick={toggleFullScreen} className="justify-between text-white hover:bg-white/10 text-sm py-2 w-full text-left flex items-center">
                 <span>Fullscreen</span>
                 {isFullScreen ? (
-                  <RxEnterFullScreen className="text-lg" />
-                ) : (
                   <RxExitFullScreen className="text-lg" />
+                ) : (
+                  <RxEnterFullScreen className="text-lg" />
                 )}
-              </a>
+              </button>
             </li>
             <li>
-              <Link to="/login" className="text-white hover:bg-white/10 text-sm py-2">Log Out</Link>
+              <a href="/login" className="text-white hover:bg-white/10 text-sm py-2">Log Out</a>
             </li>
           </ul>
         </div>

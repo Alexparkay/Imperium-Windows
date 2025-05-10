@@ -45,9 +45,10 @@ import {
   MdOutlineTag,
   MdOutlineStar,
   MdOutlineSearch,
-  MdOutlineFilterList
+  MdOutlineFilterList,
+  MdOutlinePersonAdd
 } from 'react-icons/md';
-import { FaRegEdit, FaRegTrashAlt, FaRegClock, FaRegCheckCircle, FaRegTimesCircle, FaRegLightbulb, FaRegChartBar } from 'react-icons/fa';
+import { FaRegEdit, FaRegTrashAlt, FaRegClock, FaRegCheckCircle, FaRegTimesCircle, FaRegLightbulb, FaRegChartBar, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import { 
   BarChart, Bar, 
@@ -96,6 +97,8 @@ interface Facility {
   };
 }
 
+type ChannelType = 'email' | 'linkedin' | 'whatsapp';
+
 const OutreachTracking = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -106,7 +109,7 @@ const OutreachTracking = () => {
   const [selectedContact, setSelectedContact] = useState<any>(null);
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [newNote, setNewNote] = useState('');
-  const [activeTab, setActiveTab] = useState('contacts');
+  const [activeTab, setActiveTab] = useState<ChannelType>('email');
   const [showContacts, setShowContacts] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(28);
@@ -116,15 +119,15 @@ const OutreachTracking = () => {
   
   // Extended sample data for contacts to make it look more like a big database
   const expandedContacts = [
-    { id: 1, name: "Jeff Levy", email: "j.levy@example.com", company: "Apple", location: "Atlanta, GA", position: "Facilities Manager", status: "Engaged", lastContact: "2023-06-17", tags: ["Solar", "Decision Maker"], leadScore: 87, outreachHistory: [
-      { id: 1, date: "2023-06-17", type: "email", subject: "Solar Energy Proposal", status: "sent", response: "interested", notes: "Interested in learning more about the ROI" },
-      { id: 2, date: "2023-06-10", type: "email", subject: "Introduction to Solar Solutions", status: "sent", response: "positive", notes: "Requested more information" }
+    { id: 1, name: "Jeff Levy", email: "j.levy@example.com", company: "SAP Finance", location: "Atlanta, GA", position: "SAP Manager", status: "Engaged", lastContact: "2023-06-17", tags: ["SAP S/4HANA", "Decision Maker"], leadScore: 87, outreachHistory: [
+      { id: 1, date: "2023-06-17", type: "email", subject: "SAP Migration Proposal", status: "sent", response: "interested", notes: "Interested in learning more about the ROI" },
+      { id: 2, date: "2023-06-10", type: "email", subject: "Introduction to SAP S/4HANA", status: "sent", response: "positive", notes: "Requested more information" }
     ] },
-    { id: 2, name: "Amy Huke", email: "a.huke@example.com", company: "Honeywell", location: "Kansas City, MO", position: "Facilities Manager", status: "New", lastContact: "2023-06-15", tags: ["Manufacturing", "Prospect"], leadScore: 62, outreachHistory: [
-      { id: 1, date: "2023-06-15", type: "email", subject: "Energy Efficiency Solutions", status: "sent", response: "none", notes: "" }
+    { id: 2, name: "Amy Huke", email: "a.huke@example.com", company: "Honeywell", location: "Kansas City, MO", position: "ERP Director", status: "New", lastContact: "2023-06-15", tags: ["Manufacturing", "Prospect"], leadScore: 62, outreachHistory: [
+      { id: 1, date: "2023-06-15", type: "email", subject: "SAP Cloud Migration", status: "sent", response: "none", notes: "" }
     ] },
-    { id: 3, name: "Ryan Kuddes", email: "r.kuddes@example.com", company: "Apple", location: "Denver, CO", position: "Facilities Manager", status: "Engaged", lastContact: "2023-06-22", tags: ["Solar", "Prospect"], leadScore: 73, outreachHistory: [
-      { id: 1, date: "2023-06-22", type: "email", subject: "Solar Panel Implementation", status: "sent", response: "positive", notes: "Scheduled a follow-up call" },
+    { id: 3, name: "Ryan Kuddes", email: "r.kuddes@example.com", company: "Siemens", location: "Denver, CO", position: "IT Manager", status: "Engaged", lastContact: "2023-06-22", tags: ["SAP", "Prospect"], leadScore: 73, outreachHistory: [
+      { id: 1, date: "2023-06-22", type: "email", subject: "SAP S/4HANA Implementation", status: "sent", response: "positive", notes: "Scheduled a follow-up call" },
       { id: 2, date: "2023-06-15", type: "call", subject: "Initial Introduction", status: "completed", response: "interested", notes: "Showed interest in our solutions" }
     ] },
     { id: 4, name: "Zuretti Carter", email: "z.carter@example.com", company: "ChargePoint", location: "San Francisco, CA", position: "Facilities Manager", status: "Not Interested", lastContact: "2023-06-15", tags: ["EV", "NeedNurturing"], leadScore: 45, outreachHistory: [
@@ -402,8 +405,8 @@ const OutreachTracking = () => {
     title, 
     icon, 
     children, 
-    gradient = 'from-orange-500 to-amber-600',
-    hoverGradient = 'from-orange-600 to-amber-700'
+    gradient = 'from-green-500 to-emerald-600',
+    hoverGradient = 'from-green-600 to-emerald-700'
   }: { 
     title: string; 
     icon: React.ReactNode; 
@@ -472,94 +475,104 @@ const OutreachTracking = () => {
 
   const ContactCard = ({ contact }: { contact: any }) => {
     return (
-      <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-orange-500/15 p-4 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
-        <div className="flex flex-col md:flex-row justify-between gap-4">
-          {/* Contact Info */}
-          <div className="flex-1">
-            <h2 className="text-xl font-bold text-white">{contact.name}</h2>
-            <div className="text-sm text-white/60">{contact.position} at {contact.company}</div>
-            <div className="mt-3 flex flex-col gap-2">
-              <div className="flex items-center gap-2 backdrop-blur-md bg-[#28292b]/40 rounded-lg p-3 border border-orange-500/10">
-                <MdOutlineEmail className="text-orange-500" size={18} />
-                <span className="text-white/80">{contact.email}</span>
+      <div className="backdrop-blur-lg bg-gradient-to-br from-[#28292b]/80 to-[rgba(40,41,43,0.2)] dark:from-gray-900/80 dark:to-gray-900/20 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/10 hover:border-green-500/20 p-6 transition-all duration-300 hover:shadow-xl hover:shadow-black/30 group">
+        <div className="flex flex-col h-full">
+          {/* Contact header */}
+          <div className="flex items-start justify-between pb-4 border-b border-gray-700/20 mb-4">
+            <div className="flex items-center gap-3.5">
+              <div className="relative">
+                {/* Profile image with status indicator */}
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-600/30 flex items-center justify-center text-white font-semibold text-xl border border-white/10 overflow-hidden shadow-md">
+                  {contact.name.split(' ').map((n: string) => n[0]).join('')}
               </div>
-              <div className="flex items-center gap-2 backdrop-blur-md bg-[#28292b]/40 rounded-lg p-3 border border-orange-500/10">
-                <MdPhone className="text-orange-500" size={18} />
-                <span className="text-white/80">{contact.phone}</span>
+                <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-gray-800 ${
+                  contact.status === "Engaged" ? "bg-green-500" 
+                  : contact.status === "Evaluating" ? "bg-blue-500"
+                  : contact.status === "New" ? "bg-yellow-500"
+                  : "bg-red-500"
+                }`}></div>
               </div>
-              <div className="flex items-center gap-2 backdrop-blur-md bg-[#28292b]/40 rounded-lg p-3 border border-orange-500/10">
-                <MdOutlineCalendarToday className="text-orange-500" size={18} />
-                <span className="text-white/80">{contact.location}</span>
+              <div>
+                <h3 className="font-semibold text-white">{contact.name}</h3>
+                <p className="text-white/60 text-sm flex items-center gap-1.5">
+                  <MdOutlinePerson className="text-white/40" size={14} />
+                  {contact.position}
+                </p>
               </div>
             </div>
-            
-            <div className="mt-4 flex gap-2">
-              <button 
-                onClick={() => {
-                  setSelectedContact(contact);
-                  setShowNoteModal(true);
-                }}
-                className="btn btn-sm bg-transparent border border-orange-500/30 text-white hover:bg-orange-500/10 gap-1 transition-colors"
-              >
-                <MdNotes size={16} className="text-orange-500" />
-                Add Note
+            <div className="flex gap-1.5">
+              <button className="p-1.5 text-white/60 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                <MdOutlineEmail size={18} />
               </button>
-              <button 
-                onClick={() => handleScheduleFollowUp(contact)}
-                className="btn btn-sm bg-transparent border border-orange-500/30 text-white hover:bg-orange-500/10 gap-1 transition-colors"
-              >
-                <MdOutlineSchedule size={16} className="text-orange-500" />
-                Schedule Follow-up
+              <button className="p-1.5 text-white/60 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                <MdPhone size={18} />
+              </button>
+              <button className="p-1.5 text-white/60 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                <MdOutlineMoreVert size={18} />
               </button>
             </div>
           </div>
           
-          {/* Outreach History */}
-          <div className="flex-[2]">
-            <h3 className="font-medium mb-3 text-white">Outreach History</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-white/60 text-left">
-                    <th className="py-2 px-4">Date</th>
-                    <th className="py-2 px-4">Type</th>
-                    <th className="py-2 px-4">Subject</th>
-                    <th className="py-2 px-4">Status</th>
-                    <th className="py-2 px-4">Response</th>
-                    <th className="py-2 px-4">Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {contact.outreachHistory
-                    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                    .map((outreach: any) => (
-                      <tr key={outreach.id} className="border-t border-orange-500/10 hover:bg-[#28292b]/60">
-                        <td className="py-3 px-4 text-white/80 whitespace-nowrap">{formatDate(outreach.date)}</td>
-                        <td className="py-3 px-4 text-white/80 flex items-center gap-1">
-                          {getTypeIcon(outreach.type)}
-                          <span className="capitalize">{outreach.type}</span>
-                        </td>
-                        <td className="py-3 px-4 text-white/80 max-w-[200px] truncate" title={outreach.subject}>
-                          {outreach.subject}
-                        </td>
-                        <td className="py-3 px-4">
-                          <span className={`px-2 py-1 rounded-md ${getStatusColor(outreach.status)}`}>
-                            {outreach.status}
+          {/* Contact details */}
+          <div className="space-y-3 flex-grow mb-4">
+            <div className="flex items-center gap-2">
+              <MdOutlineBusiness className="text-white/40" />
+              <span className="text-white/80 text-sm">{contact.company}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MdOutlineLocationOn className="text-white/40" />
+              <span className="text-white/80 text-sm">{contact.location}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MdOutlineTag className="text-white/40" />
+              <div className="flex gap-1.5 flex-wrap">
+                {contact.tags.map((tag: string, index: number) => (
+                  <span 
+                    key={index}
+                    className={`text-xs py-0.5 px-2 rounded-full ${
+                      tag.includes('SAP') || tag.includes('Hot Lead') || tag.includes('Decision Maker')
+                        ? 'bg-green-500/20 text-green-300'
+                        : tag.includes('Prospect') 
+                        ? 'bg-blue-500/20 text-blue-300'
+                        : tag.includes('Evaluating')
+                        ? 'bg-yellow-500/20 text-yellow-300'
+                        : 'bg-gray-500/20 text-gray-300'
+                    }`}
+                  >
+                    {tag}
                           </span>
-                        </td>
-                        <td className="py-3 px-4 flex items-center gap-1">
-                          {getResponseIcon(outreach.response)}
-                          <span className={`capitalize ${getResponseColor(outreach.response)}`}>
-                            {outreach.response === 'none' ? 'No response' : outreach.response}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-white/80 max-w-[200px] truncate" title={outreach.notes}>
-                          {outreach.notes}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Outreach history */}
+          <div className="mt-auto">
+            <div className="flex items-center justify-between border-t border-gray-700/20 pt-4">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <FaRegClock className="text-white/40" size={14} />
+                  <span className="text-white/60 text-xs">Last Contact:</span>
+                </div>
+                <p className="text-white text-sm font-medium">{contact.lastContact}</p>
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <FaRegLightbulb className="text-white/40" size={14} />
+                  <span className="text-white/60 text-xs">Lead Score:</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-full bg-gray-700/30 rounded-full h-1.5">
+                    <div className={`h-1.5 rounded-full ${
+                      contact.leadScore >= 80 ? 'bg-green-500' 
+                      : contact.leadScore >= 60 ? 'bg-blue-500'
+                      : contact.leadScore >= 40 ? 'bg-yellow-500'
+                      : 'bg-red-500'
+                    }`} style={{ width: `${contact.leadScore}%` }}></div>
+                  </div>
+                  <span className="text-white font-medium text-sm">{contact.leadScore}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -607,7 +620,7 @@ const OutreachTracking = () => {
     value, 
     subValue,
     icon,
-    colorClass = 'text-orange-500'
+    colorClass = 'text-green-500'
   }: { 
     title: string;
     value: string | number;
@@ -616,7 +629,7 @@ const OutreachTracking = () => {
     colorClass?: string;
   }) => {
     return (
-      <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-orange-500/15 p-4 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
+      <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 p-4 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-4">
             <span className={`${colorClass} text-2xl`}>{icon}</span>
@@ -690,17 +703,150 @@ const OutreachTracking = () => {
     }
   ];
 
+  // After all the state and setup code, inside the component but before the JSX return
+
+  // Channel-specific analytics data
+  const emailAnalytics = {
+    metrics: {
+      sent: 8456,
+      opened: 3782,
+      clicked: 1893,
+      responded: 872,
+      meetings: 143
+    },
+    performance: [
+      { name: "Mon", sent: 412, opened: 186, clicked: 87 },
+      { name: "Tue", sent: 428, opened: 201, clicked: 96 },
+      { name: "Wed", sent: 456, opened: 234, clicked: 124 },
+      { name: "Thu", sent: 423, opened: 187, clicked: 84 },
+      { name: "Fri", sent: 401, opened: 167, clicked: 76 },
+      { name: "Sat", sent: 89, opened: 12, clicked: 5 },
+      { name: "Sun", sent: 67, opened: 8, clicked: 2 }
+    ],
+    openRates: [
+      { name: "Week 1", rate: 42 },
+      { name: "Week 2", rate: 45 },
+      { name: "Week 3", rate: 47 },
+      { name: "Week 4", rate: 44 },
+      { name: "Week 5", rate: 48 },
+      { name: "Week 6", rate: 51 }
+    ],
+    byTime: [
+      { time: "8am", rate: 32 },
+      { time: "10am", rate: 45 },
+      { time: "12pm", rate: 43 },
+      { time: "2pm", rate: 47 },
+      { time: "4pm", rate: 41 },
+      { time: "6pm", rate: 28 }
+    ]
+  };
+
+  const linkedinAnalytics = {
+    metrics: {
+      connections: 1245,
+      messages: 867,
+      responses: 392,
+      meetings: 87
+    },
+    performance: [
+      { name: "Mon", sent: 89, accepted: 32, responded: 24 },
+      { name: "Tue", sent: 94, accepted: 41, responded: 28 },
+      { name: "Wed", sent: 112, accepted: 54, responded: 32 },
+      { name: "Thu", sent: 87, accepted: 39, responded: 26 },
+      { name: "Fri", sent: 76, accepted: 31, responded: 19 },
+      { name: "Sat", sent: 12, accepted: 4, responded: 1 },
+      { name: "Sun", sent: 8, accepted: 2, responded: 0 }
+    ],
+    byIndustry: [
+      { industry: "IT", count: 423, rate: 47 },
+      { industry: "Finance", count: 312, rate: 38 },
+      { industry: "Manufacturing", count: 245, rate: 32 },
+      { industry: "Healthcare", count: 187, rate: 29 },
+      { industry: "Retail", count: 142, rate: 26 },
+      { industry: "Other", count: 98, rate: 21 }
+    ]
+  };
+
+  const whatsappAnalytics = {
+    metrics: {
+      sent: 1893,
+      delivered: 1876,
+      read: 1654,
+      replied: 845,
+      meetings: 67
+    },
+    performance: [
+      { name: "Mon", sent: 178, read: 164, replied: 82 },
+      { name: "Tue", sent: 184, read: 173, replied: 91 },
+      { name: "Wed", sent: 197, read: 182, replied: 96 },
+      { name: "Thu", sent: 176, read: 158, replied: 78 },
+      { name: "Fri", sent: 158, read: 142, replied: 67 },
+      { name: "Sat", sent: 34, read: 21, replied: 9 },
+      { name: "Sun", sent: 28, read: 19, replied: 7 }
+    ],
+    byTime: [
+      { time: "8am-10am", count: 234, rate: 38 },
+      { time: "10am-12pm", count: 312, rate: 45 },
+      { time: "12pm-2pm", count: 287, rate: 41 },
+      { time: "2pm-4pm", count: 342, rate: 48 },
+      { time: "4pm-6pm", count: 298, rate: 43 },
+      { time: "6pm-8pm", count: 187, rate: 32 }
+    ]
+  };
+
+  // Display channel-specific metrics based on active tab
+  const getActiveChannelMetrics = () => {
+    switch (activeTab) {
+      case 'email':
+        return emailAnalytics;
+      case 'linkedin':
+        return linkedinAnalytics;
+      case 'whatsapp':
+        return whatsappAnalytics;
+      default:
+        return emailAnalytics;
+    }
+  };
+
+  // Get the appropriate icon for each channel
+  const getChannelIcon = (channel: ChannelType) => {
+    switch (channel) {
+      case 'email':
+        return <MdOutlineEmail className="text-xl" />;
+      case 'linkedin':
+        return <FaLinkedin className="text-xl" />;
+      case 'whatsapp':
+        return <FaWhatsapp className="text-xl" />;
+      default:
+        return <MdOutlineEmail className="text-xl" />;
+    }
+  };
+
+  // Get the channel name with proper formatting
+  const getChannelName = (channel: ChannelType) => {
+    switch (channel) {
+      case 'email':
+        return 'Email';
+      case 'linkedin':
+        return 'LinkedIn';
+      case 'whatsapp':
+        return 'WhatsApp';
+      default:
+        return 'Email';
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#020305] flex items-center justify-center relative overflow-hidden">
         {/* Background gradient orbs */}
-        <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-orange-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-        <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-orange-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+        <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-green-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+        <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-green-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
         
         <div className="relative z-10 flex flex-col items-center gap-8">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-            <div className="loading loading-spinner loading-lg text-orange-500 relative"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+            <div className="loading loading-spinner loading-lg text-green-500 relative"></div>
           </div>
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-2">Loading Analytics</h2>
@@ -714,8 +860,8 @@ const OutreachTracking = () => {
   return (
     <div className="w-full px-1 py-2 bg-[#020305] min-h-screen min-w-full relative">
       {/* Background gradient orbs */}
-      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-green-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-green-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-6">
@@ -724,399 +870,546 @@ const OutreachTracking = () => {
             <h1 className="text-3xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
               Campaign Analytics
             </h1>
-            <p className="text-white/60 mt-2">Monitor performance and engagement of your automated email campaigns</p>
+            <p className="text-white/60 mt-2">Monitor performance and engagement of your SAP migration outreach campaigns</p>
           </div>
 
-          {/* Metrics Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <MetricCard 
-              title="Sequence started" 
-              value={metricsData.sequenceStarted.toLocaleString()}
-              icon={<MdOutlineMailOutline />}
-            />
-            <MetricCard 
-              title="Open rate" 
-              value={`${metricsData.openRate.percentage}%`}
-              subValue={metricsData.openRate.count.toLocaleString()}
-              icon={<MdOutlineOpenInNew />}
-              colorClass="text-blue-500"
-            />
-            <MetricCard 
-              title="Click rate" 
-              value={`${metricsData.clickRate.percentage}%`}
-              subValue={metricsData.clickRate.count.toLocaleString()}
-              icon={<MdOutlineMouse />}
-              colorClass="text-green-500"
-            />
-            <MetricCard 
-              title="Reply rate" 
-              value={`${metricsData.replyRate.percentage}%`}
-              subValue={metricsData.replyRate.count.toLocaleString()}
-              icon={<MdOutlineReply />}
-              colorClass="text-purple-500"
-            />
-            <MetricCard 
-              title="Opportunities" 
-              value={metricsData.opportunities.count.toLocaleString()}
-              subValue={`$${(metricsData.opportunities.value/1000000).toFixed(1)}M`}
-              icon={<MdOutlineAttachMoney />}
-              colorClass="text-orange-500"
-            />
+          {/* Channel Tabs */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {/* Email Tab */}
+            <button
+              onClick={() => setActiveTab('email')}
+              className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+                activeTab === 'email' ? 'ring-2 ring-green-500' : ''
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                  <MdOutlineEmail size={24} />
           </div>
-
-          {/* Timeline Chart - Enhanced for better visual appeal */}
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Campaign Performance</h2>
-                  <p className="text-white/60 text-sm">Strong growth across key metrics over the last 3 months</p>
+                  <h2 className="text-lg font-semibold text-white">Email Outreach</h2>
+                  <p className="text-white/60 text-sm">SAP migration email campaigns</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-blue-500"></span>
-                    <span className="text-sm text-white/60">Emails sent</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                    <span className="text-sm text-white/60">Unique opens</span>
+            </button>
+
+            {/* LinkedIn Tab */}
+            <button
+              onClick={() => setActiveTab('linkedin')}
+              className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#0A66C2]/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+                activeTab === 'linkedin' ? 'ring-2 ring-[#0A66C2]' : ''
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-br from-[#0A66C2] to-[#0A66C2]/80 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                  <FaLinkedin size={24} />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-purple-500"></span>
-                    <span className="text-sm text-white/60">Replies</span>
+                <div>
+                  <h2 className="text-lg font-semibold text-white">LinkedIn Outreach</h2>
+                  <p className="text-white/60 text-sm">B2B SAP professional targeting</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
-                    <span className="text-sm text-white/60">Opportunities</span>
                   </div>
+            </button>
+
+            {/* WhatsApp Tab */}
+            <button
+              onClick={() => setActiveTab('whatsapp')}
+              className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#25D366]/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+                activeTab === 'whatsapp' ? 'ring-2 ring-[#25D366]' : ''
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-br from-[#25D366] to-[#25D366]/80 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                  <FaWhatsapp size={24} />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-white">WhatsApp Outreach</h2>
+                  <p className="text-white/60 text-sm">Direct messaging for key contacts</p>
                 </div>
               </div>
+            </button>
+              </div>
               
-              <div className="h-[400px]">
+          {/* Channel Content */}
+          <div className="grid grid-cols-12 gap-6">
+            {/* Channel Analytics Dashboard */}
+            <div className="col-span-12 lg:col-span-8 space-y-6">
+              {/* Email Content */}
+              {activeTab === 'email' && (
+                <>
+                  {/* Email Performance Overview */}
+                  <AnalyticsCard
+                    title="Email Campaign Performance"
+                    icon={<MdOutlineBarChart />}
+                  >
+                    <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={metricsData.timelineData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                    <defs>
-                      <linearGradient id="sent" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="uniqueOpens" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#22C55E" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#22C55E" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="totalReplies" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#A855F7" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#A855F7" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="opportunities" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#F97316" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#F97316" stopOpacity={0}/>
-                      </linearGradient>
-                      <filter id="shadow" height="200%">
-                        <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="rgba(0,0,0,0.3)" />
-                      </filter>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
-                    <XAxis 
-                      dataKey="date" 
-                      stroke="#6B7280"
-                      tick={{ fill: '#9CA3AF' }}
-                      axisLine={{ stroke: '#374151', strokeWidth: 1 }}
-                    />
-                    <YAxis 
-                      stroke="#6B7280"
-                      tick={{ fill: '#9CA3AF' }}
-                      axisLine={{ stroke: '#374151', strokeWidth: 1 }}
-                    />
+                        <BarChart
+                          data={emailAnalytics.performance}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis dataKey="name" stroke="#B3B3B3" />
+                          <YAxis stroke="#B3B3B3" />
                     <Tooltip 
                       contentStyle={{ 
-                        backgroundColor: 'rgba(31, 41, 55, 0.9)',
-                        backdropFilter: 'blur(8px)',
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
+                              borderRadius: '0.5rem',
                         border: '1px solid rgba(16, 185, 129, 0.2)',
+                              color: 'white',
+                            }}
+                          />
+                          <Legend />
+                          <Bar dataKey="sent" name="Sent" fill="#10B981" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="opened" name="Opened" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="clicked" name="Clicked" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </AnalyticsCard>
+
+                  {/* Email Open Rate Trend */}
+                  <AnalyticsCard
+                    title="Open Rate Trend"
+                    icon={<MdOutlineShowChart />}
+                    gradient="from-blue-500 to-blue-600"
+                    hoverGradient="from-blue-600 to-blue-700"
+                  >
+                    <div className="h-[250px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart
+                          data={emailAnalytics.openRates}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis dataKey="name" stroke="#B3B3B3" />
+                          <YAxis stroke="#B3B3B3" />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
                         borderRadius: '0.5rem',
-                        boxShadow: '0 4px 16px -1px rgba(0, 0, 0, 0.3)',
-                        color: '#E5E7EB'
+                              border: '1px solid rgba(59, 130, 246, 0.2)',
+                              color: 'white',
                       }}
-                      itemStyle={{ color: '#E5E7EB' }}
-                      labelStyle={{ color: '#F3F4F6', fontWeight: 'bold', marginBottom: '8px' }}
+                            formatter={(value) => [`${value}%`, 'Open Rate']}
                     />
-                    <Area 
-                      name="Emails Sent"
+                          <Line
                       type="monotone" 
-                      dataKey="sent" 
+                            dataKey="rate"
                       stroke="#3B82F6" 
-                      strokeWidth={2}
-                      fillOpacity={1} 
-                      fill="url(#sent)"
-                      activeDot={{ stroke: '#1D4ED8', strokeWidth: 2, r: 6, fill: '#3B82F6' }}
-                    />
-                    <Area 
-                      name="Unique Opens"
-                      type="monotone" 
-                      dataKey="uniqueOpens" 
-                      stroke="#22C55E" 
-                      strokeWidth={2}
-                      fillOpacity={1} 
-                      fill="url(#uniqueOpens)"
-                      activeDot={{ stroke: '#15803D', strokeWidth: 2, r: 6, fill: '#22C55E' }}
-                    />
-                    <Area 
-                      name="Replies"
-                      type="monotone" 
-                      dataKey="totalReplies" 
-                      stroke="#A855F7" 
-                      strokeWidth={2}
-                      fillOpacity={1} 
-                      fill="url(#totalReplies)"
-                      activeDot={{ stroke: '#7E22CE', strokeWidth: 2, r: 6, fill: '#A855F7' }}
-                    />
-                    <Area 
-                      name="Opportunities"
-                      type="monotone" 
-                      dataKey="opportunities" 
-                      stroke="#F97316" 
-                      strokeWidth={2}
-                      fillOpacity={1} 
-                      fill="url(#opportunities)"
-                      activeDot={{ stroke: '#C2410C', strokeWidth: 2, r: 6, fill: '#F97316' }}
-                    />
-                    <Legend 
-                      iconType="circle" 
-                      wrapperStyle={{ 
-                        paddingTop: '20px',
-                        color: '#E5E7EB'
-                      }}
-                    />
-                  </AreaChart>
+                            strokeWidth={3}
+                            dot={{ r: 4, fill: "#3B82F6", strokeWidth: 2, stroke: "rgba(59, 130, 246, 0.4)" }}
+                            activeDot={{ r: 6, fill: "#3B82F6", strokeWidth: 2, stroke: "white" }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </AnalyticsCard>
+
+                  {/* Time of Day Performance */}
+                  <AnalyticsCard
+                    title="Time of Day Effectiveness"
+                    icon={<MdOutlineAccessTime />}
+                    gradient="from-purple-500 to-purple-600"
+                    hoverGradient="from-purple-600 to-purple-700"
+                  >
+                    <div className="h-[250px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={emailAnalytics.byTime}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis dataKey="time" stroke="#B3B3B3" />
+                          <YAxis stroke="#B3B3B3" />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
+                              borderRadius: '0.5rem',
+                              border: '1px solid rgba(139, 92, 246, 0.2)',
+                              color: 'white',
+                            }}
+                            formatter={(value) => [`${value}%`, 'Open Rate']}
+                          />
+                          <Bar
+                            dataKey="rate"
+                            name="Open Rate"
+                            fill="#8B5CF6"
+                            radius={[4, 4, 0, 0]}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </AnalyticsCard>
+                </>
+              )}
+
+              {/* LinkedIn Content */}
+              {activeTab === 'linkedin' && (
+                <>
+                  {/* LinkedIn Connection Performance */}
+                  <AnalyticsCard
+                    title="LinkedIn Campaign Performance"
+                    icon={<MdOutlineBarChart />}
+                    gradient="from-[#0A66C2] to-[#0077B5]"
+                    hoverGradient="from-[#0077B5] to-[#0A66C2]"
+                  >
+                    <div className="h-[300px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={linkedinAnalytics.performance}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis dataKey="name" stroke="#B3B3B3" />
+                          <YAxis stroke="#B3B3B3" />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
+                              borderRadius: '0.5rem',
+                              border: '1px solid rgba(10, 102, 194, 0.2)',
+                              color: 'white',
+                            }}
+                          />
+                          <Legend />
+                          <Bar dataKey="sent" name="Connection Requests" fill="#0A66C2" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="accepted" name="Accepted" fill="#10B981" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="responded" name="Responded" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </AnalyticsCard>
+
+                  {/* Industry Performance */}
+                  <AnalyticsCard
+                    title="Industry Acceptance Rates"
+                    icon={<MdOutlineBusiness />}
+                    gradient="from-[#0A66C2] to-[#0077B5]"
+                    hoverGradient="from-[#0077B5] to-[#0A66C2]"
+                  >
+                    <div className="h-[300px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={linkedinAnalytics.byIndustry}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                          layout="vertical"
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis type="number" stroke="#B3B3B3" />
+                          <YAxis dataKey="industry" type="category" stroke="#B3B3B3" />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
+                              borderRadius: '0.5rem',
+                              border: '1px solid rgba(10, 102, 194, 0.2)',
+                              color: 'white',
+                            }}
+                            formatter={(value, name) => [name === 'rate' ? `${value}%` : value, name === 'rate' ? 'Acceptance Rate' : 'Connections']}
+                          />
+                          <Legend />
+                          <Bar dataKey="count" name="Connections" fill="#0A66C2" radius={[0, 4, 4, 0]} />
+                          <Bar dataKey="rate" name="Acceptance Rate (%)" fill="#10B981" radius={[0, 4, 4, 0]} />
+                        </BarChart>
                 </ResponsiveContainer>
               </div>
-              
-              <div className="flex items-center justify-between mt-4">
-                <div className="text-white/60 flex items-center gap-2 text-sm">
-                  <FaRegLightbulb className="text-orange-500" />
-                  <span>Pro tip: Response rates peak on Tuesdays and Wednesdays between 10am-11am</span>
+                  </AnalyticsCard>
+                </>
+              )}
+
+              {/* WhatsApp Content */}
+              {activeTab === 'whatsapp' && (
+                <>
+                  {/* WhatsApp Message Performance */}
+                  <AnalyticsCard
+                    title="WhatsApp Campaign Performance"
+                    icon={<MdOutlineBarChart />}
+                    gradient="from-[#25D366] to-[#128C7E]"
+                    hoverGradient="from-[#128C7E] to-[#25D366]"
+                  >
+                    <div className="h-[300px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={whatsappAnalytics.performance}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis dataKey="name" stroke="#B3B3B3" />
+                          <YAxis stroke="#B3B3B3" />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
+                              borderRadius: '0.5rem',
+                              border: '1px solid rgba(37, 211, 102, 0.2)',
+                              color: 'white',
+                            }}
+                          />
+                          <Legend />
+                          <Bar dataKey="sent" name="Sent" fill="#25D366" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="read" name="Read" fill="#10B981" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="replied" name="Replied" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
                 </div>
-                <div className="flex gap-2">
-                  <button className="btn btn-sm bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white gap-1 transition-colors">
-                    <MdFilterList size={16} />
-                    Filter
-                  </button>
-                  <button className="btn btn-sm bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white gap-1 transition-colors">
-                    <MdOutlineBarChart size={16} />
-                    View detailed report
-                  </button>
+                  </AnalyticsCard>
+
+                  {/* Time of Day Performance for WhatsApp */}
+                  <AnalyticsCard
+                    title="Response Time Analysis"
+                    icon={<MdOutlineAccessTime />}
+                    gradient="from-[#25D366] to-[#128C7E]"
+                    hoverGradient="from-[#128C7E] to-[#25D366]"
+                  >
+                    <div className="h-[300px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={whatsappAnalytics.byTime}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                          <XAxis dataKey="time" stroke="#B3B3B3" />
+                          <YAxis stroke="#B3B3B3" />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'rgba(10, 10, 10, 0.8)',
+                              borderRadius: '0.5rem',
+                              border: '1px solid rgba(37, 211, 102, 0.2)',
+                              color: 'white',
+                            }}
+                            formatter={(value, name) => [name === 'rate' ? `${value}%` : value, name === 'rate' ? 'Response Rate' : 'Messages']}
+                          />
+                          <Bar dataKey="count" name="Messages" fill="#25D366" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="rate" name="Response Rate (%)" fill="#10B981" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
                 </div>
-              </div>
-            </div>
+                  </AnalyticsCard>
+                </>
+              )}
           </div>
 
-          {/* Additional Analytics Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-2">
-            {/* Campaign Engagement by Status */}
-            <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-gradient-to-br from-purple-500 to-violet-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                  <MdOutlinePieChart size={24} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-white">Campaign Engagement</h2>
-                  <p className="text-white/60 text-sm">Distribution by response status</p>
-                </div>
+            {/* Sidebar with Stats */}
+            <div className="col-span-12 lg:col-span-4 space-y-6">
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 gap-4">
+                {activeTab === 'email' && (
+                  <>
+                    <StatCard
+                      title="Open Rate"
+                      value={`${Math.round((emailAnalytics.metrics.opened / emailAnalytics.metrics.sent) * 100)}%`}
+                      change="+5.2%"
+                      icon={<MdOutlineOpenInNew />}
+                      colorClass="text-green-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Click Rate"
+                      value={`${Math.round((emailAnalytics.metrics.clicked / emailAnalytics.metrics.opened) * 100)}%`}
+                      change="+2.8%"
+                      icon={<MdOutlineMouse />}
+                      colorClass="text-blue-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Response Rate"
+                      value={`${Math.round((emailAnalytics.metrics.responded / emailAnalytics.metrics.sent) * 100)}%`}
+                      change="+1.5%"
+                      icon={<MdOutlineReply />}
+                      colorClass="text-purple-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Meeting Conversion"
+                      value={`${Math.round((emailAnalytics.metrics.meetings / emailAnalytics.metrics.responded) * 100)}%`}
+                      change="+3.7%"
+                      icon={<MdOutlineCalendarToday />}
+                      colorClass="text-green-500"
+                      trend="up"
+                    />
+                  </>
+                )}
+
+                {activeTab === 'linkedin' && (
+                  <>
+                    <StatCard
+                      title="Connection Rate"
+                      value={`${Math.round((linkedinAnalytics.metrics.connections / 3000) * 100)}%`}
+                      change="+6.7%"
+                      icon={<MdOutlineGroups />}
+                      colorClass="text-[#0A66C2]"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Message Rate"
+                      value={`${Math.round((linkedinAnalytics.metrics.messages / linkedinAnalytics.metrics.connections) * 100)}%`}
+                      change="+4.2%"
+                      icon={<MdOutlineChat />}
+                      colorClass="text-green-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Response Rate"
+                      value={`${Math.round((linkedinAnalytics.metrics.responses / linkedinAnalytics.metrics.messages) * 100)}%`}
+                      change="+2.5%"
+                      icon={<MdOutlineReply />}
+                      colorClass="text-blue-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Meeting Conversion"
+                      value={`${Math.round((linkedinAnalytics.metrics.meetings / linkedinAnalytics.metrics.responses) * 100)}%`}
+                      change="+7.3%"
+                      icon={<MdOutlineCalendarToday />}
+                      colorClass="text-green-500"
+                      trend="up"
+                    />
+                  </>
+                )}
+
+                {activeTab === 'whatsapp' && (
+                  <>
+                    <StatCard
+                      title="Delivery Rate"
+                      value={`${Math.round((whatsappAnalytics.metrics.delivered / whatsappAnalytics.metrics.sent) * 100)}%`}
+                      change="+0.9%"
+                      icon={<MdCheck />}
+                      colorClass="text-[#25D366]"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Read Rate"
+                      value={`${Math.round((whatsappAnalytics.metrics.read / whatsappAnalytics.metrics.delivered) * 100)}%`}
+                      change="+5.1%"
+                      icon={<MdOutlineOpenInNew />}
+                      colorClass="text-green-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Response Rate"
+                      value={`${Math.round((whatsappAnalytics.metrics.replied / whatsappAnalytics.metrics.read) * 100)}%`}
+                      change="+3.5%"
+                      icon={<MdOutlineReply />}
+                      colorClass="text-blue-500"
+                      trend="up"
+                    />
+                    <StatCard
+                      title="Meeting Conversion"
+                      value={`${Math.round((whatsappAnalytics.metrics.meetings / whatsappAnalytics.metrics.replied) * 100)}%`}
+                      change="+2.1%"
+                      icon={<MdOutlineCalendarToday />}
+                      colorClass="text-green-500"
+                      trend="up"
+                    />
+                  </>
+                )}
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="h-[220px]">
+              {/* Campaign Status Summary */}
+              <AnalyticsCard
+                title={`${getChannelName(activeTab)} Campaign Status`}
+                icon={getChannelIcon(activeTab)}
+                gradient={
+                  activeTab === 'email' 
+                    ? 'from-green-500 to-emerald-600' 
+                    : activeTab === 'linkedin' 
+                    ? 'from-[#0A66C2] to-[#0077B5]'
+                    : 'from-[#25D366] to-[#128C7E]'
+                }
+                hoverGradient={
+                  activeTab === 'email' 
+                    ? 'from-green-600 to-emerald-700' 
+                    : activeTab === 'linkedin' 
+                    ? 'from-[#0077B5] to-[#0A66C2]'
+                    : 'from-[#128C7E] to-[#25D366]'
+                }
+              >
+                <div className="h-[200px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={[
                           { name: 'Engaged', value: 42 },
-                          { name: 'Evaluating', value: 23 },
-                          { name: 'New', value: 25 },
-                          { name: 'Not Interested', value: 10 }
+                          { name: 'Responded', value: 23 },
+                          { name: 'Not Engaged', value: 35 },
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={50}
+                        innerRadius={60}
                         outerRadius={80}
                         paddingAngle={2}
                         dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        labelLine={false}
                       >
-                        <Cell fill="#22C55E" />
-                        <Cell fill="#F97316" />
+                        <Cell fill="#10B981" />
                         <Cell fill="#3B82F6" />
-                        <Cell fill="#EF4444" />
+                        <Cell fill="#4B5563" />
                       </Pie>
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: 'rgba(31, 41, 55, 0.9)',
-                          backdropFilter: 'blur(8px)',
-                          border: '1px solid rgba(16, 185, 129, 0.2)',
+                          backgroundColor: 'rgba(10, 10, 10, 0.8)',
                           borderRadius: '0.5rem',
-                          boxShadow: '0 4px 16px -1px rgba(0, 0, 0, 0.3)',
-                          color: '#E5E7EB'
-                        }}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="flex flex-col justify-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <div className="text-white/80">Engaged</div>
-                    <div className="ml-auto text-white font-medium">42%</div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                    <div className="text-white/80">Evaluating</div>
-                    <div className="ml-auto text-white font-medium">23%</div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                    <div className="text-white/80">New</div>
-                    <div className="ml-auto text-white font-medium">25%</div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="text-white/80">Not Interested</div>
-                    <div className="ml-auto text-white font-medium">10%</div>
-                  </div>
-                  <div className="mt-4 text-white/60 text-sm flex items-center gap-2">
-                    <FaRegLightbulb className="text-orange-500" />
-                    <span>65% of prospects engage after 2+ touchpoints</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Response Time */}
-            <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                  <MdOutlineSpeed size={24} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-white">Response Time Distribution</h2>
-                  <p className="text-white/60 text-sm">How quickly contacts respond to campaigns</p>
-                </div>
-              </div>
-              
-              <div className="h-[220px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={[
-                      { time: 'Same day', percentage: 35 },
-                      { time: '1-2 days', percentage: 42 },
-                      { time: '3-7 days', percentage: 15 },
-                      { time: '1-2 weeks', percentage: 5 },
-                      { time: '2+ weeks', percentage: 3 }
-                    ]}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 40 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
-                    <XAxis 
-                      dataKey="time" 
-                      tick={{ fill: '#9CA3AF' }}
-                      axisLine={{ stroke: '#374151', strokeWidth: 1 }}
-                      angle={-45}
-                      textAnchor="end"
-                      height={60}
-                    />
-                    <YAxis 
-                      tick={{ fill: '#9CA3AF' }}
-                      axisLine={{ stroke: '#374151', strokeWidth: 1 }}
-                    />
-                    <Tooltip
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(31, 41, 55, 0.9)',
-                        backdropFilter: 'blur(8px)',
                         border: '1px solid rgba(16, 185, 129, 0.2)',
-                        borderRadius: '0.5rem',
-                        boxShadow: '0 4px 16px -1px rgba(0, 0, 0, 0.3)',
-                        color: '#E5E7EB'
+                          color: 'white',
                       }}
                       formatter={(value) => [`${value}%`, 'Percentage']}
                     />
-                    <Bar dataKey="percentage" fill="#3B82F6" radius={[4, 4, 0, 0]}>
-                      {
-                        [
-                          { time: 'Same day', percentage: 35 },
-                          { time: '1-2 days', percentage: 42 },
-                          { time: '3-7 days', percentage: 15 },
-                          { time: '1-2 weeks', percentage: 5 },
-                          { time: '2+ weeks', percentage: 3 }
-                        ].map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={index === 0 ? '#3B82F6' : 
-                                  index === 1 ? '#22C55E' :
-                                  index === 2 ? '#F97316' :
-                                  index === 3 ? '#A855F7' : '#EF4444'} 
-                          />
-                        ))
-                      }
-                    </Bar>
-                  </BarChart>
+                    </PieChart>
                 </ResponsiveContainer>
               </div>
+              </AnalyticsCard>
             </div>
           </div>
 
-          {/* Contacts Section Toggle */}
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-white">Contact Database</h2>
+          {/* Contacts Database Section */}
+          <div className="mt-10">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-white">SAP Prospect Database</h2>
+              <div className="flex gap-2">
             <button 
               onClick={() => setShowContacts(!showContacts)}
-              className="btn bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white gap-2 transition-colors"
-            >
-              {showContacts ? (
-                <>
-                  <span>Hide Contacts</span>
-                  <MdExpandLess className="text-orange-500" />
-                </>
-              ) : (
-                <>
-                  <span>Show Contacts</span>
-                  <MdExpandMore className="text-orange-500" />
-                </>
-              )}
+                  className="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg flex items-center gap-2 border border-green-500/10 transition-all"
+                >
+                  {showContacts ? <MdExpandLess /> : <MdExpandMore />}
+                  {showContacts ? 'Hide Contacts' : 'Show Contacts'}
+                </button>
+                <button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg shadow-green-500/20 transition-all">
+                  <MdOutlinePersonAdd />
+                  Add Contact
             </button>
+              </div>
           </div>
 
-          {/* Enhanced Contacts Database Section */}
-          {showContacts && (
-            <div className="flex flex-col gap-4">
               {/* Filters and search */}
-              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-4 relative overflow-hidden">
+            <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 p-4 relative overflow-hidden">
                 <div className="flex flex-wrap gap-3 items-center">
                   <div className="relative">
                     <input 
                       type="text" 
-                      placeholder="Search contacts..." 
-                      className="input input-sm backdrop-blur-md bg-[#28292b]/60 border border-emerald-500/20 text-white focus:border-emerald-500 pl-10 w-64"
+                    placeholder="Search SAP contacts..." 
+                    className="input input-sm backdrop-blur-md bg-[#28292b]/60 border border-green-500/20 text-white focus:border-green-500 pl-10 w-64"
                     />
-                    <MdOutlineEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-500" />
+                  <MdOutlineEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
                   </div>
                   
                   <div className="dropdown dropdown-end">
-                    <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white transition-colors gap-1">
+                  <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-green-500/10 border border-green-500/30 text-white transition-colors gap-1">
                       <MdFilterList size={16} />
                       Filter: {filterStatus === 'all' ? 'All Contacts' : 
                         filterStatus === 'interested' ? 'Engaged' :
                         filterStatus === 'not_interested' ? 'Not Interested' :
                         filterStatus === 'no_response' ? 'No Response' : 'Evaluating'}
                     </label>
-                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 rounded-box w-52">
-                      <li><button onClick={() => setFilterStatus('all')} className="text-white hover:bg-orange-500/10">All Contacts</button></li>
-                      <li><button onClick={() => setFilterStatus('interested')} className="text-white hover:bg-orange-500/10">Engaged</button></li>
-                      <li><button onClick={() => setFilterStatus('not_interested')} className="text-white hover:bg-orange-500/10">Not Interested</button></li>
-                      <li><button onClick={() => setFilterStatus('no_response')} className="text-white hover:bg-orange-500/10">No Response</button></li>
-                      <li><button onClick={() => setFilterStatus('pending')} className="text-white hover:bg-orange-500/10">Evaluating</button></li>
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 rounded-box w-52">
+                    <li><button onClick={() => setFilterStatus('all')} className="text-white hover:bg-green-500/10">All Contacts</button></li>
+                    <li><button onClick={() => setFilterStatus('interested')} className="text-white hover:bg-green-500/10">Engaged</button></li>
+                    <li><button onClick={() => setFilterStatus('not_interested')} className="text-white hover:bg-green-500/10">Not Interested</button></li>
+                    <li><button onClick={() => setFilterStatus('no_response')} className="text-white hover:bg-green-500/10">No Response</button></li>
+                    <li><button onClick={() => setFilterStatus('pending')} className="text-white hover:bg-green-500/10">Evaluating</button></li>
                     </ul>
                   </div>
                   
                   <div className="dropdown dropdown-end">
-                    <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white transition-colors gap-1">
+                  <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-green-500/10 border border-green-500/30 text-white transition-colors gap-1">
                       <MdSort size={16} />
                       Sort: {sortBy === 'date' ? 'Last Contact' : 
                         sortBy === 'name' ? 'Name' : 
@@ -1124,50 +1417,50 @@ const OutreachTracking = () => {
                         sortBy === 'score' ? 'Lead Score' : 'Status'} 
                       ({sortOrder === 'desc' ? '↓' : '↑'})
                     </label>
-                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 rounded-box w-52">
-                      <li><button onClick={() => { setSortBy('date'); setSortOrder('desc'); }} className="text-white hover:bg-orange-500/10">Latest First</button></li>
-                      <li><button onClick={() => { setSortBy('date'); setSortOrder('asc'); }} className="text-white hover:bg-orange-500/10">Oldest First</button></li>
-                      <li><button onClick={() => { setSortBy('name'); setSortOrder('asc'); }} className="text-white hover:bg-orange-500/10">Name (A-Z)</button></li>
-                      <li><button onClick={() => { setSortBy('name'); setSortOrder('desc'); }} className="text-white hover:bg-orange-500/10">Name (Z-A)</button></li>
-                      <li><button onClick={() => { setSortBy('company'); setSortOrder('asc'); }} className="text-white hover:bg-orange-500/10">Company (A-Z)</button></li>
-                      <li><button onClick={() => { setSortBy('company'); setSortOrder('desc'); }} className="text-white hover:bg-orange-500/10">Company (Z-A)</button></li>
-                      <li><button onClick={() => { setSortBy('score'); setSortOrder('desc'); }} className="text-white hover:bg-orange-500/10">Lead Score (High-Low)</button></li>
-                      <li><button onClick={() => { setSortBy('status'); setSortOrder('asc'); }} className="text-white hover:bg-orange-500/10">Status</button></li>
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 rounded-box w-52">
+                    <li><button onClick={() => { setSortBy('date'); setSortOrder('desc'); }} className="text-white hover:bg-green-500/10">Latest First</button></li>
+                    <li><button onClick={() => { setSortBy('date'); setSortOrder('asc'); }} className="text-white hover:bg-green-500/10">Oldest First</button></li>
+                    <li><button onClick={() => { setSortBy('name'); setSortOrder('asc'); }} className="text-white hover:bg-green-500/10">Name (A-Z)</button></li>
+                    <li><button onClick={() => { setSortBy('name'); setSortOrder('desc'); }} className="text-white hover:bg-green-500/10">Name (Z-A)</button></li>
+                    <li><button onClick={() => { setSortBy('company'); setSortOrder('asc'); }} className="text-white hover:bg-green-500/10">Company (A-Z)</button></li>
+                    <li><button onClick={() => { setSortBy('company'); setSortOrder('desc'); }} className="text-white hover:bg-green-500/10">Company (Z-A)</button></li>
+                    <li><button onClick={() => { setSortBy('score'); setSortOrder('desc'); }} className="text-white hover:bg-green-500/10">Lead Score (High-Low)</button></li>
+                    <li><button onClick={() => { setSortBy('status'); setSortOrder('asc'); }} className="text-white hover:bg-green-500/10">Status</button></li>
                     </ul>
                   </div>
                   
                   <div className="dropdown dropdown-end">
-                    <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white transition-colors">
+                  <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-green-500/10 border border-green-500/30 text-white transition-colors">
                       <MdOutlineMailOutline size={16} />
                       Columns
                     </label>
-                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 rounded-box w-52">
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Name
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 rounded-box w-52">
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Name
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Email
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Email
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Company
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Company
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Position
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Position
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Location
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Location
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Status
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Status
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" checked readOnly /> Last Contact
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked readOnly /> Last Contact
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" /> Tags
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" /> Tags
                       </label></li>
-                      <li><label className="flex items-center gap-2 p-2 text-white hover:bg-orange-500/10">
-                        <input type="checkbox" className="checkbox checkbox-xs checkbox-warning" /> Lead Score
+                    <li><label className="flex items-center gap-2 p-2 text-white hover:bg-green-500/10">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" /> Lead Score
                       </label></li>
                     </ul>
                   </div>
@@ -1177,14 +1470,14 @@ const OutreachTracking = () => {
                       Showing {(currentPage - 1) * rowsPerPage + 1}-{Math.min(currentPage * rowsPerPage, totalContacts)} of {totalContacts.toLocaleString()} contacts
                     </span>
                     <div className="dropdown dropdown-end">
-                      <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-orange-500/10 border border-orange-500/30 text-white transition-colors">
+                      <label tabIndex={0} className="btn btn-sm bg-transparent hover:bg-green-500/10 border border-green-500/30 text-white transition-colors">
                         {rowsPerPage} per page
                       </label>
-                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 rounded-box w-40">
-                        <li><button onClick={() => setRowsPerPage(10)} className="text-white hover:bg-orange-500/10">10 rows</button></li>
-                        <li><button onClick={() => setRowsPerPage(25)} className="text-white hover:bg-orange-500/10">25 rows</button></li>
-                        <li><button onClick={() => setRowsPerPage(50)} className="text-white hover:bg-orange-500/10">50 rows</button></li>
-                        <li><button onClick={() => setRowsPerPage(100)} className="text-white hover:bg-orange-500/10">100 rows</button></li>
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/90 to-[rgba(40,41,43,0.9)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 rounded-box w-40">
+                        <li><button onClick={() => setRowsPerPage(10)} className="text-white hover:bg-green-500/10">10 rows</button></li>
+                        <li><button onClick={() => setRowsPerPage(25)} className="text-white hover:bg-green-500/10">25 rows</button></li>
+                        <li><button onClick={() => setRowsPerPage(50)} className="text-white hover:bg-green-500/10">50 rows</button></li>
+                        <li><button onClick={() => setRowsPerPage(100)} className="text-white hover:bg-green-500/10">100 rows</button></li>
                       </ul>
                     </div>
                   </div>
@@ -1192,12 +1485,12 @@ const OutreachTracking = () => {
               </div>
 
               {/* Contact data table */}
-              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-2 relative overflow-hidden">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 p-2 relative overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="table table-sm w-full">
                     {/* Table header */}
                     <thead>
-                      <tr className="border-b border-emerald-500/20">
+                      <tr className="border-b border-green-500/20">
                         <th className="bg-[#28292b]/80 text-white/80 pl-3 rounded-tl-lg">#</th>
                         <th className="bg-[#28292b]/80 text-white/80">Name</th>
                         <th className="bg-[#28292b]/80 text-white/80">Email</th>
