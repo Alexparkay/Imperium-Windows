@@ -10,6 +10,7 @@ import MigrationInsights from './pages/MigrationInsights';
 import Outreach from './pages/Outreach';
 import OutreachTracking from './pages/OutreachTracking';
 import Pricing from './pages/Pricing';
+import SplineTest from './pages/SplineTest';
 import Menu from './components/menu/Menu';
 import { FilterProvider } from './contexts/FilterContext';
 
@@ -21,6 +22,7 @@ function App() {
         <main className="flex-1 ml-[110px]">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/spline-test" element={<SplineTest />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/market-database" element={

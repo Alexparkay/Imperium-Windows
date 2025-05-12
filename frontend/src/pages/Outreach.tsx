@@ -371,7 +371,7 @@ Best regards,
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white p-1">
+    <div className="min-h-screen bg-[#0A0A0A] text-white px-1 py-8">
       <div className="max-w-[1800px] mx-auto">
         {/* Title */}
         <div className="flex items-center gap-3 mb-6 px-2">
@@ -555,7 +555,7 @@ Best regards,
           {/* Email Sequencing Visualization */}
           <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                 <RiFlowChart size={24} />
               </div>
               <div>
@@ -715,6 +715,136 @@ Best regards,
                 <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-emerald-500/10">
                   <div className="text-sm text-emerald-400 mb-1">Complete Sequence</div>
                   <div className="text-lg text-white font-bold">40% of contacts</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Database Section - Added for Email tab */}
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <FaDatabase className="text-lg text-white" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-white">Contact Database</h2>
+                <p className="text-white/60 text-sm">Select your SAP migration audience from 2,347 verified contacts</p>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  <span className="text-xs text-emerald-500 font-medium">AI Optimized</span>
+                </div>
+                <div className="bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30">
+                  <span className="text-xs text-orange-400 font-medium">42% avg. open rate</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="table table-sm w-full">
+                <thead>
+                  <tr className="border-b border-emerald-500/20">
+                    <th className="w-10 bg-[#28292b]/80 text-white/80">
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                    </th>
+                    <th className="bg-[#28292b]/80 text-white/80">Name</th>
+                    <th className="bg-[#28292b]/80 text-white/80">Email</th>
+                    <th className="bg-[#28292b]/80 text-white/80">Company</th>
+                    <th className="bg-[#28292b]/80 text-white/80">Position</th>
+                    <th className="bg-[#28292b]/80 text-white/80 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                    <td>
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
+                    </td>
+                    <td className="font-medium text-white">Jeff Levy</td>
+                    <td className="text-white/80">j.levy@example.com</td>
+                    <td>Apple</td>
+                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="text-right">
+                      <span className="text-emerald-400 text-sm">Opened previous email</span>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                    <td>
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                    </td>
+                    <td className="font-medium text-white">Amy Huke</td>
+                    <td className="text-white/80">a.huke@example.com</td>
+                    <td>Honeywell</td>
+                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="text-right">
+                      <span className="text-blue-400 text-sm">New contact</span>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                    <td>
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
+                    </td>
+                    <td className="font-medium text-white">Ryan Kuddes</td>
+                    <td className="text-white/80">r.kuddes@example.com</td>
+                    <td>Apple</td>
+                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="text-right">
+                      <span className="text-emerald-400 text-sm">Opened previous email</span>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                    <td>
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                    </td>
+                    <td className="font-medium text-white">Zuretti Carter</td>
+                    <td className="text-white/80">z.carter@example.com</td>
+                    <td>ChargePoint</td>
+                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="text-right">
+                      <span className="text-yellow-400 text-sm">Clicked link</span>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                    <td>
+                      <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                    </td>
+                    <td className="font-medium text-white">Scott Simpson</td>
+                    <td className="text-white/80">s.simpson@example.com</td>
+                    <td>Plexus Corp.</td>
+                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="text-right"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="mt-4 flex items-center justify-between">
+              <div className="text-white/60 text-sm">2 contacts selected from 2,347 total</div>
+              <div className="flex gap-2">
+                <div className="join">
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">«</button>
+                  <button className="join-item btn btn-sm bg-emerald-500 text-white border-emerald-500">1</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">2</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">3</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">4</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">5</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">»</button>
+                </div>
+                <button className="btn btn-sm bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white border-0 gap-2 shadow-lg hover:shadow-emerald-500/20 transition-all">
+                  Import Contacts
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+              <div className="flex items-center gap-2">
+                <div className="text-emerald-500">
+                  <MdOutlineSettings className="text-xl animate-spin-slow" />
+                </div>
+                <div>
+                  <p className="text-sm text-white/90">
+                    <span className="font-medium text-emerald-400">AI-powered SAP insights:</span> Our intelligent system has analyzed your contacts and identified <span className="text-emerald-400 font-medium">78 SAP ECC 6.0 enterprises</span> with a high likelihood of migration needs before 2027. These contacts have been prioritized based on their current system complexity and maintenance costs.
+                  </p>
                 </div>
               </div>
             </div>

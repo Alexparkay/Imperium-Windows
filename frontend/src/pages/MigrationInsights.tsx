@@ -700,7 +700,7 @@ const MigrationInsights = () => {
                   {/* Full-width image container */}
                   <div className="absolute inset-0">
                     <img 
-                      src="/images/solar/unnamed2.png" 
+                      src="/images/SAP/9f8d193c67c44ea39fb7ebbbc251526f.jpg" 
                       alt="Implementation Details" 
                       className="w-full h-full object-cover object-center"
                     />
@@ -746,7 +746,7 @@ const MigrationInsights = () => {
                   {/* Full-width image container */}
                   <div className="absolute inset-0">
                     <img 
-                      src="/images/solar/unnamed4.png" 
+                      src="/images/SAP/d2e31c8edf938cb0e91610502f699f6c.jpg" 
                       alt="Financial Benefits" 
                       className="w-full h-full object-cover object-center"
                     />
@@ -792,7 +792,7 @@ const MigrationInsights = () => {
                   {/* Full-width image container */}
                   <div className="absolute inset-0">
                     <img 
-                      src="/images/solar/unnamed6.png" 
+                      src="/images/SAP/eeec8cab190002a2ebdb955a175312a0.jpg" 
                       alt="Migration Assessment" 
                       className="w-full h-full object-cover object-center"
                     />
@@ -838,7 +838,7 @@ const MigrationInsights = () => {
                   {/* Full-width image container with increased right offset */}
                   <div className="absolute inset-0 translate-x-[20%]">
                     <img 
-                      src="/images/solar/unnamed.png" 
+                      src="/images/SAP/ef752e7a0381c7ef856d5c4b3b627c13.jpg" 
                       alt="Technical Details" 
                       className="w-[115%] h-full object-cover object-left scale-95"
                     />
@@ -1442,98 +1442,6 @@ const MigrationInsights = () => {
                   <MdArrowForward className="relative z-10 text-2xl group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
               </div>
-
-              {/* SAP Migration Visualization */}
-              <section className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">Interactive Migration Assessment</h2>
-                <div className="bg-white dark:bg-[#1e222b]/50 rounded-xl shadow-lg backdrop-blur-lg border border-white/10 overflow-hidden">
-                  <div className="relative w-full" style={{ height: '650px' }}>
-                    {iframeLoaded ? (
-                      <iframe 
-                        key={iframeKey}
-                        src="http://localhost:5174" 
-                        className="absolute inset-0 w-full h-full"
-                        style={{ border: 'none' }}
-                        title="SAP Migration Assessment"
-                        sandbox="allow-scripts allow-same-origin allow-forms"
-                        onError={(e) => {
-                          console.error("SAP Migration visualization iframe error:", e);
-                          toast.error("Visualization connection error. Showing fallback content.");
-                          setIframeLoaded(false);
-                        }}
-                        onLoad={(e) => {
-                          console.log("SAP Migration visualization iframe loaded successfully");
-                          setIframeLoaded(true);
-                          
-                          // Prevent navigation by intercepting beforeunload events
-                          window.addEventListener('beforeunload', (event) => {
-                            const currentHref = window.location.href;
-                            if (currentHref.includes('#ru')) {
-                              event.preventDefault();
-                              window.history.pushState(null, '', window.location.pathname);
-                              return '';
-                            }
-                          });
-                        }}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1e222b] p-8">
-                        <MdCloudUpload size={64} className="text-emerald-500 mb-6" />
-                        <h3 className="text-2xl font-bold text-white mb-4">SAP Migration Visualization</h3>
-                        <p className="text-gray-300 text-center mb-6 max-w-2xl">
-                          This interactive visualization shows the proposed SAP migration path from on-premise
-                          infrastructure to cloud-based S/4HANA implementation, highlighting system components,
-                          integration points, and data migration strategy.
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
-                          <div className="bg-[#1e222b] p-4 rounded-lg">
-                            <h4 className="font-medium text-white mb-2">Total Systems</h4>
-                            <p className="text-3xl font-bold text-emerald-500">42</p>
-                            <p className="text-sm text-gray-400 mt-1">servers</p>
-                          </div>
-                          <div className="bg-[#1e222b] p-4 rounded-lg">
-                            <h4 className="font-medium text-white mb-2">Migration Time</h4>
-                            <p className="text-3xl font-bold text-emerald-500">9</p>
-                            <p className="text-sm text-gray-400 mt-1">months</p>
-                          </div>
-                          <div className="bg-[#1e222b] p-4 rounded-lg">
-                            <h4 className="font-medium text-white mb-2">Cost Reduction</h4>
-                            <p className="text-3xl font-bold text-emerald-500">73.5%</p>
-                            <p className="text-sm text-gray-400 mt-1">operational savings</p>
-                          </div>
-                        </div>
-                        <button 
-                          className="mt-6 px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
-                          onClick={() => {
-                            setIframeKey(prev => prev + 1);
-                            setIframeLoaded(true);
-                          }}
-                        >
-                          Try Loading Interactive View
-                        </button>
-                      </div>
-                    )}
-                    {/* Fallback trigger button always available */}
-                    <div className="absolute top-4 right-4 z-20">
-                      <button 
-                        className="p-2 bg-[#1e222b]/50 backdrop-blur-sm rounded-full hover:bg-[#1e222b]/70 transition-colors"
-                        onClick={() => {
-                          setIframeLoaded(!iframeLoaded);
-                          if (iframeLoaded) {
-                            setIframeKey(prev => prev + 1);
-                          }
-                        }}
-                        title={iframeLoaded ? "Switch to Static View" : "Try Interactive View"}
-                      >
-                        {iframeLoaded ? 
-                          <MdOutlineSettings className="text-white text-xl" /> : 
-                          <MdRefresh className="text-white text-xl" />
-                        }
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </section>
 
               {/* Next Steps */}
               <div className={cardBaseClass}>

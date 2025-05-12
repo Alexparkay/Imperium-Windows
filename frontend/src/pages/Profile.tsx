@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { MdBusiness, MdLocationOn, MdOutlineEmail, MdOutlinePhone, MdStorage, MdCloud, MdSecurity, MdSettings, MdAnalytics, MdCode, MdZoomIn, MdZoomOut } from 'react-icons/md';
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 import { geoPath } from "d3-geo";
 import { 
   sapCompanyData, 
@@ -37,6 +38,23 @@ const Profile = () => {
   // Log when the component mounts
   useEffect(() => {
     console.log("Profile component mounted");
+    console.log("Using GeoJSON URL:", geoUrl);
+    
+    // Try to fetch the GeoJSON to verify it works
+    fetch(geoUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch map data: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("GeoJSON data loaded successfully");
+      })
+      .catch(error => {
+        console.error("Error loading GeoJSON:", error);
+        setMapError(error.message);
+      });
   }, []);
 
   // Calculate optimal map position and zoom when selected regions change
@@ -103,80 +121,90 @@ const Profile = () => {
         <div className="absolute inset-0 flex items-center justify-center z-0">
           <div ref={mapRef} className="relative w-[1100px] h-[1100px] bg-[#020305]/50 backdrop-blur-md rounded-full">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative w-full h-full p-4">
-                <div className="absolute inset-0 bg-[#020305] opacity-50 rounded-full"></div>
-                
-                {/* World map visualization with CSS */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-[800px] h-[800px]">
-                    {/* Glowing center */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/5 rounded-full animate-pulse-slow"></div>
-                    
-                    {/* Region highlights */}
-                    {selectedRegions.map((region, index) => {
-                      const angle = (index * 90) % 360;
-                      const radius = 250; // Distance from center
-                      const x = Math.cos(angle * Math.PI / 180) * radius;
-                      const y = Math.sin(angle * Math.PI / 180) * radius;
-                      
-                      return (
-                        <div 
-                          key={region}
-                          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                          style={{
-                            marginLeft: `${x}px`,
-                            marginTop: `${y}px`,
-                            width: '150px',
-                            height: '150px',
-                            background: `radial-gradient(circle, ${regions[region].color}40 0%, transparent 70%)`,
-                            borderRadius: '50%',
-                            opacity: 0.7,
-                            boxShadow: `0 0 20px ${regions[region].color}80`
-                          }}
-                        >
-                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs font-medium">
-                            {region}
-                          </div>
-                        </div>
-                      );
-                    })}
-                    
-                    {/* Add continent outlines with CSS */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] border border-emerald-500/20 rounded-[350px/175px]"></div>
-                    <div className="absolute top-[30%] left-[20%] w-[120px] h-[80px] border border-emerald-500/30 rounded-full transform rotate-12"></div>
-                    <div className="absolute top-[40%] left-[70%] w-[150px] h-[100px] border border-emerald-500/30 rounded-full transform -rotate-12"></div>
-                    <div className="absolute top-[30%] left-[45%] w-[90px] h-[60px] border border-emerald-500/30 rounded-full"></div>
-                    
-                    {/* Network connections */}
-                    {selectedRegions.length > 1 && selectedRegions.map((region, index) => {
-                      if (index === selectedRegions.length - 1) return null;
-                      
-                      const angle1 = (index * 90) % 360;
-                      const angle2 = ((index + 1) * 90) % 360;
-                      const radius = 250;
-                      
-                      const x1 = Math.cos(angle1 * Math.PI / 180) * radius + 400;
-                      const y1 = Math.sin(angle1 * Math.PI / 180) * radius + 400;
-                      const x2 = Math.cos(angle2 * Math.PI / 180) * radius + 400;
-                      const y2 = Math.sin(angle2 * Math.PI / 180) * radius + 400;
-                      
-                      return (
-                        <svg key={`line-${index}`} className="absolute top-0 left-0 w-full h-full">
-                          <line 
-                            x1={x1} 
-                            y1={y1} 
-                            x2={x2} 
-                            y2={y2} 
-                            stroke={`${regions[region].color}40`} 
-                            strokeWidth="1" 
-                            strokeDasharray="4,4"
-                          />
-                        </svg>
-                      );
-                    })}
+              {/* Fallback div to ensure some content is visible */}
+              <div className="absolute inset-0 flex items-center justify-center flex-col gap-2 text-emerald-500/50 p-4 text-center">
+                {mapError && (
+                  <div className="text-red-400 text-sm max-w-md">
+                    Error loading map: {mapError}
                   </div>
-                </div>
+                )}
               </div>
+              
+              <ComposableMap
+                projection="geoMercator"
+                projectionConfig={{
+                  scale: 150,
+                  center: [0, 0]
+                }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "transparent"
+                }}
+              >
+                <ZoomableGroup
+                  center={position.coordinates}
+                  zoom={position.zoom}
+                  onMoveEnd={(position) => setPosition(position)}
+                  maxZoom={8}
+                  minZoom={1}
+                >
+                  <Geographies geography={geoUrl}>
+                    {({ geographies }) =>
+                      geographies.map((geo) => {
+                        // For world-atlas TopoJSON format
+                        const countryName = geo.properties.name || "";
+                        const countryRegion = findCountryRegion(countryName);
+                        const isSelected = selectedCountries.includes(countryName) || 
+                                         (selectedCountries.length === 0 && isInSelectedRegions(countryName));
+                        const fillColor = countryRegion 
+                          ? regions[countryRegion].color 
+                          : "#2A2A2A";
+                        const isHovered = hoveredCountry === countryName;
+
+                        return (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            onClick={() => countryRegion && handleCountryToggle(countryName)}
+                            onMouseEnter={() => {
+                              setTooltipContent(countryName);
+                              setHoveredCountry(countryName);
+                            }}
+                            onMouseLeave={() => {
+                              setTooltipContent("");
+                              setHoveredCountry("");
+                            }}
+                            style={{
+                              default: {
+                                fill: isSelected ? fillColor : "#2A2A2A",
+                                stroke: "#1A1A1A",
+                                strokeWidth: 0.5,
+                                outline: "none",
+                                opacity: countryRegion ? (isSelected ? 1 : 0.3) : 0.2
+                              },
+                              hover: {
+                                fill: countryRegion ? fillColor : "#3A3A3A",
+                                stroke: "#1A1A1A",
+                                strokeWidth: 0.5,
+                                outline: "none",
+                                opacity: 1,
+                                cursor: countryRegion ? "pointer" : "default"
+                              },
+                              pressed: {
+                                fill: countryRegion ? fillColor : "#3A3A3A",
+                                stroke: "#1A1A1A",
+                                strokeWidth: 0.5,
+                                outline: "none"
+                              }
+                            }}
+                          />
+                        );
+                      })
+                    }
+                  </Geographies>
+                </ZoomableGroup>
+              </ComposableMap>
             </div>
             
             {/* Map tooltip */}

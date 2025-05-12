@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@splinetool/react-spline": "^4.0.0",
+    "@splinetool/runtime": "^1.9.92",
     "apexcharts": "^4.5.0",
     "d3-geo": "^3.1.1",
     "react-apexcharts": "^1.7.0",
