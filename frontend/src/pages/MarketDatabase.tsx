@@ -638,57 +638,60 @@ const MarketDatabase = () => {
         break;
     }
     
-    // Update filtered stats based on selections
+    // Calculate how many filters are applied (excluding empty string filters)
+    const activeFilterCount = Object.entries({ 
+      ...activeFilters, 
+      [category]: value 
+    }).filter(([_, val]) => {
+      if (typeof val === 'string') return val !== '';
+      return val === true;
+    }).length;
+    
+    // Calculate filtered count based on number of active filters
     let newFilteredCount = companiesStats.total;
     
-    Object.entries({ ...filters, [category]: value }).forEach(([key, val]) => {
-      if (val === '' || val === false) return;
-      
-      switch (key) {
-        case 'companyName':
-          newFilteredCount = Math.round(newFilteredCount * 0.001);
-        break;
-        case 'employeeCount':
-          const employeeCountProportions: {[key: string]: number} = {
-            '1-50 employees': 0.25,
-            '51-200 employees': 0.18,
-            '201-500 employees': 0.15,
-            '501-1,000 employees': 0.21,
-            '1,001-5,000 employees': 0.09,
-            '5,001-10,000 employees': 0.07,
-            '10,000+ employees': 0.05
-          };
-          newFilteredCount = Math.round(newFilteredCount * (employeeCountProportions[val as string] || 0.1));
-        break;
-      case 'state':
-          newFilteredCount = Math.round(newFilteredCount * 0.02);
-        break;
-      case 'sector':
-          newFilteredCount = Math.round(newFilteredCount * 0.15);
-        break;
-        case 'revenue':
-          newFilteredCount = Math.round(newFilteredCount * 0.2);
-        break;
-        case 'erpModules':
-          newFilteredCount = Math.round(newFilteredCount * 0.25);
-        break;
-      case 'verifiedEmail':
-          if (val) newFilteredCount = Math.round(newFilteredCount * 0.72);
-        break;
-      case 'verifiedPhone':
-          if (val) newFilteredCount = Math.round(newFilteredCount * 0.65);
+    // Base reduction - each filter reduces the count by a percentage
+    if (activeFilterCount > 0) {
+      // Start with a baseline of 60% of total for first filter
+      // Each additional filter reduces by increasing percentages
+      switch (activeFilterCount) {
+        case 1:
+          newFilteredCount = Math.round(newFilteredCount * 0.60); // 60% of total
           break;
-        case 'verified':
-          if (val) newFilteredCount = Math.round(newFilteredCount * 0.55);
-        break;
+        case 2:
+          newFilteredCount = Math.round(newFilteredCount * 0.40); // 40% of total
+          break;
+        case 3:
+          newFilteredCount = Math.round(newFilteredCount * 0.27); // 27% of total
+          break;
+        case 4:
+          newFilteredCount = Math.round(newFilteredCount * 0.19); // 19% of total
+          break;
+        case 5:
+          newFilteredCount = Math.round(newFilteredCount * 0.12); // 12% of total
+          break;
+        default:
+          newFilteredCount = Math.round(newFilteredCount * 0.05); // 5% of total for 6+ filters
       }
-    });
+    }
     
+    // Additional filter-specific reductions
+    if (category === 'companyName' && typeof value === 'string' && value !== '') {
+      // If filtering by company name, reduce count based on name specificity
+      // The longer the name filter, the fewer results
+      newFilteredCount = Math.max(10, Math.round(newFilteredCount * (1 - (value.length * 0.05))));
+    }
+    
+    // Ensure minimum reasonable result count
+    newFilteredCount = Math.max(newFilteredCount, 5);
+    
+    // Update companies stats with new filtered count
     setCompaniesStats(prev => ({
       ...prev,
       filtered: newFilteredCount
     }));
     
+    // Update pagination
     setPagination(prev => ({
       ...prev,
       currentPage: 1,
@@ -696,7 +699,17 @@ const MarketDatabase = () => {
     }));
   };
 
-  // Clear all filters
+  // Add a useEffect to update high potential and enriched counts when filtered count changes
+  useEffect(() => {
+    // Update high potential and enriched counts based on filtered count
+    setCompaniesStats(prev => ({
+      ...prev,
+      highPotential: Math.round(prev.filtered * 0.21),
+      enriched: Math.round(prev.filtered * 0.45)
+    }));
+  }, [companiesStats.filtered]);
+
+  // Update the clearAllFilters function
   const clearAllFilters = () => {
     setCompanyNameFilter('');
     setEmployeeCountFilter('');
@@ -711,7 +724,9 @@ const MarketDatabase = () => {
     // Reset filtered count to total
     setCompaniesStats(prev => ({
       ...prev,
-      filtered: prev.total
+      filtered: prev.total,
+      highPotential: Math.round(prev.total * 0.21),
+      enriched: Math.round(prev.total * 0.45)
     }));
     
     setPagination(prev => ({
@@ -883,12 +898,18 @@ const MarketDatabase = () => {
     
     // Standard filters
     const matchesVerified = !filters.showVerifiedOnly || company.verified;
-    const matchesLocation = filters.locationFilter === '' || company.location.includes(filters.locationFilter);
-    const matchesIndustry = filters.industryFilter === '' || company.industry.includes(filters.industryFilter);
     
-    // Company type matching (for backward compatibility)
-    const matchesCompanyType = filters.companyTypeFilter === '' || 
-      company.industry.toLowerCase().includes(filters.companyTypeFilter.toLowerCase());
+    // Mock location matcher
+    const mockLocationMatcher = () => {
+      if (!stateFilter || stateFilter === '') return true;
+      return company.location.includes(stateFilter);
+    };
+    
+    // Mock industry/sector matcher
+    const mockSectorMatcher = () => {
+      if (!sectorFilter || sectorFilter === '') return true;
+      return company.industry.toLowerCase().includes(sectorFilter.toLowerCase());
+    };
     
     // Mock employee count matcher
     const mockEmployeeCountMatcher = () => {
@@ -913,18 +934,43 @@ const MarketDatabase = () => {
     const matchesVerifiedEmail = !verifiedEmailFilter || company.emails;
     const matchesVerifiedPhone = !verifiedPhoneFilter || company.phoneNumbers;
     
+    // Mock Revenue matcher
+    const mockRevenueMatcher = () => {
+      if (!revenueFilter || revenueFilter === '') return true;
+      // Use employee count as a proxy for revenue
+      if (revenueFilter.includes("Under $10M")) return company.employeeCount < 50;
+      if (revenueFilter.includes("$10M - $50M")) return company.employeeCount >= 50 && company.employeeCount < 200;
+      if (revenueFilter.includes("$50M - $100M")) return company.employeeCount >= 200 && company.employeeCount < 500;
+      if (revenueFilter.includes("$100M - $500M")) return company.employeeCount >= 500 && company.employeeCount < 1000;
+      if (revenueFilter.includes("$500M - $1B")) return company.employeeCount >= 1000 && company.employeeCount < 5000;
+      if (revenueFilter.includes("Over $1B")) return company.employeeCount >= 5000;
+      return true;
+    };
+    
+    // Mock ERP modules matcher
+    const mockErpModulesMatcher = () => {
+      if (!erpModulesFilter || erpModulesFilter === '') return true;
+      // Use employee count as a proxy for ERP modules complexity
+      if (erpModulesFilter.includes("Basic")) return company.employeeCount < 100;
+      if (erpModulesFilter.includes("Standard")) return company.employeeCount >= 100 && company.employeeCount < 500;
+      if (erpModulesFilter.includes("Advanced")) return company.employeeCount >= 500 && company.employeeCount < 2000;
+      if (erpModulesFilter.includes("Enterprise")) return company.employeeCount >= 2000;
+      return true;
+    };
+    
     // Combine all filter criteria
     return matchesSearch && 
-           matchesCompanyType &&
+           matchesJobTitle &&
+           matchesEmployeeCount &&
            matchesVerified && 
-           matchesLocation && 
-           matchesIndustry &&
+           mockLocationMatcher() && 
+           mockSectorMatcher() &&
            mockEmployeeCountMatcher() &&
            matchesCompanyName &&
            matchesVerifiedEmail &&
            matchesVerifiedPhone &&
-           matchesJobTitle &&
-           matchesEmployeeCount;
+           mockRevenueMatcher() &&
+           mockErpModulesMatcher();
   });
 
   // Stats card component for the dashboard
@@ -1021,7 +1067,7 @@ const MarketDatabase = () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  // Modify the handleSearch function to ensure filters are preserved after search
+  // Modify the handleSearch function to set more specific filters
   const handleSearch = () => {
     setShowDashboard(true);
     // Simulate loading state
@@ -1050,7 +1096,7 @@ const MarketDatabase = () => {
       }));
       
       // Build a description of what's being searched for based on active filters
-      let searchDescription = "Head of IT at companies with >100 employees";
+      let searchDescription = "Head of IT at companies with >100 employees with verified emails and phone numbers";
       
       if (filters.companyTypeFilter) {
         searchDescription += ` in ${filters.companyTypeFilter}`;
@@ -1069,18 +1115,21 @@ const MarketDatabase = () => {
       if (filters.erpModules) {
         searchDescription += ` using ${filters.erpModules}`;
       }
-      if (filters.showVerifiedOnly) {
-        searchDescription += " with verified contacts";
-      }
       
       toast.success(`Searching for ${searchDescription}`);
       
-      // Update active filters to include Head of IT and >100 employees as fixed filters
+      // Update active filters to include Head of IT, >100 employees, and verified contacts as fixed filters
       setActiveFilters(prev => ({
         ...prev,
         jobTitle: "Head of IT",
-        employeeCount: ">100 employees"
+        employeeCount: ">100 employees",
+        verifiedEmail: true,
+        verifiedPhone: true
       }));
+      
+      // Also set the verified filters state
+      setVerifiedEmailFilter(true);
+      setVerifiedPhoneFilter(true);
     }, 1000);
   };
 
@@ -1454,7 +1503,7 @@ const MarketDatabase = () => {
                 <div className="mb-4 py-3 px-4 backdrop-blur-md bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-xl border border-green-500/15 text-white/80">
                   <p className="flex items-center gap-2">
                     <FaFilter className="text-green-400 text-sm" />
-                    <span className="text-sm">Criteria: <span className="font-medium text-white">Head of IT</span> at companies with <span className="font-medium text-white">&gt;100 employees</span></span>
+                    <span className="text-sm">Criteria: <span className="font-medium text-white">Head of IT</span> at companies with <span className="font-medium text-white">&gt;100 employees</span> with <span className="font-medium text-white">verified emails</span> and <span className="font-medium text-white">phone numbers</span></span>
                     <span className="ml-auto text-green-400 font-medium">2,300 matches</span>
                   </p>
                 </div>
@@ -1463,7 +1512,7 @@ const MarketDatabase = () => {
                 <div className="grid grid-cols-3 gap-4 mb-4">
                   <StatsCard
                     title="Total Companies"
-                    value={`${(companiesStats.filtered / 1000).toFixed(1)}K`}
+                    value="2.3K"
                     change="+2.5% this month"
                     icon={<MdBusinessCenter className="text-white text-xl" />}
                     colorClass="bg-gradient-to-br from-green-500 via-green-600 to-emerald-600"
@@ -1471,7 +1520,7 @@ const MarketDatabase = () => {
                   
                   <StatsCard
                     title="High Potential Companies"
-                    value={formatNumber(Math.floor(companiesStats.filtered * 0.12))}
+                    value={formatNumber(companiesStats.highPotential)}
                     change="+3.1% this month"
                     icon={<MdDataUsage className="text-white text-xl" />}
                     colorClass="bg-gradient-to-br from-teal-500 via-teal-600 to-cyan-600"
@@ -1479,7 +1528,7 @@ const MarketDatabase = () => {
                   
                   <StatsCard
                     title="Enriched Companies"
-                    value={formatNumber(Math.floor(companiesStats.filtered * 0.44))}
+                    value={formatNumber(companiesStats.enriched)}
                     change="+5.2% this month"
                     icon={<MdCheck className="text-white text-xl" />}
                     colorClass="bg-gradient-to-br from-emerald-500 via-emerald-600 to-green-600"
@@ -1547,7 +1596,15 @@ const MarketDatabase = () => {
                               <td className="py-2 px-2 text-sm">
                                 <div className="flex gap-1">
                                   <button 
-                                    onClick={() => navigate('/signal-scanner')}
+                                    onClick={() => {
+                                      // Store the filtered companies in localStorage so SignalScanner can use them
+                                      try {
+                                        localStorage.setItem('filteredCompanies', JSON.stringify(filteredCompanies.filter(f => f.employeeCount > 100)));
+                                      } catch (error) {
+                                        console.error('Error saving filtered companies to localStorage', error);
+                                      }
+                                      navigate('/signal-scanner');
+                                    }}
                                     className="p-1.5 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm"
                                   >
                                     <MdArrowForward size={14} />
@@ -1603,7 +1660,15 @@ const MarketDatabase = () => {
                 {/* Find Market Signals button */}
                 <div className="flex justify-end mt-4">
                   <button
-                    onClick={() => navigate('/signal-scanner')}
+                    onClick={() => {
+                      // Store the filtered companies in localStorage so SignalScanner can use them
+                      try {
+                        localStorage.setItem('filteredCompanies', JSON.stringify(filteredCompanies.filter(company => company.employeeCount > 100)));
+                      } catch (error) {
+                        console.error('Error saving filtered companies to localStorage', error);
+                      }
+                      navigate('/signal-scanner');
+                    }}
                     className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2 px-6 rounded-lg font-medium transition-all text-sm shadow-md hover:shadow-lg inline-flex items-center gap-2 group border border-white/20"
                   >
                     <MdInsights className="text-lg" />

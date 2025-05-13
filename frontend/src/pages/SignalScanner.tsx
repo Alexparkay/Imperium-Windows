@@ -3,6 +3,26 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { MdArrowBack, MdInfo, MdLocationOn, MdOutlineEmail, MdOutlinePhone, MdDownload, MdArrowForward, MdAnalytics, MdFactory, MdSpeed, MdAttachMoney, MdContentCopy, MdTableChart, MdCheck, MdWarning, MdOutlineWarning, MdSearch, MdInfoOutline, MdClose, MdStorage, MdDeveloperBoard } from 'react-icons/md';
 import { FaDatabase, FaMoneyBillWave, FaServer, FaChartLine, FaRegLightbulb, FaLayerGroup, FaRegClock, FaBuilding, FaIndustry, FaWarehouse } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
+import { BsGlobe, BsServer, BsCloudDownload, BsGraphUp, BsShieldLock, BsDiagram3, BsCodeSlash, BsFileEarmarkCode } from 'react-icons/bs';
+import { AiOutlineApi, AiOutlineNodeIndex, AiOutlineFileSearch, AiOutlineRobot } from 'react-icons/ai';
+import { HiOutlineDatabase, HiOutlineDocumentSearch } from 'react-icons/hi';
+import { TbWorldSearch } from 'react-icons/tb';
+
+// Add a Company interface at the top of the file, after the imports
+interface Company {
+  id: number;
+  name: string;
+  jobTitle: string;
+  company: string;
+  emails: boolean;
+  phoneNumbers: boolean;
+  location: string;
+  enriched: boolean;
+  verified: boolean;
+  employeeCount: number;
+  industry: string;
+  [key: string]: any; // Allow for additional properties
+}
 
 // Add more companies from the MarketDatabase to enrichedEnterprises
 const enrichedEnterprises = [
@@ -416,8 +436,8 @@ const SignalScanner = () => {
   const [showLoadingAnimation, setShowLoadingAnimation] = useState(false);
   const [enrichedData, setEnrichedData] = useState(false);
   
-  // Total enterprises in the database (showing a much larger number)
-  const totalEnterprisesInDatabase = 3842;
+  // Total enterprises in the database (showing 2,300 to match MarketDatabase)
+  const totalEnterprisesInDatabase = 2300;
   
   // SAP system data
   const sapData = {
@@ -443,27 +463,147 @@ const SignalScanner = () => {
     systemCapacity: '250 TB'
   };
 
+  // Update the CSS animations in the useEffect to include the new animations
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes dataStream {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(500%); }
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      .animate-fadeIn {
+        animation: fadeIn 0.5s ease-in-out forwards;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        25% { transform: translateY(-8px) translateX(8px); }
+        50% { transform: translateY(5px) translateX(-5px); }
+        75% { transform: translateY(-3px) translateX(3px); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.1; }
+        50% { opacity: 0.5; }
+      }
+      
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      @keyframes animatePath {
+        0% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: 400; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Clean up function to remove the style when component unmounts
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   useEffect(() => {
     // Simulate API call to get enterprise data
     setIsLoading(true);
     setTimeout(() => {
-      // If a specific enterpriseId is provided, use that
-      if (facilityId) {
-        const foundEnterprise = enrichedEnterprises.find(f => f.id === parseInt(facilityId));
-        if (foundEnterprise) {
-          setEnterprise(foundEnterprise);
-          setSelectedEnterprises([foundEnterprise]);
+      // Try to get filtered companies from localStorage (set by MarketDatabase page)
+      try {
+        const filteredCompaniesString = localStorage.getItem('filteredCompanies');
+        if (filteredCompaniesString) {
+          const marketDatabaseCompanies = JSON.parse(filteredCompaniesString);
+          
+          // Enrich the companies with SAP metrics for visualization
+          const enrichedMarketCompanies = marketDatabaseCompanies.map((company: Company) => {
+            // Find if we have any existing enriched data for this company
+            const existingEnriched = enrichedEnterprises.find(e => 
+              e.company.toLowerCase() === company.company.toLowerCase() || 
+              e.name.toLowerCase() === company.name.toLowerCase()
+            );
+            
+            // Use existing enriched data or generate some default values
+            return {
+              ...company,
+              systemType: existingEnriched?.systemType || "ERP System",
+              userCount: company.employeeCount || 100,
+              implementationYear: existingEnriched?.implementationYear || 2019,
+              serverCount: existingEnriched?.serverCount || Math.round((company.employeeCount || 100) * 0.15),
+              annualTransactions: existingEnriched?.annualTransactions || Math.round((company.employeeCount || 100) * 2500),
+              licenseRate: existingEnriched?.licenseRate || 0.115,
+              peakLoad: existingEnriched?.peakLoad || Math.round((company.employeeCount || 100) * 0.5),
+              industryAvg: existingEnriched?.industryAvg || {
+                transactionVolume: 22,
+                sapAdoption: 15,
+                costPerUser: 235,
+                implementationTime: 8.2,
+              },
+              sapMetrics: existingEnriched?.sapMetrics || {
+                maxThroughput: Math.round((company.employeeCount || 100) * 0.7),
+                annualProcessing: Math.round((company.employeeCount || 100) * 2000),
+                systemCoverage: Math.round(65 + Math.random() * 30),
+                implementationCost: Math.round((company.employeeCount || 100) * 1500),
+                totalCost: Math.round((company.employeeCount || 100) * 1050),
+                savings: Math.round((company.employeeCount || 100) * 450),
+                costWithoutOptimization: Math.round((company.employeeCount || 100) * 280),
+                costWithOptimization: Math.round((company.employeeCount || 100) * 150),
+                annualSavings: Math.round((company.employeeCount || 100) * 130),
+                monthlySavings: Math.round((company.employeeCount || 100) * 10.8),
+                optimizationTime: Math.round(6 + Math.random() * 6),
+                roi: Math.round(10 + Math.random() * 15),
+                performanceImprovement: Math.round(45 + Math.random() * 50),
+              }
+            };
+          });
+          
+          // If we have companies from MarketDatabase, use those
+          if (enrichedMarketCompanies.length > 0) {
+            setSelectedEnterprises(enrichedMarketCompanies);
+            setEnterprise(enrichedMarketCompanies[0]);
+          } else {
+            // Fallback to default enriched enterprises
+            setSelectedEnterprises(enrichedEnterprises);
+            setEnterprise(enrichedEnterprises[0]);
+          }
         } else {
-          // If enterprise not found, use all enterprises
-          setSelectedEnterprises(enrichedEnterprises);
+          // If no specific facilityId and no localStorage data, default to enrichedEnterprises
+          if (facilityId) {
+            const foundEnterprise = enrichedEnterprises.find(f => f.id === parseInt(facilityId));
+            if (foundEnterprise) {
+              setEnterprise(foundEnterprise);
+              setSelectedEnterprises([foundEnterprise]);
+            } else {
+              setSelectedEnterprises(enrichedEnterprises);
+            }
+          } else {
+            setSelectedEnterprises(enrichedEnterprises);
+            setEnterprise(enrichedEnterprises[0]);
+          }
         }
-      } else {
-        // If no enterpriseId is provided, load all enriched enterprises
-        setSelectedEnterprises(enrichedEnterprises);
-        if (enrichedEnterprises.length > 0) {
+      } catch (error) {
+        console.error('Error loading filtered companies from localStorage', error);
+        // Fallback to default enriched enterprises
+        if (facilityId) {
+          const foundEnterprise = enrichedEnterprises.find(f => f.id === parseInt(facilityId));
+          if (foundEnterprise) {
+            setEnterprise(foundEnterprise);
+            setSelectedEnterprises([foundEnterprise]);
+          } else {
+            setSelectedEnterprises(enrichedEnterprises);
+          }
+        } else {
+          setSelectedEnterprises(enrichedEnterprises);
           setEnterprise(enrichedEnterprises[0]);
         }
       }
+      
       setIsLoading(false);
       
       // Simulate data enrichment processing
@@ -494,14 +634,14 @@ const SignalScanner = () => {
       setIsEnriching(true);
       setShowLoadingAnimation(true);
       
-      // Simulate API call delay
+      // Simulate API call delay - 5 seconds as requested
       setTimeout(() => {
         setIsEnriching(false);
         setShowLoadingAnimation(false);
         setShowEnriched(true);
         setEnrichedData(true);
         toast.success("SAP system data enrichment complete!");
-      }, 2000);
+      }, 5000);
     } else {
       // Toggle visibility of already-enriched data
       setShowEnriched(!showEnriched);
@@ -584,11 +724,49 @@ const SignalScanner = () => {
       {/* Loading Animation Modal */}
       {showLoadingAnimation && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center">
-          <div className="relative bg-[#1e222b]/90 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 shadow-xl max-w-3xl w-full mx-4 animate-fadeIn">
+          <div className="relative bg-[#1e222b]/90 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 shadow-xl max-w-4xl w-full mx-4 animate-fadeIn">
             {/* Animated gradient background for the modal */}
-            <div className="absolute inset-0 opacity-30 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden">
               <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-green-500/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
               <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-500/30 to-transparent rounded-full blur-3xl animate-pulse delay-700"></div>
+              <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-2xl animate-pulse delay-300"></div>
+            </div>
+            
+            {/* Floating data points and connection lines - enhanced visual effect */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {Array.from({ length: 15 }).map((_, i) => (
+                <div 
+                  key={i}
+                  className="absolute rounded-full bg-green-500/30 border border-green-500/50"
+                  style={{
+                    width: `${6 + Math.random() * 12}px`,
+                    height: `${6 + Math.random() * 12}px`,
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animation: `float ${5 + Math.random() * 10}s linear infinite`,
+                    animationDelay: `${i * 0.2}s`
+                  }}
+                ></div>
+              ))}
+              
+              {/* Connection lines */}
+              <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.2 }}>
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <line 
+                    key={i}
+                    x1={`${Math.random() * 100}%`}
+                    y1={`${Math.random() * 100}%`}
+                    x2={`${Math.random() * 100}%`}
+                    y2={`${Math.random() * 100}%`}
+                    stroke="#10b981"
+                    strokeWidth="1"
+                    style={{ 
+                      animation: `pulse ${2 + Math.random() * 4}s ease-in-out infinite`,
+                      animationDelay: `${i * 0.3}s`
+                    }}
+                  />
+                ))}
+              </svg>
             </div>
             
             <div className="absolute top-4 right-4">
@@ -601,24 +779,140 @@ const SignalScanner = () => {
             </div>
             
             <div className="p-8 relative z-10">
-              <h3 className="text-2xl font-bold text-white mb-2">Analyzing SAP System Performance</h3>
-              <p className="text-white/70 mb-6">Processing enterprise systems for optimization opportunities...</p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 p-2 rounded-lg shadow">
+                  <AiOutlineRobot className="text-xl text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">AI System Analysis</h3>
+              </div>
+              <p className="text-white/70 mb-6">Processing enterprise data from multiple sources...</p>
               
-              {/* GIF container with enhanced styling */}
-              <div className="rounded-xl overflow-hidden border border-white/20 shadow-xl mb-6 transition-all duration-500 hover:shadow-green-500/20">
-                <img 
-                  src="/images/sap/system-analysis.gif" 
-                  alt="SAP System Analysis" 
-                  className="w-full h-auto"
-                />
+              {/* Real-time activity log */}
+              <div className="mb-6 bg-black/20 rounded-xl p-4 border border-white/10 h-64 overflow-y-auto font-mono text-sm">
+                <div className="space-y-2">
+                  <div className="text-green-400 animate-fadeIn">
+                    <span className="text-white/50">[00:00.12]</span> Initializing AI data extraction modules...
+                  </div>
+                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '300ms' }}>
+                    <span className="text-white/50">[00:00.35]</span> Establishing secure connection to SAP databases <BsShieldLock className="inline" />
+                  </div>
+                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '800ms' }}>
+                    <span className="text-white/50">[00:01.08]</span> Scraping enterprise profile data from <TbWorldSearch className="inline" /> market intelligence APIs
+                  </div>
+                  <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '1200ms' }}>
+                    <span className="text-white/50">[00:01.45]</span> <BsGlobe className="inline" /> Accessing transaction history records (473,829 entries)
+                  </div>
+                  <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '1600ms' }}>
+                    <span className="text-white/50">[00:01.89]</span> <HiOutlineDatabase className="inline" /> Analyzing system infrastructure metrics...
+                  </div>
+                  <div className="text-yellow-400 animate-fadeIn" style={{ animationDelay: '2000ms' }}>
+                    <span className="text-white/50">[00:02.13]</span> <AiOutlineApi className="inline" /> Accessing third-party financial analysis systems
+                  </div>
+                  <div className="text-purple-400 animate-fadeIn" style={{ animationDelay: '2400ms' }}>
+                    <span className="text-white/50">[00:02.55]</span> <BsCodeSlash className="inline" /> Extracting system architecture and module dependencies
+                  </div>
+                  <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '2800ms' }}>
+                    <span className="text-white/50">[00:03.02]</span> <AiOutlineFileSearch className="inline" /> Cross-referencing with industry performance benchmarks
+                  </div>
+                  <div className="text-purple-400 animate-fadeIn" style={{ animationDelay: '3200ms' }}>
+                    <span className="text-white/50">[00:03.45]</span> <AiOutlineNodeIndex className="inline" /> Building dependency graph for optimization calculations
+                  </div>
+                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '3600ms' }}>
+                    <span className="text-white/50">[00:03.98]</span> <BsGraphUp className="inline" /> Generating performance improvement projection models
+                  </div>
+                  <div className="text-yellow-400 animate-fadeIn" style={{ animationDelay: '4000ms' }}>
+                    <span className="text-white/50">[00:04.32]</span> <BsDiagram3 className="inline" /> Creating optimization opportunity map by module
+                  </div>
+                  <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '4400ms' }}>
+                    <span className="text-white/50">[00:04.75]</span> <BsCloudDownload className="inline" /> Finalizing data compilation and enrichment
+                  </div>
+                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '4800ms' }}>
+                    <span className="text-white/50">[00:04.98]</span> Analysis complete! Found <span className="text-white font-bold">{selectedEnterprises ? selectedEnterprises.length : 0}</span> optimization opportunities
+                  </div>
+                </div>
+              </div>
+              
+              {/* Enhanced Data stream visualization with dots and labels */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-black/30 rounded-xl p-3 border border-white/5">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs text-white/70">API Connections</span>
+                    <span className="text-xs text-green-400">Active</span>
+                  </div>
+                  <div className="space-y-2">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="relative">
+                        <div className="flex justify-between text-xs text-white/50 mb-1">
+                          <span>{['SAP API', 'Financial Data', 'Market Intel', 'System Metrics'][i]}</span>
+                          <span className="text-green-400">
+                            {Math.floor(Math.random() * 1000)} req/s
+                          </span>
+                        </div>
+                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full relative"
+                            style={{ width: `${60 + Math.random() * 40}%` }}
+                          >
+                            <div 
+                              className="absolute inset-0 overflow-hidden"
+                              style={{ 
+                                backgroundImage: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
+                                backgroundSize: '200% 100%',
+                                animation: 'shimmer 2s infinite',
+                                width: '100%'
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="bg-black/30 rounded-xl p-3 border border-white/5">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs text-white/70">Data Processing</span>
+                    <span className="text-xs text-green-400">2.3TB</span>
+                  </div>
+                  
+                  {/* Animated graph */}
+                  <div className="h-[80px] relative">
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/20"></div>
+                    <svg
+                      className="w-full h-full"
+                      preserveAspectRatio="none"
+                      viewBox="0 0 100 100"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0,50 Q10,30 20,45 T40,40 T60,60 T80,30 T100,50"
+                        stroke="url(#gradient)"
+                        strokeWidth="2"
+                        fill="transparent"
+                        strokeDasharray="200"
+                        strokeDashoffset="0"
+                        style={{
+                          animation: 'animatePath 5s linear infinite',
+                        }}
+                      />
+                      <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#10b981" />
+                          <stop offset="100%" stopColor="#047857" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
               </div>
               
               {/* Progress indicators */}
               <div className="space-y-4 mb-6">
                 <div>
                   <div className="flex justify-between text-white/70 text-sm mb-1">
-                    <span>Analyzing system architecture</span>
-                    <span>Complete</span>
+                    <span>Data Extraction</span>
+                    <span>100%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
                     <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-full"></div>
@@ -627,28 +921,28 @@ const SignalScanner = () => {
                 
                 <div>
                   <div className="flex justify-between text-white/70 text-sm mb-1">
-                    <span>Detecting performance bottlenecks</span>
-                    <span>75%</span>
+                    <span>System Analysis</span>
+                    <span>100%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-3/4 animate-pulse"></div>
+                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-full"></div>
                   </div>
                 </div>
                 
                 <div>
                   <div className="flex justify-between text-white/70 text-sm mb-1">
-                    <span>Calculating optimization potential</span>
-                    <span>45%</span>
+                    <span>Optimization Mapping</span>
+                    <span>80%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-2/5 animate-pulse"></div>
+                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-4/5 animate-pulse"></div>
                   </div>
                 </div>
               </div>
               
               <div className="flex justify-center items-center gap-3 text-white/70">
                 <div className="w-3 h-3 rounded-full bg-green-500 animate-ping"></div>
-                <p className="text-sm">Please wait while we process the data...</p>
+                <p className="text-sm">Preparing visualization components...</p>
               </div>
             </div>
           </div>
@@ -689,7 +983,7 @@ const SignalScanner = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-sm font-medium text-white/90 mb-1">Total Systems</p>
-                        <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">{totalEnterprisesInDatabase.toLocaleString()}</h3>
+                        <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">2.3K</h3>
                       </div>
                       <div className="rounded-2xl p-3 bg-gradient-to-br from-green-500 via-green-600 to-green-700 shadow-lg shadow-green-500/20 backdrop-blur-md border border-white/20">
                         <FaDatabase className="text-white text-xl" />

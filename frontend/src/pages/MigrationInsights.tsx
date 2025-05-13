@@ -532,19 +532,124 @@ const MigrationInsights = () => {
         <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-green-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
         <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
         
-        <div className="relative z-10 flex flex-col items-center gap-8">
-          {/* GIF Container */}
-          <div className="relative group">
+        <div className="relative z-10 flex flex-col items-center gap-8 w-[700px]">
+          {/* Financial Calculations Display */}
+          <div className="relative group w-full">
             {/* Outer glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
             
-            {/* GIF box with glass effect */}
-            <div className="relative backdrop-blur-sm bg-black/20 p-1 rounded-3xl border border-white/10">
-              <img 
-                src="/images/solar/lq6qgs6wvqjt-6ULtn4qBpracPzH2BdC2Rw-5690767d955f9db839aa2b65243ec315-Untitled_1_0Xe3O7f.gif"
-                alt="SAP Migration Analysis"
-                className="w-[500px] h-[500px] object-cover rounded-2xl"
-              />
+            {/* Financial calculations with glass effect */}
+            <div className="relative backdrop-blur-md bg-black/40 p-6 rounded-3xl border border-white/10">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Total Annual Cost (Current)</span>
+                      <span className="text-white font-mono">$3,253,750</span>
+                    </div>
+                    <div className="h-1 bg-black/20 rounded-full overflow-hidden">
+                      <div className="h-full w-full bg-red-400/50 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Projected Cloud Cost</span>
+                      <span className="text-white font-mono">$863,244</span>
+                    </div>
+                    <div className="h-1 bg-black/20 rounded-full overflow-hidden">
+                      <div className="h-full w-[27%] bg-emerald-400/50 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Implementation Cost</span>
+                      <span className="text-white font-mono">$875,000</span>
+                    </div>
+                    <div className="h-1 bg-black/20 rounded-full overflow-hidden">
+                      <div className="h-full w-[26%] bg-blue-400/50 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">ROI (3-Year)</span>
+                      <span className="text-white font-mono">327%</span>
+                    </div>
+                    <div className="h-1 bg-black/20 rounded-full overflow-hidden">
+                      <div className="h-full w-[80%] bg-purple-400/50 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-[#1e222b]/70 backdrop-blur-md rounded-xl p-3 mt-4 border border-white/5">
+                    <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Payback Period</div>
+                    <div className="text-2xl font-mono text-white">14.2 <span className="text-sm">months</span></div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  {/* Animated calculation figures */}
+                  <div className="bg-[#1e222b]/60 p-3 rounded-xl border border-white/5">
+                    <div className="font-mono text-xs text-gray-400 mb-1">Operational Cost Analysis</div>
+                    <div className="font-mono text-sm text-emerald-400">
+                      <div className="flex justify-between mb-1">
+                        <span>Hardware:</span>
+                        <span className="animate-pulse">$1,238,457</span>
+                      </div>
+                      <div className="flex justify-between mb-1">
+                        <span>Software:</span>
+                        <span>$748,350</span>
+                      </div>
+                      <div className="flex justify-between mb-1">
+                        <span>Maintenance:</span>
+                        <span className="animate-pulse">$832,915</span>
+                      </div>
+                      <div className="flex justify-between mb-1">
+                        <span>Personnel:</span>
+                        <span>$434,028</span>
+                      </div>
+                      <div className="mt-1 pt-1 border-t border-white/10 flex justify-between">
+                        <span>Total:</span>
+                        <span className="animate-pulse">$3,253,750</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-[#1e222b]/60 p-3 rounded-xl border border-white/5">
+                    <div className="font-mono text-xs text-gray-400 mb-1">Projected Savings</div>
+                    <div className="font-mono text-sm text-emerald-400">
+                      <div className="flex justify-between mb-1">
+                        <span>Year 1:</span>
+                        <span className="animate-pulse">$570,500</span>
+                      </div>
+                      <div className="flex justify-between mb-1">
+                        <span>Year 2:</span>
+                        <span>$894,250</span>
+                      </div>
+                      <div className="flex justify-between mb-1">
+                        <span>Year 3:</span>
+                        <span className="animate-pulse">$894,250</span>
+                      </div>
+                      <div className="mt-1 pt-1 border-t border-white/10 flex justify-between">
+                        <span>Total:</span>
+                        <span className="animate-pulse">$2,359,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 flex gap-2">
+                    <div className="flex-1 bg-[#1e222b]/60 p-3 rounded-xl border border-white/5 font-mono">
+                      <div className="text-xs text-gray-400 mb-1">NPV</div>
+                      <div className="text-lg text-emerald-400 animate-pulse">$1,978,243</div>
+                    </div>
+                    <div className="flex-1 bg-[#1e222b]/60 p-3 rounded-xl border border-white/5 font-mono">
+                      <div className="text-xs text-gray-400 mb-1">IRR</div>
+                      <div className="text-lg text-emerald-400 animate-pulse">73.8%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -553,7 +658,7 @@ const MigrationInsights = () => {
             <p className="text-gray-400 mb-8">Analyzing system complexity and operational cost optimization...</p>
             
             {/* Progress bars */}
-            <div className="w-[500px] space-y-6">
+            <div className="w-full space-y-6">
               <div>
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-300">Analyzing system architecture</span>
@@ -746,7 +851,7 @@ const MigrationInsights = () => {
                   {/* Full-width image container */}
                   <div className="absolute inset-0">
                     <img 
-                      src="/images/SAP/d2e31c8edf938cb0e91610502f699f6c.jpg" 
+                      src="/images/SAP/eeec8cab190002a2ebdb955a175312a0.jpg" 
                       alt="Financial Benefits" 
                       className="w-full h-full object-cover object-center"
                     />
@@ -792,7 +897,7 @@ const MigrationInsights = () => {
                   {/* Full-width image container */}
                   <div className="absolute inset-0">
                     <img 
-                      src="/images/SAP/eeec8cab190002a2ebdb955a175312a0.jpg" 
+                      src="/images/SAP/d2e31c8edf938cb0e91610502f699f6c.jpg" 
                       alt="Migration Assessment" 
                       className="w-full h-full object-cover object-center"
                     />
