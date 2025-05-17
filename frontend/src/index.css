@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,9 +7,20 @@
 
 @layer base {
   :root {
-    --dark-bg: #020305;
-    --menu-bg: #1b222a;
-    --card-bg: rgba(27, 34, 42, 0.95);
+    --background-primary: #0A0A0A;
+    --background-secondary: #1A1A1A;
+    --background-accent: #2A2A2A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --text-muted: #666666;
+    --accent-primary: #10ba82;
+    --accent-hover: #0c9a6c;
+    --accent-warning: #F59E0B;
+    
+    /* Legacy variables kept for compatibility */
+    --dark-bg: #0A0A0A;
+    --menu-bg: #1A1A1A;
+    --card-bg: rgba(26, 26, 26, 0.7);
     --card-border: rgba(16, 185, 129, 0.1);
     --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
@@ -16,10 +28,32 @@
   html, body {
     min-height: 100vh;
     width: 100%;
+    font-family: 'Inter', sans-serif;
   }
   
   body {
-    background-color: var(--dark-bg);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+
+  h1 { @apply text-4xl; }
+  h2 { @apply text-3xl; }
+  h3 { @apply text-2xl; }
+  h4 { @apply text-xl; }
+  h5 { @apply text-lg; }
+  h6 { @apply text-base; }
+
+  a {
+    color: var(--accent-primary);
+    transition: all 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--accent-hover);
   }
 
   /* USA Map Styles */
@@ -303,4 +337,64 @@
 
 .animate-pulse-slow {
   animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Glass UI Components */
+.glass-panel {
+  @apply bg-[rgba(26,26,26,0.7)] backdrop-blur-md border border-white/10 rounded-xl shadow-lg shadow-black/20;
+}
+
+.glass-input {
+  @apply bg-[rgba(26,26,26,0.7)] backdrop-blur-sm border border-white/20 rounded-lg 
+         text-white focus:ring-2 focus:ring-[#10ba82] focus:border-transparent transition-all;
+}
+
+.glass-button {
+  @apply bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white rounded-lg 
+         px-4 py-2 font-medium transition-all duration-300 shadow-md hover:shadow-lg hover:brightness-110;
+}
+
+.glass-button-secondary {
+  @apply bg-[#2A2A2A] text-white rounded-lg px-4 py-2 font-medium transition-all duration-300 
+         shadow-md hover:shadow-lg hover:bg-[#3A3A3A];
+}
+
+.glass-button-outlined {
+  @apply bg-transparent border border-[#10ba82] text-[#10ba82] rounded-lg 
+         px-4 py-2 font-medium transition-all duration-300 shadow-md hover:shadow-lg hover:bg-[#10ba82]/10;
+}
+
+.glass-card {
+  @apply relative bg-[rgba(26,26,26,0.7)] backdrop-blur-md border border-white/10 rounded-xl 
+         p-5 overflow-hidden transition-all duration-300;
+}
+
+.glass-table th {
+  @apply py-3 px-4 text-left text-sm font-medium text-[#B3B3B3] border-b border-white/10;
+}
+
+.glass-table td {
+  @apply py-3 px-4 text-sm text-white border-b border-white/5;
+}
+
+.glass-table tr {
+  @apply hover:bg-[#10ba82]/5 transition-colors;
+}
+
+.glass-badge {
+  @apply inline-flex items-center gap-1 py-1 px-3 rounded-full text-xs font-medium 
+         bg-[rgba(26,26,26,0.7)] backdrop-blur-sm border border-white/10;
+}
+
+.glass-section {
+  @apply mb-8;
+}
+
+.glass-section-title {
+  @apply text-2xl font-semibold text-white mb-5 flex items-center;
+}
+
+.glass-section-title:before {
+  content: "";
+  @apply w-1 h-6 bg-[#10ba82] rounded-full mr-3;
 }

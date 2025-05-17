@@ -1,1179 +1,1319 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MdOutlineCalculate, MdOutlineAnalytics, MdOutlineShowChart, MdArrowForward, MdInfoOutline, MdClose, MdZoomOutMap } from 'react-icons/md';
-import { FaBuilding, FaChartLine, FaCalculator, FaChartBar, FaClock, FaMoneyBill, FaServer, FaTools, FaPercentage, FaDatabase, FaDesktop, FaUsers, FaNetworkWired, FaFileAlt, FaBolt, FaRegLightbulb } from 'react-icons/fa';
+import { MdOutlineCalculate, MdOutlineAnalytics, MdOutlineShowChart, MdArrowForward, MdInfoOutline, MdClose, MdZoomOutMap, MdCompare, MdOutlineSpeed, MdOutlineTimeline, MdOutlineSavings, MdOutlineAssessment, MdOutlineEngineering, MdPerson, MdBusiness, MdLocationOn, MdInfo, MdCalculate } from 'react-icons/md';
+import { FaBuilding, FaChartLine, FaCalculator, FaChartBar, FaClock, FaMoneyBill, FaServer, FaTools, FaPercentage, FaDatabase, FaDesktop, FaUsers, FaNetworkWired, FaFileAlt, FaBolt, FaRegLightbulb, FaRegSave, FaRegChartBar, FaExchangeAlt, FaCheckCircle, FaTimesCircle, FaCloud, FaCloudUploadAlt, FaUser, FaEnvelope, FaPhone, FaBuilding as FaBuildingIcon, FaMapMarkerAlt, FaUserTie, FaUserCog, FaExchangeAlt as FaExchangeAltIcon, FaMoneyBillWave, FaInfoCircle, FaQuestionCircle, FaCalculator as FaCalculatorIcon } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, XAxis, YAxis, CartesianGrid, ReferenceLine, Area, AreaChart } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, XAxis, YAxis, CartesianGrid, ReferenceLine, Area, AreaChart, BarChart, Bar, LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
-// Dashboard-Engine communication interfaces
-interface DashboardMessage {
-  type: 'COMMAND' | 'STATE_REQUEST';
-  payload: string;
+interface ModuleBreakdown {
+  name: string;
+  value: number;
+  color: string;
 }
 
-interface EngineMessage {
-  type: 'STATE_UPDATE' | 'ENGINE_READY' | 'INTERACTION';
-  payload: any;
+interface CostBreakdown {
+  name: string;
+  currentCost: number;
+  cloudCost: number;
+}
+
+interface SavingsTimeline {
+  name: string;
+  savings: number;
+  migration: number;
+}
+
+interface InfrastructureStats {
+  name: string;
+  current: number;
+  afterMigration: number;
+}
+
+interface SystemMetrics {
+  name: string;
+  value: number;
+  minimum: number;
+  maximum: number;
+  ideal: number;
+}
+
+interface ContactInfo {
+  name: string;
+  title: string;
+  company: string;
+  location: string;
+  erpSystem: string;
+}
+
+interface SAPMetrics {
+  users: number;
+  transactions: number;
+  licenceRate: number;
+  throughput: number;
+  efficiency: number;
+  currentCost: number;
+  optimizedCost: number;
+  savingsPerYear: number;
+  roi: number;
+  paybackMonths: number;
+  performanceScore: number;
+}
+
+interface MetricTooltip {
+  name: string;
+  formula: string;
+  description?: string;
+  calculation?: string;
+  example?: string;
 }
 
 const DataEnrichment = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [isCalculating, setIsCalculating] = useState(false); // Set to false to show the main content
-  const [activeInfoModal, setActiveInfoModal] = useState<string | null>(null);
-  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
-  const [selectedPieSection, setSelectedPieSection] = useState<string | null>(null);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [useEmbedHelper, setUseEmbedHelper] = useState(false);
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
-  const SOLAR_WINDOW_URL = "about:blank"; // Placeholder URL
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("overview");
+  const [activeCard, setActiveCard] = useState<string | null>(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedDetail, setSelectedDetail] = useState<string | null>(null);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [activeMetric, setActiveMetric] = useState<string | null>(null);
   
-  // Simplified data structure
+  // Contact information and personalized SAP metrics
+  const contactInfo: ContactInfo = {
+    name: "Kyle Flynn-Kasaba",
+    title: "Head of IT Infrastructure and Operations",
+    company: "Wood",
+    location: "Houston, Texas",
+    erpSystem: "SAP ECC"
+  };
+  
+  const sapMetrics: SAPMetrics = {
+    users: 36000,
+    transactions: 34250000,
+    licenceRate: 0.095,
+    throughput: 9850,
+    efficiency: 44,
+    currentCost: 3254000,
+    optimizedCost: 1772000,
+    savingsPerYear: 1482000,
+    roi: 261,
+    paybackMonths: 11.8,
+    performanceScore: 8.5
+  };
+  
+  const metricTooltips: Record<string, MetricTooltip> = {
+    // Individual metrics
+    users: {
+      name: "Users",
+      formula: "COUNT(unique user_id) from SAP USR02 or USMM",
+      description: "Total number of unique users in the SAP system",
+      calculation: "Extracted directly from SAP USR02 table with unique user IDs filtered to exclude technical users",
+      example: "36,000 active users across all business units"
+    },
+    transactions: {
+      name: "Transactions",
+      formula: "SUM of dialog steps + RFC calls (ST03N/STAD)",
+      description: "Total number of transactions processed by the system",
+      calculation: "Dialog steps (32.1M) + RFC calls (2.15M) = 34.25M transactions",
+      example: "Dialog steps from web interface, RFC calls from API integrations"
+    },
+    licenceRate: {
+      name: "Licence Rate",
+      formula: "Current Cost / Transactions",
+      description: "Cost per transaction in the current system",
+      calculation: "$3,254,000 / 34,250,000 transactions = $0.095 per transaction",
+      example: "Each transaction costs approximately 9.5 cents to process"
+    },
+    throughput: {
+      name: "Throughput",
+      formula: "Transactions / Time window (or max 5-min slice)",
+      description: "Number of transactions processed per second",
+      calculation: "Based on peak processing period: 2,955,000 transactions / 300 seconds = 9,850 TPS",
+      example: "System handles 9,850 transactions per second at peak load"
+    },
+    efficiency: {
+      name: "Efficiency",
+      formula: "Throughput / (CPU cores × 2000 SAPS ÷ 1000)",
+      description: "Measure of how efficiently the system utilizes resources",
+      calculation: "9,850 / (112 cores × 2000 SAPS ÷ 1000) = 44% efficiency",
+      example: "Currently utilizing only 44% of theoretical maximum capacity"
+    },
+    currentCost: {
+      name: "Current Cost",
+      formula: "SAP invoice + Infra/OPEX",
+      description: "Total current annual cost of operating the SAP system",
+      calculation: "SAP licensing ($1,905,000) + Infrastructure ($842,000) + Operations ($507,000) = $3,254,000",
+      example: "Annual cost breakdown across licensing, infrastructure, and operations"
+    },
+    optimizedCost: {
+      name: "Optimized Cost",
+      formula: "After reclassification, discount & cleanup",
+      description: "Projected annual cost after optimization",
+      calculation: "SAP licensing after reclassification ($985,000) + Optimized infra ($525,000) + Streamlined ops ($262,000) = $1,772,000",
+      example: "43.7% savings through license optimization, infrastructure consolidation, and operational improvements"
+    },
+    savingsPerYear: {
+      name: "Savings/yr",
+      formula: "Current Cost − Optimized Cost",
+      description: "Annual cost savings after optimization",
+      calculation: "$3,254,000 - $1,772,000 = $1,482,000 annual savings",
+      example: "Savings fund other digital transformation initiatives and improve profitability"
+    },
+    roi: {
+      name: "ROI",
+      formula: "(Savings ÷ Migration Cost) × 100",
+      description: "Return on investment percentage",
+      calculation: "($1,482,000 ÷ $568,000) × 100 = 261% ROI",
+      example: "Every dollar invested returns $2.61 in savings"
+    },
+    paybackMonths: {
+      name: "Payback",
+      formula: "(Migration Cost ÷ Savings) × 12",
+      description: "Number of months until the investment pays for itself",
+      calculation: "($568,000 ÷ $1,482,000) × 12 = 4.6 months × 2.5 risk factor = 11.8 months",
+      example: "Investment recovered in less than one year, even with conservative risk adjustment"
+    },
+    performanceScore: {
+      name: "Performance Score",
+      formula: "Weighted average based on ST03/ST06 logs",
+      description: "Overall performance score based on system logs",
+      calculation: "Response time (6.2) + Throughput (9.8) + CPU utilization (11.5) + DB performance (7.1) + Memory usage (8.1) = 8.5%",
+      example: "Score considers multiple performance dimensions weighted by importance"
+    },
+    
+    // Widget-level metrics
+    system_metrics: {
+      name: "System Metrics Overview",
+      formula: "Multiple metrics measuring SAP system performance and capacity",
+      description: "Complete overview of key SAP system metrics and performance indicators",
+      calculation: "Collection of related metrics: Users, Transactions, Throughput, Efficiency, and Performance Score",
+      example: "Provides a holistic view of the system's operational characteristics and capacity"
+    },
+    financial_metrics: {
+      name: "Financial Metrics Overview",
+      formula: "Cost, savings, and financial efficiency metrics",
+      description: "Financial analysis of SAP system operation and optimization opportunities",
+      calculation: "Current Cost → Optimized Cost → Savings calculations with per-transaction efficiency metrics",
+      example: "Shows the complete financial impact of SAP system optimization"
+    },
+    roi_metrics: {
+      name: "ROI Analysis",
+      formula: "Return on investment and payback period calculations",
+      description: "Analysis of investment return and time to recover investment costs",
+      calculation: "Multiple ROI calculations considering direct and indirect benefits with payback timeframe",
+      example: "Visualizes the ROI percentage and months to break-even on S/4HANA migration"
+    },
+    cost_comparison: {
+      name: "Cost Comparison Analysis",
+      formula: "Comparative visualization of current costs, optimized costs, and savings",
+      description: "Visual breakdown of cost structures before and after optimization",
+      calculation: "Current annual costs ($3,254,000) compared with optimized costs ($1,772,000) and resulting savings ($1,482,000)",
+      example: "Provides a visual understanding of the financial impact of optimization"
+    }
+  };
+  
+  // Enhanced data structure for SAP Migration Analysis
   const sapMigrationData = {
+    // Basic financial data
     totalAnnualCost: '$4,287,650',
     averageMonthlySpend: '$357,304',
-    licenseCount: '1,250 users',
-    totalMaintenanceCost: '$965,000',
-    monthlyMaintenanceAvg: '$80,417',
-    costPerUser: '$3,430/user',
     costWithS4HANA: '$3,215,738',
     costWithoutS4HANA: '$4,287,650',
-    monthlyDowntime: '8.3 hours',
     roiPeriod: '2.1 years',
-    breakEvenPoint: '25.2 months',
-    s4hanaPerformance: '72.4%',
-    totalAnnualUsage: '250,000 kWh',
-    averageMonthlyUsage: '20,833 kWh',
-    solarEfficiency: '92.8%',
-    peakDemand: '350 kW',
-    moduleUsageBreakdown: {
-      financials: 32,
-      materials: 24,
-      sales: 18,
-      production: 14,
-      other: 12
-    },
-    calculations: {
-      annualTCO: {
-        title: 'Annual Total Cost of Ownership',
-        steps: [
-          'License Costs: 1,250 users × avg. $1,200/user = $1,500,000',
-          'System Maintenance: $965,000 annually (based on current contracts)',
-          'Infrastructure Costs: $785,000 annually (server, storage, networking)',
-          'Support Personnel: 15 FTEs × $85,500 avg. salary = $1,282,500',
-          'Business Downtime Costs: 8.3 hours/month × $5,000/hour × 12 months = $498,000',
-          'Integration Costs: $142,150 (third-party systems, APIs, middleware)',
-          'Total Annual TCO: $4,287,650'
-        ],
-        methodology: 'TCO calculations based on current licensing agreements, maintenance contracts, IT infrastructure costs, and organizational data. Downtime costs calculated from historical system outages and business impact assessments.'
-      },
-      costAnalysis: {
-        title: 'S/4HANA Cost Benefit Analysis',
-        steps: [
-          'Initial Migration Investment: $2,150,000 (implementation, consulting, training)',
-          'New Infrastructure Costs: $625,000 (HANA-optimized servers, storage)',
-          'Reduced Annual Licensing: $1,350,000 (10% reduction due to simplified licensing model)',
-          'Reduced Maintenance: $680,000 annually (29.5% reduction from legacy system)',
-          'Reduced Infrastructure Costs: $390,000 (50.3% reduction due to database compression)',
-          'Reduced Support Personnel: 11 FTEs × $85,500 = $940,500 (26.7% reduction)',
-          'Reduced Downtime Costs: 2.1 hours/month × $5,000/hour × 12 months = $126,000',
-          'Total S/4HANA Annual TCO: $3,215,738'
-        ],
-        methodology: 'Cost projections based on SAP pricing models, industry benchmarks for similar migrations, and reference customer data. Infrastructure savings account for HANA\'s column-based storage and compression technology.'
-      },
-      businessMetrics: {
-        title: 'Business Process Improvement Metrics',
-        steps: [
-          'Financial Close: 8.2 days → 3.1 days (62.2% reduction)',
-          'Order-to-Cash: 12.5 hours → 4.2 hours (66.4% reduction)',
-          'Procure-to-Pay: 9.3 days → 4.7 days (49.5% reduction)',
-          'Inventory Management: Real-time vs. 24-hour batch updates',
-          'Business Decision Latency: 72 hours → 8 hours (88.9% reduction)'
-        ],
-        methodology: 'Process metrics derived from current ECC performance data, industry benchmarks, and typical improvements seen in S/4HANA implementations. Latency measurements taken from end-to-end process timing across business scenarios.'
-      },
-      performanceMetrics: {
-        title: 'Technical Performance Metrics',
-        steps: [
-          'Database Size: 12.8TB → 4.3TB (66.4% reduction due to HANA compression)',
-          'Average Report Runtime: 128 seconds → 12 seconds (90.6% improvement)',
-          'Batch Job Duration: Average 40% reduction across all processing',
-          'System Availability: 99.1% → 99.9% (improved resilience)',
-          'Integration Response Time: 820ms → 105ms (87.2% improvement)'
-        ],
-        methodology: 'Performance metrics based on technical benchmarks, SAP reference architectures, and proof-of-concept testing. Compression rates vary by data type and usage patterns.'
-      }
-    }
-  };
-
-  // Add ROI and cost data for graph
-  const roiData = [
-    { month: 0, withS4HANA: 2150000, withoutS4HANA: 0 }, // Initial investment
-    { month: 6, withS4HANA: 2150000 + 6 * 267978, withoutS4HANA: 6 * 357304 },
-    { month: 12, withS4HANA: 2150000 + 12 * 267978, withoutS4HANA: 12 * 357304 },
-    { month: 18, withS4HANA: 2150000 + 18 * 267978, withoutS4HANA: 18 * 357304 },
-    { month: 24, withS4HANA: 2150000 + 24 * 267978, withoutS4HANA: 24 * 357304 },
-    { month: 25, withS4HANA: 2150000 + 25 * 267978, withoutS4HANA: 25 * 357304 }, // Crossing point
-    { month: 30, withS4HANA: 2150000 + 30 * 267978, withoutS4HANA: 30 * 357304 },
-    { month: 36, withS4HANA: 2150000 + 36 * 267978, withoutS4HANA: 36 * 357304 },
-    { month: 42, withS4HANA: 2150000 + 42 * 267978, withoutS4HANA: 42 * 357304 },
-    { month: 48, withS4HANA: 2150000 + 48 * 267978, withoutS4HANA: 48 * 357304 },
-    { month: 54, withS4HANA: 2150000 + 54 * 267978, withoutS4HANA: 54 * 357304 },
-    { month: 60, withS4HANA: 2150000 + 60 * 267978, withoutS4HANA: 60 * 357304 }
-  ];
-
-  // Format module usage data for pie chart with enhanced colors and descriptions
-  const moduleUsagePieData = [
-    { 
-      id: 'financials',
-      name: 'Financials', 
-      value: sapMigrationData.moduleUsageBreakdown.financials, 
-      color: '#10B981', 
-      gradientStart: '#10B981',
-      gradientEnd: '#34D399',
-      icon: <FaMoneyBill />,
-      description: 'Financial modules including General Ledger, Accounts Payable/Receivable, and Financial Controlling represent the largest usage area.',
-      calculation: '120 financial processes × 212 daily transactions × 22 business days = 560,640 monthly transactions',
-      breakdown: [
-        { name: 'General Ledger', percentage: '42%', value: '235,469 transactions' },
-        { name: 'Accounts Payable', percentage: '28%', value: '156,979 transactions' },
-        { name: 'Accounts Receivable', percentage: '22%', value: '123,341 transactions' },
-        { name: 'Asset Management', percentage: '8%', value: '44,851 transactions' }
-      ],
-      benefits: [
-        'Universal Journal in S/4HANA reduces reconciliation time by 72%',
-        'Real-time financial reporting eliminates batch processing delays',
-        'Automated period-end closing reduces time from 8.2 days to 3.1 days'
-      ]
-    },
-    { 
-      id: 'materials',
-      name: 'Materials', 
-      value: sapMigrationData.moduleUsageBreakdown.materials, 
-      color: '#3B82F6', 
-      gradientStart: '#3B82F6',
-      gradientEnd: '#60A5FA',
-      icon: <FaServer />,
-      description: 'Materials Management including Inventory, Purchasing, and Warehouse Management processes.',
-      calculation: '430 inventory items × 85 daily transactions × 22 business days = 805,100 monthly transactions',
-      breakdown: [
-        { name: 'Inventory', percentage: '45%', value: '362,295 transactions' },
-        { name: 'Purchasing', percentage: '35%', value: '281,785 transactions' },
-        { name: 'Warehouse Mgmt', percentage: '20%', value: '161,020 transactions' }
-      ],
-      benefits: [
-        'S/4HANA\'s MRP Live reduces planning runs from hours to minutes',
-        'Advanced Available-to-Promise provides real-time inventory visibility',
-        'Embedded analytics reduces inventory carrying costs by 18%'
-      ]
-    },
-    { 
-      id: 'sales',
-      name: 'Sales', 
-      value: sapMigrationData.moduleUsageBreakdown.sales, 
-      color: '#8B5CF6', 
-      gradientStart: '#8B5CF6',
-      gradientEnd: '#A78BFA',
-      icon: <FaChartLine />,
-      description: 'Sales and Distribution processes including Order Management, Pricing, and Delivery.',
-      calculation: '310 sales orders × 65 daily transactions × 22 business days = 443,300 monthly transactions',
-      breakdown: [
-        { name: 'Order Management', percentage: '52%', value: '230,516 transactions' },
-        { name: 'Delivery Processing', percentage: '28%', value: '124,124 transactions' },
-        { name: 'Billing', percentage: '20%', value: '88,660 transactions' }
-      ],
-      benefits: [
-        'Order fulfillment time reduced by 65% with integrated processes',
-        'Real-time ATP checks improve delivery reliability by 28%',
-        'Advanced pricing simulations increase profit margins by 5.2%'
-      ]
-    },
-    { 
-      id: 'production',
-      name: 'Production', 
-      value: sapMigrationData.moduleUsageBreakdown.production, 
-      color: '#EC4899', 
-      gradientStart: '#EC4899',
-      gradientEnd: '#F472B6',
-      icon: <FaTools />,
-      description: 'Production Planning and Execution processes including MRP, Capacity Planning, and Shop Floor Control.',
-      calculation: '180 production orders × 42 daily transactions × 22 business days = 166,320 monthly transactions',
-      breakdown: [
-        { name: 'Production Planning', percentage: '45%', value: '74,844 transactions' },
-        { name: 'Execution', percentage: '40%', value: '66,528 transactions' },
-        { name: 'Quality Management', percentage: '15%', value: '24,948 transactions' }
-      ],
-      benefits: [
-        'Advanced planning algorithms reduce WIP inventory by 22%',
-        'Integrated quality management reduces defect rates by 35%',
-        'Predictive maintenance features reduce unplanned downtime by 47%'
-      ]
-    },
-    { 
-      id: 'other',
-      name: 'Other', 
-      value: sapMigrationData.moduleUsageBreakdown.other, 
-      color: '#F59E0B', 
-      gradientStart: '#F59E0B',
-      gradientEnd: '#FBBF24',
-      icon: <FaPercentage />,
-      description: 'Other modules including Human Resources, Plant Maintenance, Quality Management, and custom applications.',
-      calculation: 'Various processes across 12 additional modules = 254,640 monthly transactions',
-      breakdown: [
-        { name: 'Human Resources', percentage: '35%', value: '89,124 transactions' },
-        { name: 'Plant Maintenance', percentage: '25%', value: '63,660 transactions' },
-        { name: 'Custom Modules', percentage: '40%', value: '101,856 transactions' }
-      ],
-      benefits: [
-        'Employee self-service features reduce HR processing time by 42%',
-        'Predictive maintenance reduces unplanned downtime by 35%',
-        'Simplified architecture reduces custom code maintenance by 60%'
-      ]
-    }
-  ];
-
-  // Extended ROI data to show 25 years with extended gains - moved before it's used
-  const extendedRoiData = [
-    { year: 0, withS4HANA: 0, withoutS4HANA: 0, savings: 0, totalInvestment: 2150000 }, // Initial investment at 0
-    { year: 1, withS4HANA: 2150000 + 6 * 267978, withoutS4HANA: 6 * 357304, savings: (6 * 357304) - (6 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 2, withS4HANA: 2150000 + 12 * 267978, withoutS4HANA: 12 * 357304, savings: (12 * 357304) - (12 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 3, withS4HANA: 2150000 + 18 * 267978, withoutS4HANA: 18 * 357304, savings: (18 * 357304) - (18 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 4, withS4HANA: 2150000 + 24 * 267978, withoutS4HANA: 24 * 357304, savings: (24 * 357304) - (24 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 5, withS4HANA: 2150000 + 25 * 267978, withoutS4HANA: 25 * 357304, savings: (25 * 357304) - (25 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 6, withS4HANA: 2150000 + 30 * 267978, withoutS4HANA: 30 * 357304, savings: (30 * 357304) - (30 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 7, withS4HANA: 2150000 + 36 * 267978, withoutS4HANA: 36 * 357304, savings: (36 * 357304) - (36 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 7.2, withS4HANA: 2150000 + 25 * 267978, withoutS4HANA: 25 * 357304, savings: (25 * 357304) - (25 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 }, // Break-even point
-    { year: 8, withS4HANA: 2150000 + 42 * 267978, withoutS4HANA: 42 * 357304, savings: (42 * 357304) - (42 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 9, withS4HANA: 2150000 + 48 * 267978, withoutS4HANA: 48 * 357304, savings: (48 * 357304) - (48 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 10, withS4HANA: 2150000 + 54 * 267978, withoutS4HANA: 54 * 357304, savings: (54 * 357304) - (54 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 12, withS4HANA: 2150000 + 60 * 267978, withoutS4HANA: 60 * 357304, savings: (60 * 357304) - (60 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 15, withS4HANA: 2150000 + 72 * 267978, withoutS4HANA: 72 * 357304, savings: (72 * 357304) - (72 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 18, withS4HANA: 2150000 + 84 * 267978, withoutS4HANA: 84 * 357304, savings: (84 * 357304) - (84 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 20, withS4HANA: 2150000 + 96 * 267978, withoutS4HANA: 96 * 357304, savings: (96 * 357304) - (96 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 22, withS4HANA: 2150000 + 108 * 267978, withoutS4HANA: 108 * 357304, savings: (108 * 357304) - (108 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-    { year: 25, withS4HANA: 2150000 + 120 * 267978, withoutS4HANA: 120 * 357304, savings: (120 * 357304) - (120 * 267978 + 2150000) + 2150000, totalInvestment: 2150000 },
-  ];
-
-  // Calculate cumulative savings
-  const calculateCumulativeSavings = (data: any[]) => {
-    return data.map((entry, i) => {
-      if (i === 0) return { ...entry, cumulativeSavings: entry.savings };
-      return { 
-        ...entry, 
-        cumulativeSavings: data[i-1].cumulativeSavings + entry.savings - data[i-1].savings 
-      };
-    });
-  };
-
-  const roiDataWithCumulative = calculateCumulativeSavings(extendedRoiData);
-
-  // Detailed section data for each category
-  const getPieSectionDetails = (sectionId: string) => {
-    return moduleUsagePieData.find(item => item.id === sectionId);
-  };
-
-  // Custom pie chart renderer with gradients and 3D effect
-  const renderCustomizedPie = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name, value }: any) => {
-    const RADIAN = Math.PI / 180;
-    const radius = 25 + innerRadius + (outerRadius - innerRadius);
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
     
-    const item = moduleUsagePieData[index];
+    // Detailed financial breakdown
+    implementationCost: '$1,250,000',
+    trainingCost: '$175,000',
+    consultingFees: '$380,000',
+    hardwareUpgrades: '$220,000',
+    softwareLicenses: '$435,000',
+    maintenanceReduction: '38%',
+    operationalCostReduction: '42%',
+    annualCloudCost: '$905,250',
+    fiveYearTCO: '$7,776,250',
     
-    return (
-      <g>
-        <text 
-          x={x} 
-          y={y} 
-          textAnchor={x > cx ? 'start' : 'end'} 
-          dominantBaseline="central"
-          className="font-semibold"
-          fill="#fff"
-        >
-          {`${name} (${(percent * 100).toFixed(0)}%)`}
-        </text>
-      </g>
-    );
-  };
-
-  // Custom tooltip for enhanced pie chart
-  const CustomPieTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-gray-900/90 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700/50 max-w-xs">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${data.gradientStart}, ${data.gradientEnd})` }}>
-              {data.icon}
-            </div>
-            <h4 className="text-lg font-semibold text-white">
-              {data.name}: {data.value}%
-            </h4>
-          </div>
-          <p className="text-sm text-gray-300 mb-2">{data.description}</p>
-          <div className="text-xs text-gray-400">
-            Click for detailed breakdown & calculations
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Enhanced tooltip for ROI chart
-  const CustomROITooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      const savingsValue = data.cumulativeSavings;
-      const isPositive = savingsValue > 0;
-      
-      return (
-        <div className="bg-gray-900/90 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700/50">
-          <h4 className="text-lg font-semibold text-white mb-2">Year {label}</h4>
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <span className="text-gray-300">Without S/4HANA:</span>
-              <span className="font-semibold text-white">${data.withoutS4HANA.toLocaleString()}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-              <span className="text-gray-300">With S/4HANA:</span>
-              <span className="font-semibold text-white">${(data.withS4HANA + data.totalInvestment).toLocaleString()}</span>
-            </div>
-            <div className="pt-2 border-t border-gray-700">
-              <span className="text-gray-300">Cumulative Savings:</span>
-              <span className={`font-semibold text-lg ml-2 ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
-                {isPositive ? '+' : ''}{data.cumulativeSavings.toLocaleString()} $
-              </span>
-            </div>
-            {data.year >= 7.2 && (
-              <div className="text-sm text-green-400 font-medium pt-1">
-                {data.year === 7.2 ? 'Break-even point!' : 'Generating profit!'}
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Handle section click in pie chart to show details
-  const handlePieSectionClick = (data: any, index: number) => {
-    setSelectedPieSection(data.id);
-    setShowDetailsModal(true);
-  };
-
-  // Modal for showing detailed breakdown of each module section
-  const EnergyUsageDetailModal = ({ sectionId, onClose }: { sectionId: string | null, onClose: () => void }) => {
-    if (!sectionId) return null;
+    // Business metrics
+    processingSpeedImprovement: '67%',
+    reportingTimeReduction: '82%',
+    systemAvailabilityImprovement: '99.98%',
+    dataProcessingCapacity: '3.2x',
+    userProductivityGain: '17.5%',
     
-    const sectionData = getPieSectionDetails(sectionId);
+    // Technical specifications
+    serverReduction: '74%',
+    databaseSize: '12.8 TB',
+    integratedSystems: 14,
+    apiConnections: 87,
+    customCode: '145,000 lines',
+    moduleComplexity: 'High',
     
-    if (!sectionData) return null;
+    // Module usage breakdown
+    moduleUsageBreakdown: [
+      { name: 'Financials', value: 32, color: '#10B981' },
+      { name: 'Materials', value: 24, color: '#047857' },
+      { name: 'Sales', value: 18, color: '#34D399' },
+      { name: 'Production', value: 14, color: '#065F46' },
+      { name: 'Human Resources', value: 8, color: '#059669' },
+      { name: 'Other', value: 4, color: '#064E3B' }
+    ],
     
-    return (
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-gray-900/90 backdrop-blur-md rounded-xl w-full max-w-3xl mx-4 overflow-hidden shadow-2xl border border-gray-700/50">
-          <div className="p-6 border-b border-gray-700 flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" 
-                style={{ background: `linear-gradient(135deg, ${sectionData.gradientStart}, ${sectionData.gradientEnd})` }}>
-                {sectionData.icon}
-              </div>
-              <h3 className="text-2xl font-bold text-white">
-                {sectionData.name} Module Usage
-              </h3>
-            </div>
-            <button 
-              onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <MdClose size={24} />
-            </button>
-          </div>
-          
-          <div className="p-6 space-y-6">
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <MdOutlineAnalytics className="text-green-500" />
-                Overview
-              </h4>
-              <p className="text-gray-300">{sectionData.description}</p>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <FaCalculator className="text-green-500" />
-                Calculation
-              </h4>
-              <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
-                <p className="text-gray-300 font-mono">{sectionData.calculation}</p>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <FaChartBar className="text-green-500" />
-                Detailed Breakdown
-              </h4>
-              <div className="bg-gray-800/50 rounded-lg border border-gray-700/50 overflow-hidden">
-                <div className="grid grid-cols-3 text-sm font-medium text-gray-400 border-b border-gray-700 bg-gray-800/80">
-                  <div className="p-3">Category</div>
-                  <div className="p-3">Percentage</div>
-                  <div className="p-3">Annual Usage</div>
-                </div>
-                {sectionData.breakdown.map((item, index) => (
-                  <div key={index} className="grid grid-cols-3 text-sm border-b border-gray-700/50 last:border-0">
-                    <div className="p-3 text-white">{item.name}</div>
-                    <div className="p-3 text-green-500">{item.percentage}</div>
-                    <div className="p-3 text-white">{item.value}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <FaRegLightbulb className="text-green-500" />
-                Efficiency Benefits
-              </h4>
-              <ul className="space-y-2">
-                {sectionData.benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-start gap-2 text-gray-300">
-                    <div className="text-green-500 mt-1">•</div>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          
-          <div className="bg-gray-800/50 p-4 border-t border-gray-700 flex justify-end">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    // Cost comparison by department
+    costBreakdown: [
+      { name: 'IT Operations', currentCost: 1250000, cloudCost: 325000 },
+      { name: 'Infrastructure', currentCost: 950000, cloudCost: 180000 },
+      { name: 'Development', currentCost: 785000, cloudCost: 490000 },
+      { name: 'Support', currentCost: 650000, cloudCost: 250000 },
+      { name: 'Training', currentCost: 285000, cloudCost: 120000 },
+      { name: 'Licensing', currentCost: 367650, cloudCost: 285738 }
+    ],
+    
+    // Projected savings timeline
+    savingsTimeline: [
+      { name: 'Q1', savings: 145000, migration: 480000 },
+      { name: 'Q2', savings: 240000, migration: 350000 },
+      { name: 'Q3', savings: 310000, migration: 280000 },
+      { name: 'Q4', savings: 390000, migration: 140000 },
+      { name: 'Year 2 Q1', savings: 425000, migration: 0 },
+      { name: 'Year 2 Q2', savings: 445000, migration: 0 },
+      { name: 'Year 2 Q3', savings: 458000, migration: 0 },
+      { name: 'Year 2 Q4', savings: 468000, migration: 0 }
+    ],
+    
+    // Infrastructure statistics
+    infrastructureStats: [
+      { name: 'Servers', current: 35, afterMigration: 9 },
+      { name: 'Databases', current: 18, afterMigration: 4 },
+      { name: 'Storage (TB)', current: 28, afterMigration: 14 },
+      { name: 'Network Load (Gbps)', current: 12, afterMigration: 7 },
+      { name: 'Maintenance Hours', current: 1200, afterMigration: 320 }
+    ],
+    
+    // System performance metrics
+    systemMetrics: [
+      { name: 'Response Time (ms)', value: 230, minimum: 150, maximum: 2000, ideal: 200 },
+      { name: 'Transaction Speed', value: 1850, minimum: 500, maximum: 2000, ideal: 1900 },
+      { name: 'User Capacity', value: 2800, minimum: 1000, maximum: 3000, ideal: 2500 },
+      { name: 'Data Throughput', value: 570, minimum: 200, maximum: 800, ideal: 600 },
+      { name: 'Backup Time (min)', value: 45, minimum: 30, maximum: 240, ideal: 40 }
+    ],
+    
+    // Implementation phases
+    implementationPhases: [
+      { name: 'Assessment', duration: '4 weeks', completion: 100, nextSteps: 'Complete system inventory finalized' },
+      { name: 'Planning', duration: '6 weeks', completion: 100, nextSteps: 'Migration strategy document approved' },
+      { name: 'Development', duration: '12 weeks', completion: 85, nextSteps: 'Custom code migration in progress' },
+      { name: 'Testing', duration: '8 weeks', completion: 40, nextSteps: 'Integration testing scheduled' },
+      { name: 'Training', duration: '4 weeks', completion: 15, nextSteps: 'Admin training sessions planned' },
+      { name: 'Go-Live', duration: '2 weeks', completion: 0, nextSteps: 'Pending successful testing' }
+    ]
   };
 
-  const handleContinueToMigrationInsights = () => {
-    navigate('/migration-insights');
-  };
-
+  // Effect to simulate loading data
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
-      setTimeout(() => {
-        setIsCalculating(false);
-      }, 1000);
-    }, 1000);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
   }, []);
 
-  // Function to render the image of a facility's floor plan
-  const renderFloorPlanImage = () => {
-    return (
-      <div className="w-full h-72 md:h-96 bg-white dark:bg-gray-800 rounded-xl overflow-hidden relative border-4 border-gray-200 dark:border-gray-700 shadow-md">
-        <div id="solar-window-container" className="w-full h-full">
-          {!useEmbedHelper && (
-            <iframe
-              ref={iframeRef}
-              src={SOLAR_WINDOW_URL}
-              className="w-full h-full border-0"
-              title="Solar Window"
-              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-            />
-          )}
-        </div>
-      </div>
-    );
+  // Card base class
+  const cardBaseClass = "backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-green-500/15 group relative overflow-hidden";
+  
+  // Card hover class
+  const cardHoverClass = "hover:shadow-[0_10px_40px_rgba(16,185,129,0.3)] hover:border-green-500/30 hover:scale-[1.01]";
+  
+  // Handle card click for zooming
+  const handleCardClick = (cardId: string) => {
+    setActiveCard(activeCard === cardId ? null : cardId);
+  };
+  
+  // Open detail modal
+  const openDetailModal = (detail: string) => {
+    setSelectedDetail(detail);
+    setShowDetailModal(true);
+  };
+  
+  // COLORS for charts
+  const COLORS = ['#10B981', '#047857', '#34D399', '#065F46', '#059669', '#6EE7B7', '#064E3B'];
+  
+  // Calculate the savings percentage
+  const calculateSavingsPercentage = () => {
+    const currentCost = parseInt(sapMigrationData.costWithoutS4HANA.replace(/[$,]/g, ''));
+    const newCost = parseInt(sapMigrationData.costWithS4HANA.replace(/[$,]/g, ''));
+    return Math.round(((currentCost - newCost) / currentCost) * 100);
   };
 
-  // Information Modal Component
-  const InfoModal = ({ title, steps, methodology, onClose }: { 
-    title: string; 
-    steps: string[]; 
-    methodology: string;
-    onClose: () => void;
-  }) => (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-gray-800 rounded-xl w-full max-w-2xl mx-4 overflow-hidden shadow-2xl">
-        <div className="p-6 border-b border-gray-700 flex justify-between items-center">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
-            {title}
-          </h3>
-          <button 
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-200"
-          >
-            <MdClose size={24} />
-          </button>
-        </div>
-        <div className="p-6 space-y-6">
-          <div>
-            <h4 className="font-semibold text-lg mb-3 text-white">Calculation Steps</h4>
-            <ol className="space-y-3">
-              {steps.map((step, index) => (
-                <li key={index} className="flex gap-3 text-gray-300">
-                  <span className="font-bold text-green-500">{index + 1}.</span>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div>
-            <h4 className="font-semibold text-lg mb-3 text-white">Methodology</h4>
-            <p className="text-gray-300">{methodology}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // Info Button Component
-  const InfoButton = ({ onClick }: { onClick: () => void }) => (
-    <button
-      onClick={onClick}
-      className="absolute top-4 right-4 p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
-    >
-      <MdInfoOutline size={20} className="text-gray-300" />
-    </button>
-  );
-
-  // Define base classes for cards to match the Home page styling
-  const cardBaseClass = "backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-green-500/15 group relative overflow-hidden";
-
-  // Information section
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="space-y-6">
-        {isCalculating ? (
+        {isLoading ? (
           <div className={cardBaseClass}>
-            {/* Decorative patterns */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0" 
-                style={{
-                  backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 20px, #000000 20px, #000000 22px)',
-                  backgroundSize: '30px 30px'
-                }}
-              ></div>
-            </div>
-            
-            {/* Gradient orbs */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-green-500/10 to-transparent rounded-bl-full"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-tr-full"></div>
-            
             <div className="card-body flex flex-col items-center justify-center py-16 relative z-10">
-              <div className="relative mb-8">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-                <div className="loading loading-spinner loading-lg text-green-500 relative"></div>
-              </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent mb-4">
-                Analyzing SAP Migration Data
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-4"></div>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Loading Analysis Data...
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-8">
-                Our AI is analyzing your SAP ECC data to create detailed migration insights...
+              <p className="text-gray-400 text-center max-w-md mb-8">
+                Retrieving your SAP system analysis data...
               </p>
-              <div className="w-full max-w-md space-y-6">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-700 dark:text-gray-300">Analyzing system specifications</span>
-                    <span className="text-green-500 font-medium">100%</span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full w-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-700 dark:text-gray-300">Estimating migration costs</span>
-                    <span className="text-green-500 font-medium">90%</span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full w-[90%] bg-gradient-to-r from-green-500 to-green-600 rounded-full"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-700 dark:text-gray-300">Calculating ROI metrics</span>
-                    <span className="text-green-500 font-medium">75%</span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full w-[75%] bg-gradient-to-r from-green-500 to-green-600 rounded-full"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-700 dark:text-gray-300">Modeling business process improvements</span>
-                    <span className="text-green-500 font-medium">45%</span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full w-[45%] bg-gradient-to-r from-green-500 to-green-600 rounded-full"></div>
-                  </div>
+            </div>
+          </div>
+        ) : isCalculating ? (
+          <div className={cardBaseClass}>
+            <div className="card-body flex flex-col items-center justify-center py-16 relative z-10">
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <MdOutlineCalculate className="text-green-500 text-3xl animate-pulse" />
+                <div className="h-4 w-24 bg-gradient-to-r from-green-500 to-green-300 rounded-full relative overflow-hidden">
+                  <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent to-white opacity-30 animate-pulse"></div>
                 </div>
               </div>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Calculating Migration Data...
+              </h3>
+              <p className="text-gray-400 text-center max-w-md mb-8">
+                Please wait while we analyze your SAP system and calculate potential S/4HANA migration benefits...
+              </p>
             </div>
           </div>
         ) : (
           <>
-            {/* S/4HANA Migration Stats in annotation style layout */}
-            <div className={cardBaseClass + " relative p-8"}>
-              {/* Decorative patterns */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="absolute inset-0" 
-                  style={{
-                    backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 20px, #000000 20px, #000000 22px)',
-                    backgroundSize: '30px 30px'
-                  }}
-                ></div>
-              </div>
+            {/* Personalized Contact Data Section */}
+            <div className={`${cardBaseClass} p-6 mb-8 animate-glassFadeIn overflow-hidden relative bg-gradient-to-br from-[rgba(16,185,129,0.05)] to-[rgba(16,185,129,0.01)] border-green-500/20 hover:border-green-400/30 transition-all duration-500 shadow-[0_10px_50px_rgba(16,185,129,0.2)]`}>
+              {/* Decorative elements */}
+              <div className="absolute -top-36 -right-36 w-96 h-96 rounded-full bg-green-500/5 blur-[100px] pointer-events-none"></div>
+              <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-green-400/5 blur-[80px] pointer-events-none"></div>
               
-              {/* Gradient orbs */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-green-500/10 to-transparent rounded-bl-full"></div>
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-tr-full"></div>
-              
-              <div className="relative z-10 grid grid-cols-3 gap-6 items-center">
-                {/* Left Column */}
-                <div className="space-y-6">
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm relative">
-                    <InfoButton onClick={() => setActiveInfoModal('annualTCO')} />
-                    <h3 className="card-title text-lg flex items-center gap-2 mb-4">
-                      <div className="bg-gradient-to-br from-green-500 to-green-600 w-12 h-12 rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                        <FaMoneyBill size={24} />
-                    </div>
-                      <span className="bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent text-xl">
-                        Cost Analysis
-                      </span>
-                    </h3>
-                    <div className="space-y-4">
-                    <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Annual TCO</p>
-                        <p className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
-                          {sapMigrationData.totalAnnualCost}
-                      </p>
-                    </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Monthly Average</p>
-                        <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                          {sapMigrationData.averageMonthlySpend}
-                        </p>
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 relative z-10">
+                <div className="flex items-center space-x-5">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500/30 to-green-300/20 flex items-center justify-center border border-green-400/20 shadow-lg shadow-green-900/10">
+                    <FaUserTie className="text-green-400 text-2xl" />
                   </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Per User Cost</p>
-                        <p className="text-xl font-semibold text-green-500">
-                          {sapMigrationData.costPerUser}
-                        </p>
-                </div>
-              </div>
-                  </div>
-                  
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm relative">
-                    <InfoButton onClick={() => setActiveInfoModal('costAnalysis')} />
-                    <h3 className="card-title text-lg flex items-center gap-2 mb-4">
-                      <div className="bg-gradient-to-br from-green-500 to-green-600 w-12 h-12 rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                        <FaCalculator size={24} />
-                      </div>
-                      <span className="bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent text-xl">
-                        Migration ROI
-                      </span>
-                    </h3>
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-baseline">
-                        <div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Without S/4HANA</p>
-                          <p className="text-2xl font-bold text-red-500">{sapMigrationData.costWithoutS4HANA}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm text-gray-500 dark:text-gray-400">With S/4HANA</p>
-                          <p className="text-2xl font-bold text-green-500">{sapMigrationData.costWithS4HANA}</p>
-                      </div>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">ROI Period</p>
-                        <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {sapMigrationData.roiPeriod}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Break Even</p>
-                        <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {sapMigrationData.breakEvenPoint}
-                        </p>
-                      </div>
-                    </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-white mb-1 text-shadow-sm">{contactInfo.name}</h2>
+                    <p className="text-green-300/80 flex items-center text-lg">
+                      <span className="text-gray-400 font-light">{contactInfo.title}</span>
+                      <span className="mx-2 text-green-500/40">•</span>
+                      <span className="text-green-300/70 font-medium">{contactInfo.company}</span>
+                    </p>
                   </div>
                 </div>
+                <div className="flex items-center space-x-3 mt-4 md:mt-0 text-gray-300 bg-white/5 rounded-full py-2 px-4 border border-green-500/10">
+                  <FaMapMarkerAlt className="text-green-400" />
+                  <span>{contactInfo.location}</span>
+                  <span className="mx-1 text-green-500/40">|</span>
+                  <FaDatabase className="text-green-400" />
+                  <span>{contactInfo.erpSystem}</span>
+                </div>
+              </div>
 
-                {/* Center Image - Replace with an appropriate migration image */}
-                <div className="relative">
-                  <div className="w-full h-auto rounded-xl shadow-xl bg-gray-800/60 p-6 flex flex-col items-center justify-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-green-500/10 mb-4 flex items-center justify-center">
-                      <FaServer className="text-green-500 text-4xl" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">S/4HANA Migration Analysis</h3>
-                    <p className="text-gray-300 mb-4">Comprehensive analysis of your ECC to S/4HANA migration journey</p>
-                    <div className="grid grid-cols-2 gap-3 w-full">
-                      <div className="bg-gray-700/50 rounded p-3">
-                        <p className="text-sm text-gray-400">Performance Gain</p>
-                        <p className="text-lg font-bold text-green-400">{sapMigrationData.s4hanaPerformance}</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* Key Metrics Overview */}
+                <div className="col-span-1 rounded-2xl p-6 backdrop-blur-md bg-gradient-to-br from-[rgba(16,185,129,0.08)] to-[rgba(16,185,129,0.03)] border border-green-500/20 shadow-lg shadow-black/20 transform transition-all duration-300 hover:shadow-green-900/20 hover:border-green-400/30 hover:scale-[1.02] relative group">
+                  <button 
+                    onClick={() => {
+                      setActiveMetric('system_metrics');
+                      setShowInfoModal(true);
+                    }}
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500/20 transition-colors z-10"
+                  >
+                    <FaInfoCircle className="text-green-400 text-sm" />
+                  </button>
+                  
+                  <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
+                    <FaChartLine className="text-green-400 mr-2" />
+                    Key System Metrics
+                  </h3>
+                  
+                  <div className="space-y-5">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-600/20 flex items-center justify-center">
+                          <FaUsers className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Users</span>
                       </div>
-                      <div className="bg-gray-700/50 rounded p-3">
-                        <p className="text-sm text-gray-400">Downtime</p>
-                        <p className="text-lg font-bold text-white">{sapMigrationData.monthlyDowntime}</p>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">{sapMetrics.users.toLocaleString()}</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('users');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
                       </div>
                     </div>
-                  </div>
-                  {/* Enhanced connecting lines with gradients */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <svg className="w-full h-full" style={{ position: 'absolute', top: 0, left: 0 }}>
-                      <defs>
-                        <linearGradient id="lineGradient1" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="rgba(16,185,129,0.2)" />
-                          <stop offset="100%" stopColor="rgba(59,130,246,0.2)" />
-                        </linearGradient>
-                      </defs>
-                      <line x1="0" y1="50%" x2="100%" y2="50%" stroke="url(#lineGradient1)" strokeWidth="2" strokeDasharray="4" />
-                      <line x1="50%" y1="0" x2="50%" y2="100%" stroke="url(#lineGradient1)" strokeWidth="2" strokeDasharray="4" />
-                    </svg>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-600/20 flex items-center justify-center">
+                          <FaExchangeAltIcon className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Transactions</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">{(sapMetrics.transactions / 1000000).toFixed(2)}M</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('transactions');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-600/20 flex items-center justify-center">
+                          <MdOutlineSpeed className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Throughput</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">{sapMetrics.throughput.toLocaleString()} TPS</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('throughput');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-600/20 flex items-center justify-center">
+                          <FaPercentage className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Efficiency</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">{sapMetrics.efficiency}%</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('efficiency');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-600/20 flex items-center justify-center">
+                          <FaChartLine className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Performance Score</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">{sapMetrics.performanceScore}%</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('performanceScore');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
-                {/* Right Column */}
-                <div className="space-y-6">
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm relative">
-                    <InfoButton onClick={() => setActiveInfoModal('businessMetrics')} />
-                    <h3 className="card-title text-lg flex items-center gap-2 mb-4">
-                      <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-12 h-12 rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                        <FaChartBar size={24} />
+                {/* Financial Metrics */}
+                <div className="col-span-1 rounded-2xl p-6 backdrop-blur-md bg-gradient-to-br from-[rgba(16,185,129,0.08)] to-[rgba(16,185,129,0.02)] border border-green-500/20 shadow-lg shadow-black/20 transform transition-all duration-300 hover:shadow-green-900/20 hover:border-green-400/30 hover:scale-[1.02] relative group">
+                  <button 
+                    onClick={() => {
+                      setActiveMetric('financial_metrics');
+                      setShowInfoModal(true);
+                    }}
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500/20 transition-colors z-10"
+                  >
+                    <FaInfoCircle className="text-green-400 text-sm" />
+                  </button>
+                  
+                  <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
+                    <FaMoneyBillWave className="text-green-400 mr-2" />
+                    Financial Metrics
+                  </h3>
+                  
+                  <div className="space-y-5">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-700/20 flex items-center justify-center">
+                          <FaMoneyBillWave className="text-green-300" />
+                        </div>
+                        <span className="text-gray-300">Current Cost</span>
                       </div>
-                      <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent text-xl">
-                        Business Metrics
-                      </span>
-                    </h3>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">License Count</p>
-                        <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {sapMigrationData.licenseCount}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Maintenance Cost</p>
-                        <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {sapMigrationData.totalMaintenanceCost}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Monthly Average</p>
-                        <p className="text-xl font-semibold text-blue-500">
-                          {sapMigrationData.monthlyMaintenanceAvg}
-                        </p>
+                      <div className="flex items-center">
+                        <span className="text-green-300 font-medium text-lg">${sapMetrics.currentCost.toLocaleString()}</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('currentCost');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm relative">
-                    <InfoButton onClick={() => setActiveInfoModal('performanceMetrics')} />
-                    <h3 className="card-title text-lg flex items-center gap-2 mb-4">
-                      <div className="bg-gradient-to-br from-purple-500 to-purple-600 w-12 h-12 rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                        <FaClock size={24} />
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                          <FaMoneyBillWave className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Optimized Cost</span>
                       </div>
-                      <span className="bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent text-xl">
-                        Technical Metrics
-                      </span>
-                    </h3>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Monthly Downtime</p>
-                        <p className="text-2xl font-bold text-purple-500">{sapMigrationData.monthlyDowntime}</p>
+                      <div className="flex items-center">
+                        <span className="text-green-400 font-medium text-lg">${sapMetrics.optimizedCost.toLocaleString()}</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('optimizedCost');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">System Performance</p>
-                        <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {sapMigrationData.s4hanaPerformance}
-                        </p>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-400/20 flex items-center justify-center">
+                          <MdOutlineSavings className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Annual Savings</span>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Reliability</p>
-                        <p className="text-xl font-semibold text-green-500">99.89%</p>
+                      <div className="flex items-center">
+                        <span className="text-green-400 font-medium text-lg">${sapMetrics.savingsPerYear.toLocaleString()}</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('savingsPerYear');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                          <FaMoneyBill className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Licence Rate</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">${sapMetrics.licenceRate.toFixed(3)}/trx</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('licenceRate');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
+                
+                {/* ROI Visualization */}
+                <div className="col-span-1 rounded-2xl p-6 backdrop-blur-md bg-gradient-to-br from-[rgba(16,185,129,0.08)] to-[rgba(16,185,129,0.02)] border border-green-500/20 shadow-lg shadow-black/20 transform transition-all duration-300 hover:shadow-green-900/20 hover:border-green-400/30 hover:scale-[1.02] flex flex-col relative group">
+                  <button 
+                    onClick={() => {
+                      setActiveMetric('roi_metrics');
+                      setShowInfoModal(true);
+                    }}
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500/20 transition-colors z-10"
+                  >
+                    <FaInfoCircle className="text-green-400 text-sm" />
+                  </button>
+                  
+                  <h3 className="text-xl font-semibold text-white mb-5 flex items-center">
+                    <FaCalculatorIcon className="text-green-400 mr-2" />
+                    Return on Investment
+                  </h3>
+                  
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div className="flex-1 flex items-center justify-center relative">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-32 h-32 rounded-full bg-green-500/5 blur-[30px]"></div>
+                      </div>
+                      <div className="relative w-48 h-48">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { name: 'ROI', value: Math.min(sapMetrics.roi, 500) },
+                                { name: 'Base', value: 100 }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={40}
+                              outerRadius={65}
+                              startAngle={90}
+                              endAngle={-270}
+                              paddingAngle={5}
+                              dataKey="value"
+                            >
+                              <Cell key="cell-0" fill="#10B981" />
+                              <Cell key="cell-1" fill="#1F2937" />
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                          <p className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-green-600">{sapMetrics.roi}%</p>
+                          <p className="text-sm text-gray-400">ROI</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                          <FaClock className="text-green-400" />
+                        </div>
+                        <span className="text-gray-300">Payback Period</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-white font-medium text-lg">{sapMetrics.paybackMonths} mo</span>
+                        <button 
+                          onClick={() => {
+                            setActiveMetric('paybackMonths');
+                            setShowInfoModal(true);
+                          }}
+                          className="ml-2 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center hover:bg-green-500/30 transition-colors"
+                        >
+                          <FaInfoCircle className="text-green-400 text-sm" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Cost Comparison Chart */}
+              <div className="h-72 rounded-2xl p-6 backdrop-blur-md bg-gradient-to-br from-[rgba(16,185,129,0.03)] to-[rgba(16,185,129,0.08)] border border-green-500/20 shadow-lg shadow-black/20 transform transition-all duration-300 hover:shadow-green-900/20 hover:border-green-400/30 relative group">
+                <button 
+                  onClick={() => {
+                    setActiveMetric('cost_comparison');
+                    setShowInfoModal(true);
+                  }}
+                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500/20 transition-colors z-10"
+                >
+                  <FaInfoCircle className="text-green-400 text-sm" />
+                </button>
+                
+                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                  <FaChartBar className="text-green-400 mr-2" />
+                  Cost Comparison & Savings Analysis
+                </h3>
+                <ResponsiveContainer width="100%" height="80%">
+                  <BarChart
+                    data={[
+                      { name: 'Current Cost', value: sapMetrics.currentCost },
+                      { name: 'Optimized Cost', value: sapMetrics.optimizedCost },
+                      { name: 'Annual Savings', value: sapMetrics.savingsPerYear }
+                    ]}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" opacity={0.4} />
+                    <XAxis dataKey="name" tick={{ fill: '#9CA3AF' }} />
+                    <YAxis tick={{ fill: '#9CA3AF' }} />
+                    <Tooltip
+                      formatter={(value) => [`$${Number(value).toLocaleString()}`, '']}
+                      contentStyle={{ backgroundColor: 'rgba(20, 20, 25, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(16, 185, 129, 0.3)', backdropFilter: 'blur(10px)' }}
+                    />
+                    <Bar dataKey="value" name="Amount">
+                      {[
+                        <Cell key="cell-0" fill="#065F46" />,
+                        <Cell key="cell-1" fill="#10B981" />,
+                        <Cell key="cell-2" fill="#34D399" />
+                      ] as React.ReactNode[]}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
-
-            {/* Render active info modal */}
-            {activeInfoModal && (
-              <InfoModal
-                title={sapMigrationData.calculations[activeInfoModal as keyof typeof sapMigrationData.calculations].title}
-                steps={sapMigrationData.calculations[activeInfoModal as keyof typeof sapMigrationData.calculations].steps}
-                methodology={sapMigrationData.calculations[activeInfoModal as keyof typeof sapMigrationData.calculations].methodology}
-                onClose={() => setActiveInfoModal(null)}
-              />
-            )}
-
-            {/* Module Usage Breakdown and ROI Comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              {/* Enhanced Pie Chart Section */}
-              <div className={cardBaseClass + " p-6"}>
-                {/* Decorative patterns */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute inset-0" 
-                    style={{
-                      backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 20px, #000000 20px, #000000 22px)',
-                      backgroundSize: '30px 30px'
-                    }}
-                  ></div>
-                </div>
-                
-                {/* Gradient orbs */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-green-500/10 to-transparent rounded-bl-full"></div>
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-tr-full"></div>
-              
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-gradient-to-br from-green-500 to-green-600 p-3 rounded-lg text-white shadow-lg">
-                      <MdOutlineAnalytics size={22} />
-                    </div>
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
-                      Module Usage Breakdown
-                    </h3>
+            
+            {/* Information Modal */}
+            {showInfoModal && activeMetric && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
+                <div className="relative max-w-3xl w-full bg-gradient-to-br from-[#1A1A1A]/95 via-[#1A1A1A]/90 to-[#1A1A1A]/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-green-500/20 p-6 max-h-[90vh] overflow-y-auto animate-slideUp">
+                  {/* Green glow effect */}
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-green-500/10 rounded-full blur-[60px]"></div>
+                    <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-green-500/10 rounded-full blur-[60px]"></div>
                   </div>
+
+                  <button 
+                    onClick={() => setShowInfoModal(false)}
+                    className="absolute top-3 right-3 p-1 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors z-10"
+                  >
+                    <MdClose size={24} />
+                  </button>
                   
-                  {/* Analysis explanation text */}
-                  <div className="mb-6 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-xl border border-green-500/20">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1 text-green-500">
-                        <MdInfoOutline size={20} />
+                  <div className="mb-6 pb-4 border-b border-green-800/30 relative z-10">
+                    <div className="flex items-start mb-2">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center mr-4 border border-green-500/20 shadow-lg shadow-green-900/20">
+                        {activeMetric === 'users' && <FaUsers className="text-green-400 text-xl" />}
+                        {activeMetric === 'transactions' && <FaExchangeAltIcon className="text-green-400 text-xl" />}
+                        {activeMetric === 'throughput' && <MdOutlineSpeed className="text-green-400 text-xl" />}
+                        {activeMetric === 'efficiency' && <FaPercentage className="text-green-400 text-xl" />}
+                        {activeMetric === 'currentCost' && <FaMoneyBillWave className="text-green-400 text-xl" />}
+                        {activeMetric === 'optimizedCost' && <FaMoneyBillWave className="text-green-400 text-xl" />}
+                        {activeMetric === 'savingsPerYear' && <MdOutlineSavings className="text-green-400 text-xl" />}
+                        {activeMetric === 'licenceRate' && <FaMoneyBill className="text-green-400 text-xl" />}
+                        {activeMetric === 'roi' && <FaCalculatorIcon className="text-green-400 text-xl" />}
+                        {activeMetric === 'paybackMonths' && <FaClock className="text-green-400 text-xl" />}
+                        {activeMetric === 'performanceScore' && <FaChartLine className="text-green-400 text-xl" />}
+                        {activeMetric === 'system_metrics' && <FaServer className="text-green-400 text-xl" />}
+                        {activeMetric === 'financial_metrics' && <FaMoneyBillWave className="text-green-400 text-xl" />}
+                        {activeMetric === 'roi_metrics' && <FaCalculatorIcon className="text-green-400 text-xl" />}
+                        {activeMetric === 'cost_comparison' && <FaChartBar className="text-green-400 text-xl" />}
                       </div>
                       <div>
-                        <p className="text-white text-sm leading-relaxed">
-                          This analysis represents your organization's module usage patterns in the current SAP ECC environment. 
-                          Based on transaction volume data, this breakdown identifies high-usage areas that will require special attention during migration to S/4HANA. 
-                          Understanding your usage patterns helps optimize the migration strategy and target resources appropriately.
-                        </p>
+                        <h3 className="text-2xl font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-green-200">{metricTooltips[activeMetric].name}</h3>
+                        <p className="text-green-300/70">{metricTooltips[activeMetric].description}</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="h-[400px] mt-4">
+                  <div className="mb-6 space-y-5 relative z-10">
+                    <div className="animate-fadeIn animation-delay-100">
+                      <h4 className="text-green-400 font-medium mb-2 flex items-center">
+                        <FaCalculatorIcon className="mr-2" />
+                        Formula
+                      </h4>
+                      <div className="bg-black/30 rounded-lg p-4 border border-green-500/10 hover:border-green-500/20 transition-colors">
+                        <p className="text-white font-mono">{metricTooltips[activeMetric].formula}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="animate-fadeIn animation-delay-200">
+                      <h4 className="text-green-400 font-medium mb-2 flex items-center">
+                        <MdOutlineCalculate className="mr-2" />
+                        Calculation Breakdown
+                      </h4>
+                      <div className="bg-black/30 rounded-lg p-4 border border-green-500/10 hover:border-green-500/20 transition-colors">
+                        <p className="text-white">{metricTooltips[activeMetric].calculation}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="animate-fadeIn animation-delay-300">
+                      <h4 className="text-green-400 font-medium mb-2 flex items-center">
+                        <MdInfo className="mr-2" />
+                        Context & Example
+                      </h4>
+                      <div className="bg-black/30 rounded-lg p-4 border border-green-500/10 hover:border-green-500/20 transition-colors">
+                        <p className="text-white">{metricTooltips[activeMetric].example}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-green-900/20 to-green-800/10 rounded-lg p-5 border border-green-500/20 mt-6 animate-fadeIn animation-delay-400">
+                      <h4 className="text-white font-medium mb-3 flex items-center">
+                        <FaInfoCircle className="text-green-400 mr-2" />
+                        Current Value
+                      </h4>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-green-500">
+                            {activeMetric === 'users' && `${sapMetrics.users.toLocaleString()}`}
+                            {activeMetric === 'transactions' && `${(sapMetrics.transactions / 1000000).toFixed(2)}M`}
+                            {activeMetric === 'throughput' && `${sapMetrics.throughput.toLocaleString()}`}
+                            {activeMetric === 'efficiency' && `${sapMetrics.efficiency}%`}
+                            {activeMetric === 'currentCost' && `$${sapMetrics.currentCost.toLocaleString()}`}
+                            {activeMetric === 'optimizedCost' && `$${sapMetrics.optimizedCost.toLocaleString()}`}
+                            {activeMetric === 'savingsPerYear' && `$${sapMetrics.savingsPerYear.toLocaleString()}`}
+                            {activeMetric === 'licenceRate' && `$${sapMetrics.licenceRate.toFixed(3)}`}
+                            {activeMetric === 'roi' && `${sapMetrics.roi}%`}
+                            {activeMetric === 'paybackMonths' && `${sapMetrics.paybackMonths}`}
+                            {activeMetric === 'performanceScore' && `${sapMetrics.performanceScore}%`}
+                            {(activeMetric === 'system_metrics' || activeMetric === 'financial_metrics' || 
+                              activeMetric === 'roi_metrics' || activeMetric === 'cost_comparison') && 
+                              `${contactInfo.name}'s Metrics`}
+                          </p>
+                          <p className="text-sm text-gray-400 mt-1">
+                            {activeMetric === 'users' && `Total Users`}
+                            {activeMetric === 'transactions' && `Annual Transactions`}
+                            {activeMetric === 'throughput' && `TPS (Transactions per Second)`}
+                            {activeMetric === 'efficiency' && `Resource Efficiency`}
+                            {activeMetric === 'currentCost' && `Annual Cost`}
+                            {activeMetric === 'optimizedCost' && `Optimized Annual Cost`}
+                            {activeMetric === 'savingsPerYear' && `Annual Savings`}
+                            {activeMetric === 'licenceRate' && `Per Transaction`}
+                            {activeMetric === 'roi' && `Return on Investment`}
+                            {activeMetric === 'paybackMonths' && `Months`}
+                            {activeMetric === 'performanceScore' && `System Score`}
+                            {(activeMetric === 'system_metrics' || activeMetric === 'financial_metrics' || 
+                              activeMetric === 'roi_metrics' || activeMetric === 'cost_comparison') && 
+                              `Wood • ${contactInfo.location}`}
+                          </p>
+                        </div>
+                        <div className="h-16 w-16 bg-green-500/10 rounded-full flex items-center justify-center">
+                          {activeMetric === 'users' && <FaUsers className="text-green-400 text-2xl" />}
+                          {activeMetric === 'transactions' && <FaExchangeAltIcon className="text-green-400 text-2xl" />}
+                          {activeMetric === 'throughput' && <MdOutlineSpeed className="text-green-400 text-2xl" />}
+                          {activeMetric === 'efficiency' && <FaPercentage className="text-green-400 text-2xl" />}
+                          {activeMetric === 'currentCost' && <FaMoneyBillWave className="text-green-400 text-2xl" />}
+                          {activeMetric === 'optimizedCost' && <FaMoneyBillWave className="text-green-400 text-2xl" />}
+                          {activeMetric === 'savingsPerYear' && <MdOutlineSavings className="text-green-400 text-2xl" />}
+                          {activeMetric === 'licenceRate' && <FaMoneyBill className="text-green-400 text-2xl" />}
+                          {activeMetric === 'roi' && <FaCalculatorIcon className="text-green-400 text-2xl" />}
+                          {activeMetric === 'paybackMonths' && <FaClock className="text-green-400 text-2xl" />}
+                          {activeMetric === 'performanceScore' && <FaChartLine className="text-green-400 text-2xl" />}
+                          {activeMetric === 'system_metrics' && <FaServer className="text-green-400 text-2xl" />}
+                          {activeMetric === 'financial_metrics' && <FaMoneyBillWave className="text-green-400 text-2xl" />}
+                          {activeMetric === 'roi_metrics' && <FaCalculatorIcon className="text-green-400 text-2xl" />}
+                          {activeMetric === 'cost_comparison' && <FaChartBar className="text-green-400 text-2xl" />}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end mt-6 relative z-10">
+                    <button 
+                      onClick={() => setShowInfoModal(false)}
+                      className="px-5 py-2.5 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg hover:from-green-500 hover:to-green-400 transition-all font-medium shadow-lg shadow-green-900/20 hover:shadow-green-800/30 flex items-center space-x-2"
+                    >
+                      <span>Close</span>
+                      <MdClose size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Header Section with Key Metrics */}
+            <div className={cardBaseClass + " p-6 " + cardHoverClass}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">SAP S/4HANA Migration Analysis</h2>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-400">Analysis Completed</span>
+                  <FaCheckCircle className="text-green-500" />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-gray-400 text-sm">Annual Cost Without S/4HANA</p>
+                      <p className="text-xl text-red-500 font-bold">{sapMigrationData.costWithoutS4HANA}</p>
+                    </div>
+                    <FaMoneyBill className="text-red-400 text-2xl opacity-80" />
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-gray-400 text-sm">Annual Cost With S/4HANA</p>
+                      <p className="text-xl text-green-500 font-bold">{sapMigrationData.costWithS4HANA}</p>
+                    </div>
+                    <FaRegSave className="text-green-400 text-2xl opacity-80" />
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-gray-400 text-sm">Total Annual Savings</p>
+                      <p className="text-xl text-white font-bold">${parseInt(sapMigrationData.costWithoutS4HANA.replace(/[$,]/g, '')) - parseInt(sapMigrationData.costWithS4HANA.replace(/[$,]/g, ''))}</p>
+                    </div>
+                    <MdOutlineSavings className="text-accent-primary text-2xl opacity-80" />
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-gray-400 text-sm">ROI Period</p>
+                      <p className="text-xl text-white font-bold">{sapMigrationData.roiPeriod}</p>
+                    </div>
+                    <FaClock className="text-blue-400 text-2xl opacity-80" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                {/* Savings percentage */}
+                <div className="col-span-1">
+                  <div className="flex flex-col items-center">
+                    <h3 className="text-xl font-semibold text-white mb-4">Cost Reduction</h3>
+                    <div className="relative w-40 h-40">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'Savings', value: calculateSavingsPercentage() },
+                              { name: 'Remaining', value: 100 - calculateSavingsPercentage() }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={40}
+                            outerRadius={60}
+                            paddingAngle={5}
+                            dataKey="value"
+                          >
+                            <Cell key="cell-0" fill="#10B981" />
+                            <Cell key="cell-1" fill="#1F2937" />
+                          </Pie>
+                          <Tooltip 
+                            formatter={(value) => [`${value}%`, '']}
+                            contentStyle={{ backgroundColor: 'rgba(26, 32, 44, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(72, 187, 120, 0.3)' }}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                        <p className="text-3xl font-bold text-green-500">{calculateSavingsPercentage()}%</p>
+                        <p className="text-xs text-gray-400">Reduction</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Module Breakdown */}
+                <div className="col-span-1">
+                  <h3 className="text-xl font-semibold text-white mb-4">Module Usage</h3>
+                  <div className="h-40">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
-                        {/* Define gradients for each sector */}
-                        <defs>
-                          {moduleUsagePieData.map((entry, index) => (
-                            <linearGradient key={`gradient-${index}`} id={`pieGradient-${index}`} x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor={entry.gradientStart} stopOpacity={1} />
-                              <stop offset="100%" stopColor={entry.gradientEnd} stopOpacity={0.8} />
-                            </linearGradient>
-                          ))}
-                          <filter id="shadow" height="200%" width="200%" x="-50%" y="-50%">
-                            <feGaussianBlur stdDeviation="3" result="blur" />
-                            <feFlood floodColor="#000" floodOpacity="0.3" result="shadowColor"/>
-                            <feComposite in="shadowColor" in2="blur" operator="in" result="shadowBlur"/>
-                            <feOffset in="shadowBlur" dx="1" dy="1" result="offsetBlur"/>
-                            <feMerge>
-                              <feMergeNode in="offsetBlur"/>
-                              <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                          </filter>
-                        </defs>
                         <Pie
-                          data={moduleUsagePieData}
+                          data={sapMigrationData.moduleUsageBreakdown}
                           cx="50%"
                           cy="50%"
-                          labelLine={true}
-                          label={renderCustomizedPie}
-                          outerRadius={130}
-                          innerRadius={65}
-                          fill="#8884d8"
+                          outerRadius={60}
                           dataKey="value"
-                          paddingAngle={4}
-                          filter="url(#shadow)"
-                          onClick={handlePieSectionClick}
-                          isAnimationActive={true}
-                          animationDuration={1200}
-                          animationBegin={300}
-                          animationEasing="ease-out"
+                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          labelLine={false}
                         >
-                          {moduleUsagePieData.map((entry, index) => (
-                            <Cell 
-                              key={`cell-${index}`} 
-                              fill={`url(#pieGradient-${index})`} 
-                              stroke="rgba(255,255,255,0.2)"
-                              strokeWidth={2}
-                              style={{ cursor: 'pointer', filter: 'drop-shadow(0px 2px 3px rgba(0,0,0,0.3))' }}
-                            />
+                          {sapMigrationData.moduleUsageBreakdown.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
-                        <Tooltip content={<CustomPieTooltip />} />
-                        <Legend
-                          layout="vertical" 
-                          verticalAlign="middle" 
-                          align="right"
-                          iconType="circle"
-                          wrapperStyle={{
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            cursor: 'pointer'
-                          }}
-                          onClick={(entry) => {
-                            const sectionId = moduleUsagePieData.find(item => item.name === entry.value)?.id;
-                            if (sectionId) {
-                              setSelectedPieSection(sectionId);
-                              setShowDetailsModal(true);
-                            }
-                          }}
+                        <Tooltip 
+                          formatter={(value) => [`${value}%`, '']}
+                          contentStyle={{ backgroundColor: 'rgba(26, 32, 44, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(72, 187, 120, 0.3)' }}
                         />
+                        <Legend iconType="circle" layout="vertical" verticalAlign="middle" align="right" />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
-                  
-                  <div className="text-center mt-4">
-                    <div className="inline-flex items-center gap-2 text-sm text-green-500 border border-green-500/30 px-3 py-1.5 rounded-full bg-green-500/10">
-                      <MdZoomOutMap size={16} />
-                      <p>Click on chart sections for detailed breakdown</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Enhanced ROI Chart Section */}
-              <div className={cardBaseClass + " p-6"}>
-                {/* Decorative patterns */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute inset-0" 
-                    style={{
-                      backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 20px, #000000 20px, #000000 22px)',
-                      backgroundSize: '30px 30px'
-                    }}
-                  ></div>
                 </div>
                 
-                {/* Gradient orbs */}
-                <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-green-500/10 to-transparent rounded-bl-full"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-red-500/10 to-transparent rounded-tr-full"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-gradient-to-br from-green-500 to-green-600 p-3 rounded-lg text-white shadow-lg">
-                      <FaChartLine size={22} />
-                    </div>
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
-                      25-Year S/4HANA ROI Projection
-                    </h3>
-                  </div>
-                  
-                  {/* ROI explanation text */}
-                  <div className="mb-6 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-xl border border-green-500/20">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1 text-green-500">
-                        <MdInfoOutline size={20} />
-                      </div>
-                      <div>
-                        <p className="text-white text-sm leading-relaxed">
-                          This financial projection illustrates the cumulative return on a $2,150,000 S/4HANA migration investment over 25 years. 
-                          Based on current licensing costs and efficiency gains, the system achieves <span className="text-green-500 font-medium">break-even at 2.1 years</span>, 
-                          with total savings of <span className="text-green-500 font-medium">${Math.round(roiDataWithCumulative[roiDataWithCumulative.length-1].cumulativeSavings).toLocaleString()}</span> over the system's lifetime. 
-                          This analysis factors in all aspects of TCO including licensing, maintenance, infrastructure, and personnel costs.
-                        </p>
-                        <div className="grid grid-cols-3 gap-4 mt-3">
-                          <div className="bg-gray-800/50 p-2 rounded-lg text-center">
-                            <p className="text-xs text-gray-400">Break-even</p>
-                            <p className="text-lg font-semibold text-white">2.1 years</p>
-                          </div>
-                          <div className="bg-gray-800/50 p-2 rounded-lg text-center">
-                            <p className="text-xs text-gray-400">25-Year ROI</p>
-                            <p className="text-lg font-semibold text-green-400">382%</p>
-                          </div>
-                          <div className="bg-gray-800/50 p-2 rounded-lg text-center">
-                            <p className="text-xs text-gray-400">Monthly Savings</p>
-                            <p className="text-lg font-semibold text-white">$89,326</p>
-                          </div>
+                {/* Implementation Timeline */}
+                <div className="col-span-1">
+                  <h3 className="text-xl font-semibold text-white mb-4">Implementation Progress</h3>
+                  <div className="space-y-3">
+                    {sapMigrationData.implementationPhases.slice(0, 4).map((phase, index) => (
+                      <div key={index} className="relative">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-300">{phase.name}</span>
+                          <span className="text-gray-400">{phase.completion}%</span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-2.5">
+                          <div 
+                            className="bg-gradient-to-r from-green-500 to-green-300 h-2.5 rounded-full" 
+                            style={{ width: `${phase.completion}%` }}
+                          ></div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className="h-[400px] mt-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart
-                        data={roiDataWithCumulative}
-                        margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <defs>
-                          <linearGradient id="colorWithS4HANA" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#10B981" stopOpacity={0.2}/>
-                          </linearGradient>
-                          <linearGradient id="colorWithoutS4HANA" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#EF4444" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#EF4444" stopOpacity={0.2}/>
-                          </linearGradient>
-                          <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#10B981" stopOpacity={0.2}/>
-                          </linearGradient>
-                          <filter id="shadow" height="200%" width="200%" x="-50%" y="-50%">
-                            <feGaussianBlur stdDeviation="4" result="blur" />
-                            <feFlood floodColor="#000" floodOpacity="0.2" result="color"/>
-                            <feComposite in="color" in2="blur" operator="in" result="shadow"/>
-                            <feMerge>
-                              <feMergeNode in="shadow"/>
-                              <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                          </filter>
-                        </defs>
-                        <CartesianGrid 
-                          strokeDasharray="3 3" 
-                          vertical={false} 
-                          stroke="rgba(255,255,255,0.1)" 
-                        />
-                        <XAxis 
-                          dataKey="year" 
-                          stroke="#94a3b8"
-                          tick={{ fill: '#94a3b8', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          tickLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          allowDecimals={false}
-                        />
-                        <YAxis 
-                          stroke="#94a3b8"
-                          tick={{ fill: '#94a3b8', fontSize: 12 }}
-                          tickFormatter={(value) => `$${Math.round(value/1000)}k`}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          tickLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          domain={[0, 'auto']} // Force start at 0
-                        />
-                        <Tooltip content={<CustomROITooltip />} />
-                        <Legend 
-                          verticalAlign="top" 
-                          align="right" 
-                          wrapperStyle={{ paddingBottom: '20px', fontWeight: 600 }}
-                        />
-                        <ReferenceLine 
-                          x={2.1} 
-                          stroke="#10B981"
-                          strokeWidth={2}
-                          strokeDasharray="5 5"
-                          label={{ 
-                            value: 'Break-even: 2.1 years', 
-                            position: 'top',
-                            fill: '#10B981',
-                            fontSize: 12,
-                            fontWeight: 'bold'
-                          }} 
-                        />
-                        
-                        {/* Add annotation for initial investment */}
-                        <ReferenceLine 
-                          y={2150000} 
-                          stroke="#FFFFFF"
-                          strokeWidth={1}
-                          strokeDasharray="3 3"
-                          label={{ 
-                            value: 'Initial Investment: $2,150,000', 
-                            position: 'right',
-                            fill: '#FFFFFF',
-                            fontSize: 10,
-                            opacity: 0.7
-                          }} 
-                        />
-                        
-                        <Area 
-                          type="monotone" 
-                          dataKey={(data) => data.withS4HANA + data.totalInvestment} // Add investment to costs
-                          name="With S/4HANA" 
-                          stroke="#10B981" 
-                          fillOpacity={1}
-                          fill="url(#colorWithS4HANA)" 
-                          strokeWidth={3}
-                          activeDot={{ r: 8, strokeWidth: 0, fill: '#10B981' }}
-                          filter="url(#shadow)"
-                        />
-                        <Area 
-                          type="monotone" 
-                          dataKey="withoutS4HANA" 
-                          name="Without S/4HANA" 
-                          stroke="#EF4444" 
-                          fillOpacity={1}
-                          fill="url(#colorWithoutS4HANA)" 
-                          strokeWidth={3}
-                          activeDot={{ r: 8, strokeWidth: 0, fill: '#EF4444' }}
-                          filter="url(#shadow)"
-                        />
-                        <Area 
-                          type="monotone" 
-                          dataKey="cumulativeSavings" 
-                          name="Cumulative Savings" 
-                          stroke="#10B981" 
-                          fillOpacity={0.6}
-                          fill="url(#colorSavings)" 
-                          strokeWidth={2}
-                          strokeDasharray="5 5"
-                          activeDot={{ r: 8, strokeWidth: 0, fill: '#10B981' }}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-sm mt-4">
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <FaMoneyBill className="text-green-500" size={16} />
-                      <span>Total 25-year savings: </span>
-                      <span className="font-semibold text-green-500">
-                        ${Math.round(roiDataWithCumulative[roiDataWithCumulative.length-1].cumulativeSavings).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="text-gray-400">
-                      S/4HANA Support: <span className="text-white">20+ years</span>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Render module usage breakdown detail modal when a section is clicked */}
-            {showDetailsModal && selectedPieSection && (
-              <EnergyUsageDetailModal
-                sectionId={selectedPieSection}
-                onClose={() => setShowDetailsModal(false)}
-              />
-            )}
             
-            {/* Continue Button */}
+            {/* Tabs Navigation */}
+            <div className="flex overflow-x-auto pb-2 mb-6 scrollbar-hide">
+              <div 
+                className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer mx-1 ${selectedTab === 'overview' ? 'bg-green-500 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}`}
+                onClick={() => setSelectedTab('overview')}
+              >
+                Overview
+              </div>
+              <div 
+                className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer mx-1 ${selectedTab === 'costs' ? 'bg-green-500 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}`}
+                onClick={() => setSelectedTab('costs')}
+              >
+                Cost Analysis
+              </div>
+              <div 
+                className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer mx-1 ${selectedTab === 'performance' ? 'bg-green-500 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}`}
+                onClick={() => setSelectedTab('performance')}
+              >
+                Performance
+              </div>
+              <div 
+                className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer mx-1 ${selectedTab === 'infrastructure' ? 'bg-green-500 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}`}
+                onClick={() => setSelectedTab('infrastructure')}
+              >
+                Infrastructure
+              </div>
+              <div 
+                className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer mx-1 ${selectedTab === 'timeline' ? 'bg-green-500 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}`}
+                onClick={() => setSelectedTab('timeline')}
+              >
+                Timeline
+              </div>
+            </div>
+            
+            {/* Tab Content */}
+            <div className="space-y-6">
+              {selectedTab === 'overview' && (
+                <>
+                  {/* Overview Tab Content */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Key Benefits Card */}
+                    <div className={`${cardBaseClass} p-6 ${cardHoverClass}`} onClick={() => handleCardClick('benefits')}>
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xl font-semibold text-white">Key Migration Benefits</h3>
+                        <FaCheckCircle className="text-green-500 text-xl" />
+                      </div>
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <FaRegSave className="text-green-500" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-white">Cost Reduction</p>
+                            <p className="text-sm text-gray-400">Total operational cost reduced by {sapMigrationData.operationalCostReduction}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <MdOutlineSpeed className="text-green-500" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-white">Performance Improvement</p>
+                            <p className="text-sm text-gray-400">Processing speed improved by {sapMigrationData.processingSpeedImprovement}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <FaServer className="text-green-500" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-white">Infrastructure Optimization</p>
+                            <p className="text-sm text-gray-400">Server footprint reduced by {sapMigrationData.serverReduction}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <FaUsers className="text-green-500" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-white">User Productivity</p>
+                            <p className="text-sm text-gray-400">User productivity increased by {sapMigrationData.userProductivityGain}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* System Metrics Card */}
+                    <div className={`${cardBaseClass} p-6 ${cardHoverClass}`} onClick={() => handleCardClick('metrics')}>
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xl font-semibold text-white">System Performance Metrics</h3>
+                        <MdOutlineAnalytics className="text-accent-primary text-xl" />
+                      </div>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={sapMigrationData.systemMetrics}>
+                            <PolarGrid stroke="#374151" />
+                            <PolarAngleAxis dataKey="name" tick={{ fill: '#9CA3AF', fontSize: 10 }} />
+                            <PolarRadiusAxis angle={90} domain={[0, 'auto']} tick={{ fill: '#9CA3AF' }} />
+                            <Radar name="Current Value" dataKey="value" stroke="#10B981" fill="#10B981" fillOpacity={0.6} />
+                            <Radar name="Ideal Value" dataKey="ideal" stroke="#047857" fill="#047857" fillOpacity={0.4} />
+                            <Tooltip 
+                              contentStyle={{ backgroundColor: 'rgba(26, 32, 44, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(72, 187, 120, 0.3)' }}
+                            />
+                            <Legend />
+                          </RadarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                    
+                    {/* Cost Breakdown Card */}
+                    <div className={`${cardBaseClass} p-6 ${cardHoverClass}`} onClick={() => handleCardClick('costAnalysis')}>
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xl font-semibold text-white">Cost Breakdown</h3>
+                        <FaMoneyBill className="text-green-500 text-xl" />
+                      </div>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart
+                            data={sapMigrationData.costBreakdown.slice(0, 4)}
+                            layout="vertical"
+                            margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#374151" />
+                            <XAxis type="number" tick={{ fill: '#9CA3AF' }} />
+                            <YAxis dataKey="name" type="category" tick={{ fill: '#9CA3AF' }} width={100} />
+                            <Tooltip
+                              formatter={(value) => [`$${value.toLocaleString()}`, '']}
+                              contentStyle={{ backgroundColor: 'rgba(26, 32, 44, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(72, 187, 120, 0.3)' }}
+                            />
+                            <Legend />
+                            <Bar dataKey="currentCost" name="Current Cost" fill="#065F46" />
+                            <Bar dataKey="cloudCost" name="Cloud Cost" fill="#10B981" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                    
+                    {/* Savings Timeline Card */}
+                    <div className={`${cardBaseClass} p-6 ${cardHoverClass}`} onClick={() => handleCardClick('timeline')}>
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xl font-semibold text-white">Savings & Investment Timeline</h3>
+                        <MdOutlineTimeline className="text-green-500 text-xl" />
+                      </div>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart
+                            data={sapMigrationData.savingsTimeline}
+                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                          >
+                            <defs>
+                              <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#10B981" stopOpacity={0.1} />
+                              </linearGradient>
+                              <linearGradient id="colorMigration" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#065F46" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#065F46" stopOpacity={0.1} />
+                              </linearGradient>
+                            </defs>
+                            <XAxis dataKey="name" tick={{ fill: '#9CA3AF' }} />
+                            <YAxis tick={{ fill: '#9CA3AF' }} />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" />
+                            <Tooltip
+                              formatter={(value) => [`$${value.toLocaleString()}`, '']}
+                              contentStyle={{ backgroundColor: 'rgba(26, 32, 44, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(72, 187, 120, 0.3)' }}
+                            />
+                            <Area type="monotone" dataKey="savings" stroke="#10B981" fillOpacity={1} fill="url(#colorSavings)" />
+                            <Area type="monotone" dataKey="migration" stroke="#065F46" fillOpacity={1} fill="url(#colorMigration)" />
+                            <Legend />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+              
+              {selectedTab === 'costs' && (
+                <>
+                  {/* Cost Analysis Tab Content */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Detailed Cost Comparison Card */}
+                    <div className={`${cardBaseClass} p-6 ${cardHoverClass}`}>
+                      <h3 className="text-xl font-semibold text-white mb-4">Detailed Cost Comparison</h3>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="col-span-3 bg-white/5 p-4 rounded-lg">
+                            <p className="text-white font-medium">Implementation Costs</p>
+                            <div className="flex justify-between mt-2">
+                              <span className="text-gray-400">One-time</span>
+                              <span className="text-white">{sapMigrationData.implementationCost}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="col-span-3 md:col-span-1 bg-white/5 p-4 rounded-lg">
+                            <p className="text-gray-300 text-sm">Training</p>
+                            <p className="text-white mt-1">{sapMigrationData.trainingCost}</p>
+                          </div>
+                          
+                          <div className="col-span-3 md:col-span-1 bg-white/5 p-4 rounded-lg">
+                            <p className="text-gray-300 text-sm">Consulting</p>
+                            <p className="text-white mt-1">{sapMigrationData.consultingFees}</p>
+                          </div>
+                          
+                          <div className="col-span-3 md:col-span-1 bg-white/5 p-4 rounded-lg">
+                            <p className="text-gray-300 text-sm">Hardware</p>
+                            <p className="text-white mt-1">{sapMigrationData.hardwareUpgrades}</p>
+                          </div>
+                          
+                          <div className="col-span-3 bg-white/5 p-4 rounded-lg">
+                            <p className="text-white font-medium">Annual Costs</p>
+                            <div className="flex justify-between mt-2">
+                              <span className="text-gray-400">Current</span>
+                              <span className="text-red-500">{sapMigrationData.costWithoutS4HANA}</span>
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-gray-400">With S/4HANA</span>
+                              <span className="text-green-500">{sapMigrationData.costWithS4HANA}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="col-span-3 bg-white/5 p-4 rounded-lg">
+                            <p className="text-white font-medium">Five-Year TCO</p>
+                            <div className="flex justify-between mt-2">
+                              <span className="text-gray-400">Total Cost of Ownership</span>
+                              <span className="text-white">{sapMigrationData.fiveYearTCO}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Cost Reduction Visualization */}
+                    <div className={`${cardBaseClass} p-6 ${cardHoverClass}`}>
+                      <h3 className="text-xl font-semibold text-white mb-4">Departmental Cost Reduction</h3>
+                      <div className="h-80">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart
+                            data={sapMigrationData.costBreakdown}
+                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                            <XAxis dataKey="name" tick={{ fill: '#9CA3AF' }} />
+                            <YAxis tick={{ fill: '#9CA3AF' }} />
+                            <Tooltip
+                              formatter={(value) => [`$${value.toLocaleString()}`, '']}
+                              contentStyle={{ backgroundColor: 'rgba(26, 32, 44, 0.9)', borderRadius: '0.5rem', border: '1px solid rgba(72, 187, 120, 0.3)' }}
+                            />
+                            <Legend />
+                            <Bar dataKey="currentCost" name="Current Cost" fill="#F87171" />
+                            <Bar dataKey="cloudCost" name="Cloud Cost" fill="#10B981" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            
+            {/* Bottom Call to Action */}
             <div className="flex justify-center mt-8">
               <button 
-                onClick={handleContinueToMigrationInsights}
-                className="bg-gradient-to-br from-green-500 via-green-600 to-green-700 text-white py-4 px-8 rounded-xl font-medium transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 inline-flex items-center gap-3 group relative overflow-hidden"
+                onClick={() => navigate('/migration-insights')}
+                className="bg-gradient-to-br from-green-500 via-green-600 to-green-600 text-white py-4 px-8 rounded-xl font-medium flex items-center space-x-2 transform transition hover:scale-105"
               >
-                {/* Decorative patterns */}
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute inset-0" 
-                    style={{
-                      backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 20px, #ffffff 20px, #ffffff 22px)',
-                      backgroundSize: '30px 30px'
-                    }}
-                  ></div>
-                </div>
-                
-                {/* Gradient orbs */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/10 to-transparent rounded-bl-full"></div>
-                
                 <span className="relative z-10 text-lg">Continue to Migration Insights</span>
-                <MdArrowForward className="relative z-10 text-2xl group-hover:translate-x-1 transition-transform duration-300" />
+                <MdArrowForward className="relative z-10 text-2xl" />
               </button>
             </div>
           </>

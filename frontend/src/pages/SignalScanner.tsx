@@ -27,65 +27,24 @@ interface Company {
 // Add more companies from the MarketDatabase to enrichedEnterprises
 const enrichedEnterprises = [
   {
-    id: 1,
-    name: "Michael Reynolds",
-    jobTitle: "SAP Administrator",
-    company: "Apple",
-    emails: true,
-    phoneNumbers: true,
-    location: "Atlanta, GA",
-    enriched: true,
-    verified: true,
-    email: "m.reynolds@example.com",
-    phone: "(404) 555-1234",
-    systemType: "ERP System",
-    userCount: 1250,
-    implementationYear: 2018,
-    serverCount: 85,
-    annualTransactions: 2750000,
-    licenseRate: 0.128, // $ per transaction
-    peakLoad: 750, // transactions per second
-    industryAvg: {
-      transactionVolume: 22, // per user
-      sapAdoption: 15, // percentage
-      costPerUser: 235, // $
-      implementationTime: 8.2, // months
-    },
-    sapMetrics: {
-      maxThroughput: 850, // transactions per second
-      annualProcessing: 1275000, // transactions
-      systemCoverage: 46.3, // percentage
-      implementationCost: 1997500, // $
-      totalCost: 1398250, // $ after optimizations
-      savings: 599250, // $
-      costWithoutOptimization: 352000, // $ per year
-      costWithOptimization: 189060, // $ per year
-      annualSavings: 162940, // $ per year
-      monthlySavings: 13578, // $ per month
-      optimizationTime: 8.6, // months
-      roi: 11.6, // percentage
-      performanceImprovement: 90.3, // percentage
-    }
-  },
-  {
     id: 2,
-    name: "Amy Huke",
-    jobTitle: "SAP Administrator",
-    company: "Honeywell",
+    name: "Kyle Flynn-Kasaba",
+    jobTitle: "Head of IT Infrastructure and Operations",
+    company: "Wood",
     emails: true,
     phoneNumbers: true,
-    location: "Kansas City, MO",
+    location: "Houston, Texas",
     enriched: true,
     verified: true,
-    email: "a.huke@example.com",
-    phone: "(816) 555-6789",
-    systemType: "Manufacturing System",
-    userCount: 3100,
+    email: "k.flynn-kasaba@example.com",
+    phone: "(713) 555-6789",
+    systemType: "ERP System",
+    userCount: 36000,
     implementationYear: 2019,
-    serverCount: 275,
-    annualTransactions: 8350000,
+    serverCount: 2300,
+    annualTransactions: 34250000,
     licenseRate: 0.095, // $ per transaction
-    peakLoad: 1850, // transactions per second
+    peakLoad: 8450, // transactions per second
     industryAvg: {
       transactionVolume: 28, // per user
       sapAdoption: 8, // percentage
@@ -93,33 +52,36 @@ const enrichedEnterprises = [
       implementationTime: 9.8, // months
     },
     sapMetrics: {
-      maxThroughput: 2750, // transactions per second
-      annualProcessing: 3685000, // transactions
+      maxThroughput: 9850, // transactions per second
+      annualProcessing: 39750000, // transactions
       systemCoverage: 44.1, // percentage
-      implementationCost: 5912500, // $
-      totalCost: 4138750, // $ after optimizations
-      savings: 1773750, // $
-      costWithoutOptimization: 793250, // $ per year
-      costWithOptimization: 442975, // $ per year
-      annualSavings: 350275, // $ per year
-      monthlySavings: 29189, // $ per month
+      implementationCost: 7740000, // $
+      totalCost: 5418000, // $ after optimizations
+      savings: 2322000, // $
+      costWithoutOptimization: 3253750, // $ per year
+      costWithOptimization: 1771790, // $ per year
+      annualSavings: 1481960, // $ per year
+      monthlySavings: 123497, // $ per month
       optimizationTime: 11.8, // months
       roi: 8.5, // percentage
       performanceImprovement: 261, // percentage
-    }
+    },
+    industry: "Professional Training & Coaching"
   },
   {
     id: 3,
-    name: "Karl Wisniewski",
-    jobTitle: "Head of IT",
-    company: "Sandvik",
+    name: "Wells Shammout",
+    jobTitle: "Vice President, Head of Information Technology",
+    company: "IPS",
     emails: true,
     phoneNumbers: true,
-    location: "Roedermark, Germany",
+    location: "Rutherford, New Jersey",
     enriched: true,
     verified: true,
-    systemType: "Manufacturing System",
-    userCount: 4000,
+    email: "w.shammout@example.com",
+    phone: "(201) 555-9012",
+    systemType: "ERP System",
+    userCount: 3400,
     implementationYear: 2016,
     serverCount: 320,
     annualTransactions: 9250000,
@@ -145,20 +107,23 @@ const enrichedEnterprises = [
       optimizationTime: 6.1, // months
       roi: 19.6, // percentage
       performanceImprovement: 75.8, // percentage
-    }
+    },
+    industry: "Information Services"
   },
   {
     id: 4,
-    name: "Grant Hodge",
-    jobTitle: "Head of IT",
-    company: "Viridor",
+    name: "Sanjeev Sharma",
+    jobTitle: "Head of Information Technology - Info",
+    company: "IPG Photonics",
     emails: true,
     phoneNumbers: true,
-    location: "Taunton, United Kingdom",
+    location: "Framingham, Massachusetts",
     enriched: true,
     verified: true,
-    systemType: "ERP System",
-    userCount: 1200,
+    email: "s.sharma@example.com",
+    phone: "(508) 555-3456",
+    systemType: "Manufacturing System",
+    userCount: 1600,
     implementationYear: 2014,
     serverCount: 95,
     annualTransactions: 3250000,
@@ -184,25 +149,28 @@ const enrichedEnterprises = [
       optimizationTime: 8.8, // months
       roi: 11.1, // percentage
       performanceImprovement: 48.6, // percentage
-    }
+    },
+    industry: "Electrical/Electronic Manufacturing"
   },
   {
     id: 5,
-    name: "Franz Mittermayr",
-    jobTitle: "Head of IT",
-    company: "Elseco",
+    name: "Leah Sullivan",
+    jobTitle: "Head of IT application Engineering",
+    company: "Henkel",
     emails: true,
     phoneNumbers: true,
-    location: "Dubai, United Arab Emirates",
+    location: "Watchung, New Jersey",
     enriched: true,
     verified: true,
-    systemType: "Finance System",
-    userCount: 82,
+    email: "l.sullivan@example.com",
+    phone: "(908) 555-7890",
+    systemType: "ERP System",
+    userCount: 48000,
     implementationYear: 2020,
-    serverCount: 15,
-    annualTransactions: 1850000,
+    serverCount: 1820,
+    annualTransactions: 25650000,
     licenseRate: 0.102, // $ per transaction
-    peakLoad: 380, // transactions per second
+    peakLoad: 4250, // transactions per second
     industryAvg: {
       transactionVolume: 32, // per user
       sapAdoption: 9, // percentage
@@ -210,72 +178,36 @@ const enrichedEnterprises = [
       implementationTime: 6.3, // months
     },
     sapMetrics: {
-      maxThroughput: 620, // transactions per second
-      annualProcessing: 1250000, // transactions
+      maxThroughput: 5620, // transactions per second
+      annualProcessing: 29750000, // transactions
       systemCoverage: 67.5, // percentage
-      implementationCost: 1705000, // $
-      totalCost: 1193500, // $ after optimizations
-      savings: 511500, // $
-      costWithoutOptimization: 188700, // $ per year
-      costWithOptimization: 61219, // $ per year
-      annualSavings: 127481, // $ per year
-      monthlySavings: 10623, // $ per month
+      implementationCost: 15275000, // $
+      totalCost: 10692500, // $ after optimizations
+      savings: 4582500, // $
+      costWithoutOptimization: 2616300, // $ per year
+      costWithOptimization: 1308150, // $ per year
+      annualSavings: 1308150, // $ per year
+      monthlySavings: 109013, // $ per month
       optimizationTime: 9.4, // months
       roi: 10.7, // percentage
       performanceImprovement: 63.2, // percentage
-    }
+    },
+    industry: "Mechanical Or Industrial Engineering"
   },
   {
     id: 6,
-    name: "Raed Tekeh",
-    jobTitle: "Head of IT",
-    company: "National Bank of Kuwait",
+    name: "Benjamin Partout",
+    jobTitle: "Head of Information Technology",
+    company: "Strive",
     emails: true,
     phoneNumbers: true,
-    location: "Dubai, United Arab Emirates",
+    location: "Denver, Colorado",
     enriched: true,
     verified: true,
-    systemType: "Finance System",
-    userCount: 7400,
-    implementationYear: 2015,
-    serverCount: 520,
-    annualTransactions: 15950000,
-    licenseRate: 0.115, // $ per transaction
-    peakLoad: 3400, // transactions per second
-    industryAvg: {
-      transactionVolume: 21, // per user
-      sapAdoption: 14, // percentage
-      costPerUser: 229, // $
-      implementationTime: 12.7, // months
-    },
-    sapMetrics: {
-      maxThroughput: 4100, // transactions per second
-      annualProcessing: 19570000, // transactions
-      systemCoverage: 122.7, // percentage
-      implementationCost: 6763300, // $
-      totalCost: 4734310, // $ after optimizations
-      savings: 2028990, // $
-      costWithoutOptimization: 1834250, // $ per year
-      costWithOptimization: 596817, // $ per year
-      annualSavings: 1237433, // $ per year
-      monthlySavings: 103120, // $ per month
-      optimizationTime: 3.8, // months
-      roi: 26.1, // percentage
-      performanceImprovement: 67.5, // percentage
-    }
-  },
-  {
-    id: 7,
-    name: "Patrick Antic",
-    jobTitle: "Head of IT",
-    company: "Bertrams Chemical Plant",
-    emails: true,
-    phoneNumbers: true,
-    location: "Basel, Switzerland",
-    enriched: true,
-    verified: true,
-    systemType: "Manufacturing System",
-    userCount: 80,
+    email: "b.partout@example.com",
+    phone: "(720) 555-0123",
+    systemType: "ERP System",
+    userCount: 160,
     implementationYear: 2019,
     serverCount: 22,
     annualTransactions: 950000,
@@ -301,25 +233,112 @@ const enrichedEnterprises = [
       optimizationTime: 8.9, // months
       roi: 11.2, // percentage
       performanceImprovement: 67.0, // percentage
-    }
+    },
+    industry: "Chemicals - Research"
+  },
+  {
+    id: 7,
+    name: "Henry Ifiuscati",
+    jobTitle: "Head of Information Technology",
+    company: "Liberty Mutual Insurance",
+    emails: true,
+    phoneNumbers: true,
+    location: "Boston, Massachusetts",
+    enriched: true,
+    verified: true,
+    email: "h.ifiuscati@example.com",
+    phone: "(617) 555-4567",
+    systemType: "Finance System",
+    userCount: 45000,
+    implementationYear: 2015,
+    serverCount: 3580,
+    annualTransactions: 41250000,
+    licenseRate: 0.115, // $ per transaction
+    peakLoad: 9800, // transactions per second
+    industryAvg: {
+      transactionVolume: 21, // per user
+      sapAdoption: 14, // percentage
+      costPerUser: 229, // $
+      implementationTime: 12.7, // months
+    },
+    sapMetrics: {
+      maxThroughput: 11300, // transactions per second
+      annualProcessing: 57250000, // transactions
+      systemCoverage: 122.7, // percentage
+      implementationCost: 10325000, // $
+      totalCost: 7227500, // $ after optimizations
+      savings: 3097500, // $
+      costWithoutOptimization: 4743750, // $ per year
+      costWithOptimization: 1895500, // $ per year
+      annualSavings: 2848250, // $ per year
+      monthlySavings: 237354, // $ per month
+      optimizationTime: 3.8, // months
+      roi: 26.1, // percentage
+      performanceImprovement: 67.5, // percentage
+    },
+    industry: "Insurance - Financial Services"
   },
   {
     id: 8,
-    name: "Sven Faber",
-    jobTitle: "Head of IT",
-    company: "GROHE",
+    name: "Brandon Thielen",
+    jobTitle: "Head of Information Technology",
+    company: "Fives Cinetic Corp.",
     emails: true,
     phoneNumbers: true,
-    location: "Duesseldorf, Germany",
+    location: "Farmington, Michigan",
     enriched: true,
     verified: true,
+    email: "b.thielen@example.com",
+    phone: "(248) 555-8901",
+    systemType: "Manufacturing System",
+    userCount: 2600,
+    implementationYear: 2017,
+    serverCount: 270,
+    annualTransactions: 6500000,
+    licenseRate: 0.121, // $ per transaction
+    peakLoad: 1120, // transactions per second
+    industryAvg: {
+      transactionVolume: 18, // per user
+      sapAdoption: 13, // percentage
+      costPerUser: 245, // $
+      implementationTime: 10.1, // months
+    },
+    sapMetrics: {
+      maxThroughput: 1850, // transactions per second
+      annualProcessing: 8740000, // transactions
+      systemCoverage: 134.5, // percentage
+      implementationCost: 3900000, // $
+      totalCost: 2730000, // $ after optimizations
+      savings: 1170000, // $
+      costWithoutOptimization: 786500, // $ per year
+      costWithOptimization: 327590, // $ per year
+      annualSavings: 458910, // $ per year
+      monthlySavings: 38243, // $ per month
+      optimizationTime: 7.1, // months
+      roi: 14.2, // percentage
+      performanceImprovement: 65.1, // percentage
+    },
+    industry: "Machinery"
+  },
+  {
+    id: 9,
+    name: "Tayo Oshoei",
+    jobTitle: "Head of Information Technology",
+    company: "Holcim",
+    emails: true,
+    phoneNumbers: true,
+    location: "Washington, District of Columbia",
+    enriched: true,
+    verified: true,
+    email: "t.oshoei@example.com",
+    phone: "(202) 555-2345",
     systemType: "ERP System",
-    userCount: 9000,
+    userCount: 10100,
     implementationYear: 2016,
-    serverCount: 650,
-    annualTransactions: 22500000,
-    licenseRate: 0.126, // $ per transaction
-    peakLoad: 4700, // transactions per second
+    serverCount: 825,
+    annualTransactions: 19750000,
+    licenseRate: 0.118, // $ per transaction
+    peakLoad: 3750, // transactions per second
     industryAvg: {
       transactionVolume: 24, // per user
       sapAdoption: 16, // percentage
@@ -327,98 +346,63 @@ const enrichedEnterprises = [
       implementationTime: 13.5, // months
     },
     sapMetrics: {
-      maxThroughput: 5600, // transactions per second
-      annualProcessing: 27920000, // transactions
-      systemCoverage: 124.1, // percentage
-      implementationCost: 8687500, // $
-      totalCost: 6081250, // $ after optimizations
-      savings: 2606250, // $
-      costWithoutOptimization: 2835000, // $ per year
-      costWithOptimization: 1021800, // $ per year
-      annualSavings: 1813200, // $ per year
-      monthlySavings: 151100, // $ per month
-      optimizationTime: 3.4, // months
-      roi: 29.8, // percentage
-      performanceImprovement: 19.1, // percentage
-    }
-  },
-  {
-    id: 9,
-    name: "Tung Nguyen",
-    jobTitle: "Head of IT",
-    company: "FPT Software",
-    emails: true,
-    phoneNumbers: true,
-    location: "Vietnam",
-    enriched: true,
-    verified: true,
-    systemType: "Logistics System",
-    userCount: 48000,
-    implementationYear: 2017,
-    serverCount: 3800,
-    annualTransactions: 127800000,
-    licenseRate: 0.091, // $ per transaction
-    peakLoad: 28400, // transactions per second
-    industryAvg: {
-      transactionVolume: 26, // per user
-      sapAdoption: 11, // percentage
-      costPerUser: 195, // $
-      implementationTime: 17.8, // months
+      maxThroughput: 4950, // transactions per second
+      annualProcessing: 26780000, // transactions
+      systemCoverage: 126.1, // percentage
+      implementationCost: 6060000, // $
+      totalCost: 4242000, // $ after optimizations
+      savings: 1818000, // $
+      costWithoutOptimization: 2330500, // $ per year
+      costWithOptimization: 889130, // $ per year
+      annualSavings: 1441370, // $ per year
+      monthlySavings: 120114, // $ per month
+      optimizationTime: 5.2, // months
+      roi: 19.3, // percentage
+      performanceImprovement: 32.0, // percentage
     },
-    sapMetrics: {
-      maxThroughput: 32600, // transactions per second
-      annualProcessing: 163270000, // transactions
-      systemCoverage: 127.8, // percentage
-      implementationCost: 42725000, // $
-      totalCost: 29907500, // $ after optimizations
-      savings: 12817500, // $
-      costWithoutOptimization: 11629800, // $ per year
-      costWithOptimization: 3839834, // $ per year
-      annualSavings: 7789966, // $ per year
-      monthlySavings: 649164, // $ per month
-      optimizationTime: 3.8, // months
-      roi: 26.0, // percentage
-      performanceImprovement: 14.8, // percentage
-    }
+    industry: "Building Materials"
   },
   {
     id: 10,
-    name: "Danny Cater",
-    jobTitle: "Head of IT",
-    company: "Square One Resources",
+    name: "Rahul Chaudhary",
+    jobTitle: "Head of Information Technology",
+    company: "TEK Inspirations LLC",
     emails: true,
     phoneNumbers: true,
-    location: "London, United Kingdom",
+    location: "Frisco, Texas",
     enriched: true,
     verified: true,
-    systemType: "HR System",
-    userCount: 75,
-    implementationYear: 2021,
-    serverCount: 12,
-    annualTransactions: 680000,
+    email: "r.chaudhary@example.com",
+    phone: "(469) 555-6789",
+    systemType: "ERP System",
+    userCount: 440,
+    implementationYear: 2020,
+    serverCount: 45,
+    annualTransactions: 1850000,
     licenseRate: 0.135, // $ per transaction
-    peakLoad: 190, // transactions per second
+    peakLoad: 380, // transactions per second
     industryAvg: {
-      transactionVolume: 9, // per user
-      sapAdoption: 7, // percentage
+      transactionVolume: 17, // per user
+      sapAdoption: 12, // percentage
       costPerUser: 198, // $
-      implementationTime: 4.5, // months
+      implementationTime: 5.8, // months
     },
     sapMetrics: {
-      maxThroughput: 225, // transactions per second
-      annualProcessing: 810000, // transactions
-      systemCoverage: 119.1, // percentage
-      implementationCost: 580000, // $
-      totalCost: 406000, // $ after optimizations
-      savings: 174000, // $
-      costWithoutOptimization: 91800, // $ per year
-      costWithOptimization: 41310, // $ per year
-      annualSavings: 50490, // $ per year
-      monthlySavings: 4208, // $ per month
-      optimizationTime: 8.0, // months
-      roi: 12.4, // percentage
-      performanceImprovement: 55.0, // percentage
-    }
+      maxThroughput: 540, // transactions per second
+      annualProcessing: 2240000, // transactions
+      systemCoverage: 121.1, // percentage
+      implementationCost: 1320000, // $
+      totalCost: 924000, // $ after optimizations
+      savings: 396000, // $
+      costWithoutOptimization: 249750, // $ per year
+      costWithOptimization: 104895, // $ per year
+      annualSavings: 144855, // $ per year
+      monthlySavings: 12071, // $ per month
+      optimizationTime: 6.8, // months
+      roi: 14.7, // percentage
+      performanceImprovement: 42.1, // percentage
+    },
+    industry: "Information Technology & Services"
   }
 ];
 
@@ -659,7 +643,7 @@ const SignalScanner = () => {
   
   // Handle view button click to show modal first, then navigate
   const handleViewEnterprise = (enterpriseId: number) => {
-    const enterpriseToView = enrichedEnterprises.find(f => f.id === enterpriseId);
+    const enterpriseToView = selectedEnterprises.find(f => f.id === enterpriseId);
     setSelectedEnterpriseForModal(enterpriseToView);
     const modalElement = document.getElementById('visualization-modal');
     if (modalElement && 'showModal' in modalElement) {
@@ -716,10 +700,10 @@ const SignalScanner = () => {
   const cardBaseClass = "backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-green-500/15 group relative overflow-hidden";
 
   return (
-    <div className="w-full px-1 py-2 bg-[#020305] min-h-screen min-w-full relative">
+    <div className="w-full px-32 py-2 bg-[#020305] min-h-screen min-w-full relative">
       {/* Background gradient orbs */}
-      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-green-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-green-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-[#10ba82]/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-[#10ba82]/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
 
       {/* Loading Animation Modal */}
       {showLoadingAnimation && (
@@ -727,9 +711,9 @@ const SignalScanner = () => {
           <div className="relative bg-[#1e222b]/90 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 shadow-xl max-w-4xl w-full mx-4 animate-fadeIn">
             {/* Animated gradient background for the modal */}
             <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-green-500/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-500/30 to-transparent rounded-full blur-3xl animate-pulse delay-700"></div>
-              <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-2xl animate-pulse delay-300"></div>
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#10ba82]/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-[#10ba82]/30 to-transparent rounded-full blur-3xl animate-pulse delay-700"></div>
+              <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-gradient-to-br from-[#10ba82]/20 to-transparent rounded-full blur-2xl animate-pulse delay-300"></div>
             </div>
             
             {/* Floating data points and connection lines - enhanced visual effect */}
@@ -737,7 +721,7 @@ const SignalScanner = () => {
               {Array.from({ length: 15 }).map((_, i) => (
                 <div 
                   key={i}
-                  className="absolute rounded-full bg-green-500/30 border border-green-500/50"
+                  className="absolute rounded-full bg-[#10ba82]/30 border border-[#10ba82]/50"
                   style={{
                     width: `${6 + Math.random() * 12}px`,
                     height: `${6 + Math.random() * 12}px`,
@@ -758,7 +742,7 @@ const SignalScanner = () => {
                     y1={`${Math.random() * 100}%`}
                     x2={`${Math.random() * 100}%`}
                     y2={`${Math.random() * 100}%`}
-                    stroke="#10b981"
+                    stroke="#10ba82"
                     strokeWidth="1"
                     style={{ 
                       animation: `pulse ${2 + Math.random() * 4}s ease-in-out infinite`,
@@ -780,7 +764,7 @@ const SignalScanner = () => {
             
             <div className="p-8 relative z-10">
               <div className="flex items-center gap-3 mb-2">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 p-2 rounded-lg shadow">
+                <div className="bg-gradient-to-br from-[#10ba82] to-[#0c9a6c] p-2 rounded-lg shadow">
                   <AiOutlineRobot className="text-xl text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-white">AI System Analysis</h3>
@@ -790,13 +774,13 @@ const SignalScanner = () => {
               {/* Real-time activity log */}
               <div className="mb-6 bg-black/20 rounded-xl p-4 border border-white/10 h-64 overflow-y-auto font-mono text-sm">
                 <div className="space-y-2">
-                  <div className="text-green-400 animate-fadeIn">
+                  <div className="text-[#10ba82] animate-fadeIn">
                     <span className="text-white/50">[00:00.12]</span> Initializing AI data extraction modules...
                   </div>
-                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '300ms' }}>
+                  <div className="text-[#10ba82] animate-fadeIn" style={{ animationDelay: '300ms' }}>
                     <span className="text-white/50">[00:00.35]</span> Establishing secure connection to SAP databases <BsShieldLock className="inline" />
                   </div>
-                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '800ms' }}>
+                  <div className="text-[#10ba82] animate-fadeIn" style={{ animationDelay: '800ms' }}>
                     <span className="text-white/50">[00:01.08]</span> Scraping enterprise profile data from <TbWorldSearch className="inline" /> market intelligence APIs
                   </div>
                   <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '1200ms' }}>
@@ -826,7 +810,7 @@ const SignalScanner = () => {
                   <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '4400ms' }}>
                     <span className="text-white/50">[00:04.75]</span> <BsCloudDownload className="inline" /> Finalizing data compilation and enrichment
                   </div>
-                  <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '4800ms' }}>
+                  <div className="text-[#10ba82] animate-fadeIn" style={{ animationDelay: '4800ms' }}>
                     <span className="text-white/50">[00:04.98]</span> Analysis complete! Found <span className="text-white font-bold">{selectedEnterprises ? selectedEnterprises.length : 0}</span> optimization opportunities
                   </div>
                 </div>
@@ -837,20 +821,20 @@ const SignalScanner = () => {
                 <div className="bg-black/30 rounded-xl p-3 border border-white/5">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs text-white/70">API Connections</span>
-                    <span className="text-xs text-green-400">Active</span>
+                    <span className="text-xs text-[#10ba82]">Active</span>
                   </div>
                   <div className="space-y-2">
                     {Array.from({ length: 4 }).map((_, i) => (
                       <div key={i} className="relative">
                         <div className="flex justify-between text-xs text-white/50 mb-1">
                           <span>{['SAP API', 'Financial Data', 'Market Intel', 'System Metrics'][i]}</span>
-                          <span className="text-green-400">
+                          <span className="text-[#10ba82]">
                             {Math.floor(Math.random() * 1000)} req/s
                           </span>
                         </div>
                         <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full relative"
+                            className="h-full bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] rounded-full relative"
                             style={{ width: `${60 + Math.random() * 40}%` }}
                           >
                             <div 
@@ -872,7 +856,7 @@ const SignalScanner = () => {
                 <div className="bg-black/30 rounded-xl p-3 border border-white/5">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs text-white/70">Data Processing</span>
-                    <span className="text-xs text-green-400">2.3TB</span>
+                    <span className="text-xs text-[#10ba82]">2.3TB</span>
                   </div>
                   
                   {/* Animated graph */}
@@ -898,8 +882,8 @@ const SignalScanner = () => {
                       />
                       <defs>
                         <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#10b981" />
-                          <stop offset="100%" stopColor="#047857" />
+                          <stop offset="0%" stopColor="#10ba82" />
+                          <stop offset="100%" stopColor="#0c9a6c" />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -915,7 +899,7 @@ const SignalScanner = () => {
                     <span>100%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-full"></div>
+                    <div className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] h-2 rounded-full w-full"></div>
                   </div>
                 </div>
                 
@@ -925,7 +909,7 @@ const SignalScanner = () => {
                     <span>100%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-full"></div>
+                    <div className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] h-2 rounded-full w-full"></div>
                   </div>
                 </div>
                 
@@ -935,13 +919,13 @@ const SignalScanner = () => {
                     <span>80%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-4/5 animate-pulse"></div>
+                    <div className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] h-2 rounded-full w-4/5 animate-pulse"></div>
                   </div>
                 </div>
               </div>
               
               <div className="flex justify-center items-center gap-3 text-white/70">
-                <div className="w-3 h-3 rounded-full bg-green-500 animate-ping"></div>
+                <div className="w-3 h-3 rounded-full bg-[#10ba82] animate-ping"></div>
                 <p className="text-sm">Preparing visualization components...</p>
               </div>
             </div>
@@ -954,7 +938,7 @@ const SignalScanner = () => {
           {/* Simple header without box */}
           <div className="py-4">
             <div className="flex items-center gap-3">
-              <MdTableChart className="text-2xl text-green-500" />
+              <MdTableChart className="text-2xl text-[#10ba82]" />
               <h1 className="text-xl font-bold bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">Signal Scanner</h1>
             </div>
           </div>
@@ -977,7 +961,7 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-green-500/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
@@ -985,7 +969,7 @@ const SignalScanner = () => {
                         <p className="text-sm font-medium text-white/90 mb-1">Total Systems</p>
                         <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">2.3K</h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-green-500 via-green-600 to-green-700 shadow-lg shadow-green-500/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
                         <FaDatabase className="text-white text-xl" />
                       </div>
                     </div>
@@ -1001,7 +985,7 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-blue-500/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
@@ -1011,7 +995,7 @@ const SignalScanner = () => {
                           {Math.round(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.userCount, 0) / selectedEnterprises.length).toLocaleString()}
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 shadow-lg shadow-blue-500/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
                         <MdFactory className="text-white text-xl" />
                       </div>
                     </div>
@@ -1027,7 +1011,7 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-green-500/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
@@ -1037,7 +1021,7 @@ const SignalScanner = () => {
                           {(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.sapMetrics.roi, 0) / selectedEnterprises.length).toFixed(1)}%
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-green-500 via-green-600 to-green-700 shadow-lg shadow-green-500/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
                         <MdAttachMoney className="text-white text-xl" />
                       </div>
                     </div>
@@ -1053,7 +1037,7 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-purple-500/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
@@ -1063,7 +1047,7 @@ const SignalScanner = () => {
                           {(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.annualTransactions, 0) / 1000000).toFixed(1)}M
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 shadow-lg shadow-purple-500/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
                         <MdSpeed className="text-white text-xl" />
                       </div>
                     </div>
@@ -1079,7 +1063,7 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-green-500/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
@@ -1089,7 +1073,7 @@ const SignalScanner = () => {
                           ${(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.sapMetrics.annualSavings, 0) / 1000).toFixed(0)}K/yr
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-green-500 via-green-600 to-green-700 shadow-lg shadow-green-500/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
                         <MdAnalytics className="text-white text-xl" />
                       </div>
                     </div>
@@ -1118,7 +1102,7 @@ const SignalScanner = () => {
                       <button 
                         className={`${
                           showEnriched 
-                            ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/20' 
+                            ? 'bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white shadow-lg shadow-green-500/20' 
                             : 'bg-white/10 text-white/80 hover:bg-white/20'
                         } backdrop-blur-md rounded-full px-4 py-2 transition-all duration-500 text-sm font-medium border border-white/10 flex items-center gap-2`}
                         onClick={handleToggleEnriched}
@@ -1195,20 +1179,20 @@ const SignalScanner = () => {
                                 <td className="px-2 py-2 text-xs">
                                   <div className="flex items-center">
                                     <div className="w-8 bg-gray-200 rounded-full h-1.5 mr-1">
-                                      <div className="bg-green-500 h-1.5 rounded-full" style={{ width: `${Math.min(100, enterprise.sapMetrics.systemCoverage)}%` }}></div>
+                                      <div className="bg-[#10ba82] h-1.5 rounded-full" style={{ width: `${Math.min(100, enterprise.sapMetrics.systemCoverage)}%` }}></div>
                                     </div>
                                     <span className="text-white">{enterprise.sapMetrics.systemCoverage.toFixed(0)}%</span>
                                   </div>
                                 </td>
                                 <td className="px-2 py-2 text-white text-xs">${(enterprise.sapMetrics.costWithoutOptimization/1000).toFixed(0)}K</td>
                                 <td className="px-2 py-2 text-white text-xs">${(enterprise.sapMetrics.costWithOptimization/1000).toFixed(0)}K</td>
-                                <td className="px-2 py-2 text-green-400 text-xs">${(enterprise.sapMetrics.annualSavings/1000).toFixed(0)}K</td>
+                                <td className="px-2 py-2 text-[#10ba82] text-xs">${(enterprise.sapMetrics.annualSavings/1000).toFixed(0)}K</td>
                                 <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.roi.toFixed(1)}%</td>
                                 <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.optimizationTime.toFixed(1)} mo</td>
                                 <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.performanceImprovement}%</td>
                                 <td className="px-2 py-2 text-xs">
                                   <button 
-                                    className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg px-2 py-1 text-xs font-medium hover:from-green-600 hover:to-green-700 transition-all"
+                                    className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white rounded-lg px-2 py-1 text-xs font-medium hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all"
                                     onClick={() => handleViewEnterprise(enterprise.id)}
                                   >
                                     View
@@ -1237,7 +1221,7 @@ const SignalScanner = () => {
                 </div>
                 <div className="flex gap-1">
                   <button className="bg-white/10 text-white/70 px-3 py-1 rounded-md hover:bg-white/20 transition-all">Previous</button>
-                  <button className="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-md hover:from-green-600 hover:to-green-700 transition-all">1</button>
+                  <button className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white px-3 py-1 rounded-md hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all">1</button>
                   <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">2</button>
                   <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">3</button>
                   <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">...</button>
@@ -1258,7 +1242,7 @@ const SignalScanner = () => {
 
                 <button
                   onClick={handleContinueToSystemAnalysis}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white transition-colors px-6 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-2"
+                  className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] hover:from-[#0c9a6c] hover:to-[#0a8a5c] text-white transition-colors px-6 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-2"
                 >
                   Continue to System Analysis
                   <MdArrowForward size={20} />
@@ -1271,7 +1255,7 @@ const SignalScanner = () => {
 
       {/* Visualization Modal */}
       <dialog id="visualization-modal" className="modal modal-bottom sm:modal-middle bg-transparent">
-        <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/80 to-[rgba(40,41,43,0.7)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 p-6 max-w-2xl mx-auto">
+        <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/80 to-[rgba(40,41,43,0.7)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#10ba82]/15 p-6 max-w-2xl mx-auto">
           <div className="flex justify-between items-start mb-4">
             <h3 className="text-xl font-bold text-white">SAP System Analysis</h3>
             <button 
@@ -1291,7 +1275,7 @@ const SignalScanner = () => {
                     <p className="text-white/70 text-sm mb-1">{selectedEnterpriseForModal.company}</p>
                     <p className="text-white/70 text-sm mb-3">
                       <span className="inline-flex items-center gap-1">
-                        <MdLocationOn className="text-green-500" size={14} />
+                        <MdLocationOn className="text-[#10ba82]" size={14} />
                         {selectedEnterpriseForModal.location}
                       </span>
                     </p>
@@ -1319,38 +1303,38 @@ const SignalScanner = () => {
                 
                 <div className="flex-1">
                   <div className="bg-white/5 p-4 rounded-xl h-full flex flex-col">
-                    <h4 className="text-lg font-medium text-white mb-2">Available Visualizations</h4>
+                    <h4 className="text-lg font-medium text-white mb-2">Available Data Visualizations</h4>
                     <ul className="space-y-2 text-white/70 text-sm flex-1">
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-green-500">•</div>
-                        <span>Transaction Performance: Visualize how workload is processed across different system components</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
+                        <span>Transaction Performance Analysis: See how SAP processes your workload across different modules and components</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-green-500">•</div>
-                        <span>SAP ROI Analysis: Interactive graph showing cost savings over time</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
+                        <span>ROI Calculation Graph: Interactive visualization showing potential cost savings over time</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-green-500">•</div>
-                        <span>System Efficiency Metrics: Performance impact visualization</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
+                        <span>System Efficiency Dashboard: Compare current vs. optimized performance metrics</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-green-500">•</div>
-                        <span>Implementation Cost Breakdown: Detailed cost analysis</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
+                        <span>Cost Breakdown Charts: See where your SAP budget is going and how to optimize it</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-6 bg-gradient-to-r from-green-500/20 to-green-600/20 p-4 rounded-xl">
+              <div className="mt-6 bg-gradient-to-r from-[#10ba82]/20 to-[#0c9a6c]/20 p-4 rounded-xl">
                 <div className="flex items-start gap-3">
-                  <div className="text-green-500 mt-1">
+                  <div className="text-[#10ba82] mt-1">
                     <MdInfoOutline size={24} />
                   </div>
                   <div>
-                    <p className="text-white font-medium">Interactive Visualization Experience</p>
+                    <p className="text-white font-medium">See Behind the Scenes Data for {selectedEnterpriseForModal.name}</p>
                     <p className="text-white/70 text-sm mt-1">
-                      Continue to the System Analysis page to interact with detailed visualizations and perform custom analyses.
+                      Go deeper into how we collected and analyzed performance metrics specifically for {selectedEnterpriseForModal.company}. Our visualizations reveal the exact data sources, analysis methods, and optimization potential we've identified for this system.
                     </p>
                   </div>
                 </div>
@@ -1365,9 +1349,9 @@ const SignalScanner = () => {
                 </button>
                 <button 
                   onClick={goToSystemAnalysis}
-                  className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all flex items-center gap-2"
+                  className="px-6 py-2 bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white rounded-lg hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all flex items-center gap-2"
                 >
-                  <span>View Visualizations</span>
+                  <span>View Behind the Scenes Data</span>
                   <MdArrowForward />
                 </button>
               </div>

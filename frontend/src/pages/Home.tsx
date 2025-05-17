@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TopDealsBox from '../components/topDealsBox/TopDealsBox';
 import ChartBox from '../components/charts/ChartBox';
 import USMap from '../components/maps/USMap';
@@ -38,10 +38,14 @@ import {
   MdHomeWork,
   MdShowChart,
   MdEmail,
-  MdDashboard
+  MdDashboard,
+  MdClose,
+  MdInfoOutline,
+  MdCircle,
+  MdArrowUpward,
+  MdDateRange
 } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, PieChart, Pie, Cell, Legend, BarChart, Bar } from 'recharts';
 
 // Mock data for Imperum SAP dashboard
 const dashboardData = {
@@ -183,14 +187,45 @@ const campaignData = [
 
 // Add this email campaign data near the top of the file, after the existing mock data
 const emailCampaignData = [
-  { day: 'Mon', sent: 400, opened: 180, clicked: 80 },
-  { day: 'Tue', sent: 420, opened: 200, clicked: 90 },
-  { day: 'Wed', sent: 450, opened: 230, clicked: 120 },
-  { day: 'Thu', sent: 420, opened: 180, clicked: 85 },
-  { day: 'Fri', sent: 400, opened: 165, clicked: 75 },
-  { day: 'Sat', sent: 80, opened: 20, clicked: 10 },
-  { day: 'Sun', sent: 60, opened: 15, clicked: 5 },
+  { day: 'Mon', sent: 950, opened: 580, clicked: 320 },
+  { day: 'Tue', sent: 1040, opened: 620, clicked: 360 },
+  { day: 'Wed', sent: 1170, opened: 730, clicked: 420 },
+  { day: 'Thu', sent: 1080, opened: 640, clicked: 350 },
+  { day: 'Fri', sent: 950, opened: 540, clicked: 290 },
+  { day: 'Sat', sent: 380, opened: 180, clicked: 110 },
+  { day: 'Sun', sent: 320, opened: 150, clicked: 90 },
 ];
+
+// Add this monthly email campaign data after the existing emailCampaignData
+const monthlyEmailCampaignData = [
+  { month: 'Jan', sent: 4800, opened: 2160, clicked: 960 },
+  { month: 'Feb', sent: 5200, opened: 2470, clicked: 1120 },
+  { month: 'Mar', sent: 6280, opened: 3265, clicked: 1695 },
+  { month: 'Apr', sent: 5700, opened: 2850, clicked: 1425 },
+  { month: 'May', sent: 6100, opened: 3172, clicked: 1586 },
+  { month: 'Jun', sent: 6500, opened: 3380, clicked: 1755 },
+];
+
+// Add this overall email campaign data
+const overallEmailCampaignData = [
+  { quarter: 'Q1 2022', sent: 12000, opened: 5400, clicked: 2400 },
+  { quarter: 'Q2 2022', sent: 14500, opened: 6960, clicked: 3480 },
+  { quarter: 'Q3 2022', sent: 16800, opened: 8736, clicked: 4368 },
+  { quarter: 'Q4 2022', sent: 18200, opened: 9282, clicked: 4732 },
+  { quarter: 'Q1 2023', sent: 21500, opened: 11610, clicked: 5805 },
+  { quarter: 'Q2 2023', sent: 24700, opened: 13585, clicked: 6428 },
+];
+
+// Add this campaign breakdown data
+const campaignBreakdownData: Record<string, { email: number; linkedin: number; voice: number }> = {
+  Mon: { email: 420, linkedin: 350, voice: 180 },
+  Tue: { email: 480, linkedin: 365, voice: 195 },
+  Wed: { email: 520, linkedin: 410, voice: 240 },
+  Thu: { email: 490, linkedin: 380, voice: 210 },
+  Fri: { email: 450, linkedin: 325, voice: 175 },
+  Sat: { email: 180, linkedin: 120, voice: 80 },
+  Sun: { email: 160, linkedin: 95, voice: 65 },
+};
 
 // Add migration timeline data
 const migrationTimelineData = [
@@ -201,8 +236,52 @@ const migrationTimelineData = [
   { company: 'Enterprise E', size: 'Medium', timelineMonths: 9, complexity: 'Medium', modules: 10, status: 'In Progress' },
 ];
 
+// Add ERP landscape data
+const erpLandscapeData = {
+  sapMigration: [
+    { name: 'Completed', value: 34, color: '#10B981' },
+    { name: 'Planning before 2027', value: 41, color: '#059669' },
+    { name: 'Will miss deadline', value: 18, color: '#047857' },
+    { name: 'No plans', value: 7, color: '#065F46' }
+  ],
+  cloudERP: [
+    { name: 'Manufacturing', value: 47, color: '#10B981' },
+    { name: 'Finance/Insurance', value: 60.5, color: '#059669' },
+    { name: 'Wholesale/Retail', value: 49.7, color: '#047857' },
+    { name: 'Healthcare', value: 42.3, color: '#065F46' },
+    { name: 'Technology', value: 55.8, color: '#064E3B' }
+  ],
+  aiDeployment: { value: 72.6 },
+  hybridCloud: { value: 76.5 },
+  composableERP: { value: 46 },
+  timelines: [
+    { year: 2025, event: 'Present', description: 'Only 34% migration complete' },
+    { year: 2027, event: 'Deadline', description: 'End of mainstream support' },
+    { year: 2030, event: 'End', description: 'End of extended paid support' }
+  ]
+};
+
 const Home = () => {
   const navigate = useNavigate();
+  const [campaignView, setCampaignView] = useState<'weekly' | 'monthly' | 'overall'>('weekly');
+  const [hoverDay, setHoverDay] = useState<string | null>(null);
+  const [showERPInfo, setShowERPInfo] = useState(false);
+  const erpBoxRef = useRef<HTMLDivElement>(null);
+  const [erpInfoPosition, setErpInfoPosition] = useState({ top: 0, left: 0 });
+
+  // Helper function to determine if a specific view is active
+  const isViewActive = (view: 'weekly' | 'monthly' | 'overall') => campaignView === view;
+
+  // Effect to calculate position when ERP box is shown
+  useEffect(() => {
+    if (showERPInfo && erpBoxRef.current) {
+      const rect = erpBoxRef.current.getBoundingClientRect();
+      setErpInfoPosition({
+        top: rect.top + window.scrollY,
+        left: rect.left + rect.width + window.scrollX
+      });
+    }
+  }, [showERPInfo]);
 
   const FeatureCard = ({ 
     icon, 
@@ -461,6 +540,288 @@ const Home = () => {
     );
   };
 
+  // Updated ERP Landscape Info Modal Component
+  const ERPLandscapeInfoModal = () => {
+    if (!showERPInfo) return null;
+    
+    return (
+      <div 
+        className="fixed inset-0 z-[2000] flex items-center justify-center pointer-events-none"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setShowERPInfo(false);
+        }}
+      >
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-auto" onClick={() => setShowERPInfo(false)}></div>
+        <div 
+          className="absolute z-10 w-[65vw] h-[75vh] rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.30)] backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-white overflow-hidden pointer-events-auto animate-popup-scale"
+          style={{ transformOrigin: 'center left' }}
+        >
+          {/* Decorative background elements */}
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-500/25 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute top-1/3 -right-20 w-64 h-64 bg-gradient-to-bl from-emerald-400/10 to-transparent rounded-full blur-2xl"></div>
+          
+          <div className="relative z-10 p-5 h-full">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+                  ERP Landscape Overview (2025–2027)
+                </h2>
+                <p className="text-emerald-400 text-sm">Key metrics and deadlines shaping the market</p>
+              </div>
+              
+              <button 
+                onClick={() => setShowERPInfo(false)}
+                className="rounded-full p-2 bg-emerald-900/40 hover:bg-emerald-800/50 text-white/70 hover:text-white transition-all duration-300 border border-emerald-500/20"
+              >
+                <MdClose />
+              </button>
+            </div>
+            
+            {/* Main content in grid layout - tighter spacing */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-[calc(100%-3.5rem)]">
+              {/* SAP ECC Migration Section */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                      <MdDateRange className="text-white text-lg" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-white">SAP ECC to S/4HANA Migration</h3>
+                      <div className="flex items-center text-emerald-300 text-xs">
+                        <MdAccessTime className="mr-1" /> Deadline: December 31, 2027
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex mb-3">
+                    <div className="w-1/2">
+                      <PieChart width={130} height={130}>
+                        <Pie
+                          data={erpLandscapeData.sapMigration}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={32}
+                          outerRadius={55}
+                          paddingAngle={2}
+                          dataKey="value"
+                          labelLine={false}
+                        >
+                          {erpLandscapeData.sapMigration.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                      </PieChart>
+                    </div>
+                    <div className="w-1/2 space-y-1.5 my-auto">
+                      {erpLandscapeData.sapMigration.map((item, index) => (
+                        <div key={index} className="flex items-center">
+                          <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }}></div>
+                          <div className="text-sm text-slate-300">{item.name}</div>
+                          <div className="ml-auto text-sm font-medium text-white">{item.value}%</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1.5 text-sm text-slate-300">
+                    <p>• Over 50% of SAP customers risk missing the 2027 deadline</p>
+                    <p>• Extended support available until 2030 (premium pricing)</p>
+                    <p>• Resource crunch expected: Only 57% of enterprises on track</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Cloud ERP Adoption */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                      <MdOutlineCloud className="text-white text-xl" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">Cloud ERP Adoption</h3>
+                      <div className="flex items-center text-emerald-300 text-xs">
+                        <MdTrendingUp className="mr-1" /> Growing at 10.5% CAGR
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="h-[160px] mb-3">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={erpLandscapeData.cloudERP} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.15)" horizontal={false} />
+                        <XAxis 
+                          type="number"
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: 10, fill: '#94A3B8' }}
+                          domain={[0, 100]}
+                        />
+                        <YAxis 
+                          type="category"
+                          dataKey="name"
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: 10, fill: '#E2E8F0' }}
+                          width={90}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'rgba(6, 78, 59, 0.8)', 
+                            border: '1px solid rgba(16, 185, 129, 0.4)',
+                            borderRadius: '0.5rem',
+                            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+                            color: 'white',
+                            fontSize: '12px',
+                            backdropFilter: 'blur(8px)'
+                          }}
+                          formatter={(value) => [`${value}%`, 'Adoption']}
+                        />
+                        <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                          {erpLandscapeData.cloudERP.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                  <div className="space-y-1.5 text-sm text-slate-300">
+                    <p>• Global adoption: <span className="text-white font-medium">53%</span> of organizations now use cloud ERP</p>
+                    <p>• Market growth: Spending reaching <span className="text-white font-medium">$70 billion</span> by 2032</p>
+                    <p>• Hybrid preference: <span className="text-white font-medium">76.5%</span> opt for hosted vs. SaaS for customization</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Emerging ERP Tech */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                      <MdOutlineLightbulb className="text-white text-xl" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white">Emerging ERP Technologies</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-4 mb-4">
+                    {/* AI Integration */}
+                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-emerald-500/20">
+                      <div className="text-sm font-medium text-emerald-400 mb-1.5">AI Integration</div>
+                      <div className="flex items-end gap-2 mb-1">
+                        <div className="text-2xl font-bold text-white">72.6%</div>
+                        <div className="text-xs text-emerald-300">Adoption</div>
+                      </div>
+                      <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-2">
+                        <div 
+                          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
+                          style={{ width: '72.6%' }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-slate-300">For predictive analytics & automation</div>
+                    </div>
+                    
+                    {/* Hyperautomation */}
+                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-emerald-500/20">
+                      <div className="text-sm font-medium text-emerald-400 mb-1.5">Hyperautomation</div>
+                      <div className="flex items-end gap-2 mb-1">
+                        <div className="text-2xl font-bold text-white">40-60%</div>
+                        <div className="text-xs text-emerald-300">Task Reduction</div>
+                      </div>
+                      <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-2">
+                        <div 
+                          className="h-full bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-full"
+                          style={{ width: '50%' }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-slate-300">Invoice processing, demand planning</div>
+                    </div>
+                    
+                    {/* Composable ERP */}
+                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-emerald-500/20">
+                      <div className="text-sm font-medium text-emerald-400 mb-1.5">Composable ERP</div>
+                      <div className="flex items-end gap-2 mb-1">
+                        <div className="text-2xl font-bold text-white">46%</div>
+                        <div className="text-xs text-emerald-300">Adoption</div>
+                      </div>
+                      <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-2">
+                        <div 
+                          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
+                          style={{ width: '46%' }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-slate-300">APIs/microservices for vendor flexibility</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Regional & Industry Trends + Strategic Implications */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                      <MdInsights className="text-white text-xl" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">Regional & Strategic Insights</h3>
+                      <div className="flex items-center text-emerald-300 text-xs">
+                        <MdLocationOn className="mr-1" /> Global Market Overview
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Timeline visualization */}
+                  <div className="mb-4 relative">
+                    <div className="absolute left-0 top-5 bottom-5 w-[3px] bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 rounded-full"></div>
+                    
+                    {erpLandscapeData.timelines.map((item, index) => (
+                      <div key={index} className="ml-6 mb-3 relative">
+                        <div className="absolute -left-8 top-0 w-4 h-4 rounded-full border-2 border-white bg-gradient-to-r from-emerald-500 to-emerald-400" style={{
+                          backgroundColor: index === 0 ? '#10B981' : index === 1 ? '#059669' : '#047857'
+                        }}></div>
+                        <div className="text-sm font-medium text-white">{item.year}: {item.event}</div>
+                        <div className="text-xs text-slate-300">{item.description}</div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mb-4">
+                    <div className="text-sm font-medium text-white mb-1">Regional Distribution</div>
+                    <div className="flex items-center gap-1">
+                      <div className="flex-1 h-4 bg-slate-700/60 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '35%' }}></div>
+                      </div>
+                      <div className="text-xs text-white w-8 text-right">35%</div>
+                    </div>
+                    <div className="text-xs text-slate-400">North America: 35% of global ERP spending</div>
+                  </div>
+                  
+                  <div className="space-y-1.5 text-sm text-slate-300">
+                    <p>• <span className="text-white font-medium">Strategic imperative:</span> Migrate by 2027 to avoid 20-30% higher costs</p>
+                    <p>• <span className="text-white font-medium">AI ROI:</span> 15-25% error reduction in finance/supply chain</p>
+                    <p>• <span className="text-white font-medium">Risk factors:</span> Compliance gaps, operational inefficiencies</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full h-screen bg-[#020305] relative overflow-hidden">
       {/* Background gradient orbs */}
@@ -491,17 +852,21 @@ const Home = () => {
                     <MdOutlineAnalytics className="text-white text-3xl" />
                   </div>
                   <div className="ml-3">
-                    <div className="text-4xl font-bold text-white tracking-tight">4.13<span className="text-lg font-normal text-white/80">M</span></div>
-                    <div className="text-xs text-emerald-400 font-medium mt-0.5">SAP Enterprises</div>
+                    <div className="text-4xl font-bold text-white tracking-tight">3.84<span className="text-lg font-normal text-white/80">M</span></div>
+                    <div className="text-xs text-emerald-400 font-medium mt-0.5">ERP Enterprises</div>
                   </div>
                 </div>
-                <div className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10">
+                <div 
+                  className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10 cursor-pointer transition-all duration-300 hover:bg-emerald-500/20 hover:border-emerald-500/30"
+                  onClick={() => navigate('/market-database')}
+                  title="Go to Market Database"
+                >
                   <MdOutlineSearch className="text-xl text-white/70" />
                 </div>
               </div>
               
-              <h3 className="text-xl font-bold text-white mb-2">SAP Enterprise Database</h3>
-              <p className="text-sm text-slate-300 mb-4">Access to 4.13 million companies using SAP ECC for migration</p>
+              <h3 className="text-xl font-bold text-white mb-2">ERP Enterprise Database</h3>
+              <p className="text-sm text-slate-300 mb-4">Access to 3.84 million companies using ERP systems for migration</p>
               
               {/* Status indicators */}
               <div className="space-y-2 mb-4">
@@ -528,39 +893,59 @@ const Home = () => {
           </div>
 
           {/* S/4HANA Analysis box */}
-          <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group flex-1">
+          <div 
+            ref={erpBoxRef}
+            className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group flex-1"
+          >
             {/* Background patterns */}
             <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 via-emerald-500/15 to-emerald-600/10 opacity-20"></div>
             <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-emerald-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
             <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-emerald-500/20 to-transparent rounded-full blur-2xl"></div>
 
             <div className="p-5 pt-6 relative z-10 bg-gradient-to-br from-white/[0.06] to-transparent rounded-2xl h-full flex flex-col">
-              {/* Header */}
+              {/* Header with info icon */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center">
                   <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
                     <MdOutlineLightbulb className="text-white text-2xl" />
                   </div>
                   <div className="ml-3">
-                    <div className="text-3xl font-bold text-white tracking-tight">74<span className="text-sm font-normal text-white/80">%</span></div>
-                    <div className="text-xs text-emerald-400 font-medium mt-0.5">Migration Readiness</div>
+                    <div className="text-3xl font-bold text-white tracking-tight">92<span className="text-sm font-normal text-white/80">%</span></div>
+                    <div className="text-xs text-emerald-400 font-medium mt-0.5">Data Enrichment</div>
                   </div>
+                </div>
+                <div 
+                  className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10 cursor-pointer transition-all duration-300 hover:bg-emerald-500/20 hover:border-emerald-500/30"
+                  onClick={() => setShowERPInfo(true)}
+                  title="ERP Landscape Overview"
+                >
+                  <MdInfoOutline className="text-xl text-white/70" />
                 </div>
               </div>
               
-              <h3 className="text-lg font-bold text-white mb-2">S/4HANA Analysis</h3>
+              <h3 className="text-lg font-bold text-white mb-2">ERP Intelligence</h3>
               
-              {/* Migration Stages Progress */}
+              {/* Data Enrichment Progress */}
               <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 mb-3 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
-                  <h3 className="text-white text-xs font-medium mb-3">Migration Pipeline</h3>
+                  <h3 className="text-white text-xs font-medium mb-3">Data Enrichment Pipeline</h3>
                   <div className="space-y-2.5">
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-slate-300 text-xs">Discovery</span>
-                        <span className="text-emerald-400 text-xs font-medium">98</span>
+                        <span className="text-slate-300 text-xs">Company Financials</span>
+                        <span className="text-emerald-400 text-xs font-medium">98%</span>
+                      </div>
+                      <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '98%' }}></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-slate-300 text-xs">Tech Stack Analysis</span>
+                        <span className="text-emerald-400 text-xs font-medium">95%</span>
                       </div>
                       <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '95%' }}></div>
@@ -569,77 +954,86 @@ const Home = () => {
                     
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-slate-300 text-xs">Assessment</span>
-                        <span className="text-emerald-400 text-xs font-medium">76</span>
+                        <span className="text-slate-300 text-xs">Decision Maker Profiles</span>
+                        <span className="text-emerald-400 text-xs font-medium">92%</span>
                       </div>
                       <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '74%' }}></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-slate-300 text-xs">Proposal</span>
-                        <span className="text-emerald-400 text-xs font-medium">52</span>
-                      </div>
-                      <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '50%' }}></div>
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '92%' }}></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Migration Timeline - Simplified to just numbers */}
+              {/* Key Metrics */}
               <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 mb-3 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
-                  <h3 className="text-white text-xs font-medium mb-3">Migration Timeline</h3>
+                  <h3 className="text-white text-xs font-medium mb-3">Enrichment Metrics</h3>
                   
-                  {/* Timeline data - Simple grid with key metrics */}
-                  <div className="grid grid-cols-3 gap-x-3">
+                  {/* Metrics data - Simple grid with key metrics */}
+                  <div className="grid grid-cols-3 gap-x-3 gap-y-3">
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Avg. Timeline</div>
-                      <div className="text-white text-lg font-bold">9.8 <span className="text-sm">months</span></div>
+                      <div className="text-emerald-400 text-xs font-medium">Contact Data</div>
+                      <div className="text-white text-lg font-bold">2.8<span className="text-sm">M</span></div>
                     </div>
                     
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Modules</div>
-                      <div className="text-white text-lg font-bold">11.4 <span className="text-sm">avg</span></div>
+                      <div className="text-emerald-400 text-xs font-medium">Tech Signals</div>
+                      <div className="text-white text-lg font-bold">1.2<span className="text-sm">M</span></div>
                     </div>
                     
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Team Size</div>
-                      <div className="text-white text-lg font-bold">8-12</div>
+                      <div className="text-emerald-400 text-xs font-medium">Firmographics</div>
+                      <div className="text-white text-lg font-bold">3.1<span className="text-sm">M</span></div>
                     </div>
+
+                    <div>
+                      <div className="text-emerald-400 text-xs font-medium">Revenue Data</div>
+                      <div className="text-white text-lg font-bold">2.5<span className="text-sm">M</span></div>
+                    </div>
+
+                    <div>
+                      <div className="text-emerald-400 text-xs font-medium">Employee Count</div>
+                      <div className="text-white text-lg font-bold">2.9<span className="text-sm">M</span></div>
+                    </div>
+
+                    <div>
+                      <div className="text-emerald-400 text-xs font-medium">Industry Data</div>
+                      <div className="text-white text-lg font-bold">3.2<span className="text-sm">M</span></div>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 text-center">
+                    <span className="text-emerald-400 text-xs font-medium">+ 15 more data points</span>
                   </div>
                 </div>
               </div>
               
-              {/* Benefits Analysis */}
+              {/* Data Quality */}
               <div className="flex-1 bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
-                  <h3 className="text-white text-xs font-medium mb-3">S/4HANA Benefits</h3>
+                  <h3 className="text-white text-xs font-medium mb-3">Data Quality Metrics</h3>
                   
                   <div className="space-y-2">
                     <div className="bg-[rgba(15,23,42,0.4)] backdrop-blur-sm rounded-lg border border-emerald-500/10 p-2">
-                      <div className="text-emerald-400 text-xs font-medium">Performance</div>
-                      <div className="text-white text-lg font-bold">78%</div>
+                      <div className="text-emerald-400 text-xs font-medium">Accuracy Rate</div>
+                      <div className="text-white text-lg font-bold">96%</div>
                       <div className="flex items-center text-emerald-300 text-xs">
                         <MdTrendingUp className="mr-1" />
-                        <span>+53% Speed</span>
+                        <span>Verified Monthly</span>
                       </div>
                     </div>
                     
                     <div className="bg-[rgba(15,23,42,0.4)] backdrop-blur-sm rounded-lg border border-emerald-500/10 p-2">
-                      <div className="text-emerald-400 text-xs font-medium">TCO Reduction</div>
-                      <div className="text-white text-lg font-bold">35%</div>
+                      <div className="text-emerald-400 text-xs font-medium">Update Frequency</div>
+                      <div className="text-white text-lg font-bold">24h</div>
                       <div className="flex items-center text-emerald-300 text-xs">
                         <MdTrendingUp className="mr-1" />
-                        <span>$4.2M Savings</span>
+                        <span>Real-time Signals</span>
                       </div>
                     </div>
                   </div>
@@ -653,7 +1047,7 @@ const Home = () => {
         <div className="flex-1 relative h-full flex justify-end items-end">
           {/* Right side widget - positioned at bottom right */}
           <div className="w-2/5 mb-6">
-            <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group">
+            <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-visible">
               {/* Background patterns */}
               <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 via-emerald-500/15 to-emerald-600/10 opacity-20"></div>
               <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-emerald-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
@@ -671,57 +1065,287 @@ const Home = () => {
                       <div className="text-xs text-emerald-400 font-medium mt-0.5">Response Rate</div>
                     </div>
                   </div>
+                  <button 
+                    className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10 cursor-pointer transition-all duration-300 hover:bg-emerald-500/20 hover:border-emerald-500/30"
+                    onClick={() => navigate('/outreach-tracking')}
+                    title="Go to Outreach Tracking"
+                  >
+                    <MdArrowOutward className="text-xl text-white/70" />
+                  </button>
                 </div>
                 
-                <h3 className="text-lg font-bold text-white mb-4">Email Campaign Performance</h3>
+                <h3 className="text-lg font-bold text-white mb-2">Email Campaign Performance</h3>
                 
-                {/* Email Performance Graph - fixed to match the image */}
-                <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 relative overflow-hidden">
+                {/* View toggle buttons */}
+                <div className="flex space-x-2 mb-3">
+                  <button 
+                    onClick={() => setCampaignView('weekly')} 
+                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('weekly') ? 'bg-emerald-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
+                  >
+                    Weekly
+                  </button>
+                  <button 
+                    onClick={() => setCampaignView('monthly')} 
+                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('monthly') ? 'bg-emerald-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
+                  >
+                    Monthly
+                  </button>
+                  <button 
+                    onClick={() => setCampaignView('overall')} 
+                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('overall') ? 'bg-emerald-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
+                  >
+                    Overall
+                  </button>
+                </div>
+                
+                {/* Email Performance Graph */}
+                <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 relative overflow-visible">
                   <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
                   
-                  <div className="relative z-10">
+                  <div className="relative z-10 overflow-visible">
                     {/* Chart Graph */}
-                    <div className="h-28 relative flex items-end">
-                      {/* Grid lines */}
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
-                        <div className="border-t border-slate-600/30"></div>
-                        <div className="border-t border-slate-600/30"></div>
-                        <div className="border-t border-slate-600/30"></div>
-                        <div className="border-t border-slate-600/30"></div>
-                        <div className="border-t border-slate-600/30"></div>
-                      </div>
-                      
-                      {/* Days of week and bars */}
-                      <div className="w-full h-full flex justify-between items-end">
-                        {emailCampaignData.map((item, index) => (
-                          <div key={index} className="flex flex-col items-center">
-                            {/* Bar group */}
-                            <div className="flex items-end space-x-0.5 mb-1">
-                              {/* Sent bar */}
-                              <div 
-                                style={{ height: `${Math.min(100, item.sent / 5)}px` }} 
-                                className="w-3 bg-emerald-500 rounded-t"
-                              ></div>
+                    {isViewActive('weekly') && (
+                      <div className="h-40 relative flex items-end overflow-visible">
+                        {/* Grid lines */}
+                        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
+                          <div className="border-t border-slate-600/30"></div>
+                          <div className="border-t border-slate-600/30"></div>
+                          <div className="border-t border-slate-600/30"></div>
+                          <div className="border-t border-slate-600/30"></div>
+                          <div className="border-t border-slate-600/30"></div>
+                        </div>
+                        
+                        {/* Y-axis metrics */}
+                        <div className="absolute h-full left-0 flex flex-col justify-between items-end pr-1 text-[10px] text-slate-300">
+                          <span>1200</span>
+                          <span>1000</span>
+                          <span>800</span>
+                          <span>600</span>
+                          <span>400</span>
+                          <span>200</span>
+                        </div>
+                        
+                        {/* Days of week and bars - slightly adjusted to make room for y-axis */}
+                        <div className="w-full h-full flex justify-between items-end pl-6">
+                          {emailCampaignData.map((item, index) => (
+                            <div 
+                              key={index} 
+                              className="flex flex-col items-center relative"
+                              onMouseEnter={() => setHoverDay(item.day)}
+                              onMouseLeave={() => setHoverDay(null)}
+                            >
+                              {/* Bar group - adjust the scaling for larger numbers */}
+                              <div className="flex items-end space-x-0.5 mb-1">
+                                {/* Sent bar */}
+                                <div 
+                                  style={{ height: `${Math.min(100, item.sent / 12)}px` }} 
+                                  className="w-3 bg-emerald-500 rounded-t cursor-pointer transition-all duration-200 hover:bg-emerald-400"
+                                ></div>
+                                
+                                {/* Opened bar */}
+                                <div 
+                                  style={{ height: `${Math.min(100, item.opened / 12)}px` }} 
+                                  className="w-3 bg-blue-500 rounded-t cursor-pointer transition-all duration-200 hover:bg-blue-400"
+                                ></div>
+                                
+                                {/* Clicked bar */}
+                                <div 
+                                  style={{ height: `${Math.min(100, item.clicked / 12)}px` }} 
+                                  className="w-3 bg-purple-500 rounded-t cursor-pointer transition-all duration-200 hover:bg-purple-400"
+                                ></div>
+                              </div>
                               
-                              {/* Opened bar */}
-                              <div 
-                                style={{ height: `${Math.min(100, item.opened / 5)}px` }} 
-                                className="w-3 bg-blue-500 rounded-t"
-                              ></div>
+                              {/* Day label */}
+                              <div className="text-xs text-slate-400">{item.day}</div>
                               
-                              {/* Clicked bar */}
-                              <div 
-                                style={{ height: `${Math.min(100, item.clicked / 5)}px` }} 
-                                className="w-3 bg-purple-500 rounded-t"
-                              ></div>
+                              {/* Hover popup */}
+                              {hoverDay === item.day && (
+                                <div 
+                                  className="absolute bottom-full mb-2 bg-emerald-900/40 backdrop-blur-xl rounded-lg p-3 shadow-xl border border-emerald-500/40 w-[180px]" 
+                                  style={{ 
+                                    position: 'absolute', 
+                                    left: '50%', 
+                                    transform: 'translateX(-50%)',
+                                    zIndex: 9999,
+                                    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)'
+                                  }}
+                                >
+                                  <div className="text-xs font-medium text-emerald-300 mb-2">{item.day} Breakdown</div>
+                                  <div className="space-y-2.5">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-xs text-emerald-100/90 flex items-center">
+                                        <MdEmail className="text-emerald-400 mr-1.5" />Email
+                                      </span>
+                                      <span className="text-xs text-white font-medium">{campaignBreakdownData[item.day].email}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-xs text-emerald-100/90 flex items-center">
+                                        <MdShowChart className="text-emerald-400 mr-1.5" />LinkedIn
+                                      </span>
+                                      <span className="text-xs text-white font-medium">{campaignBreakdownData[item.day].linkedin}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-xs text-emerald-100/90 flex items-center">
+                                        <MdOutlineTrackChanges className="text-emerald-400 mr-1.5" />Voice
+                                      </span>
+                                      <span className="text-xs text-white font-medium">{campaignBreakdownData[item.day].voice}</span>
+                                    </div>
+                                  </div>
+                                  {/* Triangle pointer */}
+                                  <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-emerald-900/40 border-b border-r border-emerald-500/40 rotate-45"></div>
+                                </div>
+                              )}
                             </div>
-                            
-                            {/* Day label */}
-                            <div className="text-xs text-slate-400">{item.day}</div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
+                    
+                    {isViewActive('monthly') && (
+                      <div className="h-40">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={monthlyEmailCampaignData} margin={{ top: 5, right: 10, left: 0, bottom: 10 }}>
+                            <defs>
+                              <linearGradient id="sentGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#10B981" stopOpacity={0.2}/>
+                                <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.15)" vertical={false} />
+                            <XAxis 
+                              dataKey="month" 
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 10, fill: '#94A3B8' }}
+                              dy={5}
+                            />
+                            <YAxis 
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 10, fill: '#94A3B8' }}
+                              width={25}
+                            />
+                            <Tooltip 
+                              contentStyle={{ 
+                                backgroundColor: 'rgba(6, 78, 59, 0.8)', 
+                                border: '1px solid rgba(16, 185, 129, 0.4)',
+                                borderRadius: '0.5rem',
+                                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+                                color: 'white',
+                                fontSize: '12px',
+                                backdropFilter: 'blur(8px)'
+                              }}
+                              itemStyle={{ color: 'white', padding: 0, margin: 0 }}
+                              labelStyle={{ color: 'rgb(167, 243, 208)', fontWeight: 'bold', marginBottom: '4px' }}
+                            />
+                            <Line 
+                              type="monotone" 
+                              dataKey="sent" 
+                              stroke="#10B981" 
+                              strokeWidth={2} 
+                              dot={{ r: 3, fill: '#10B981', strokeWidth: 0 }} 
+                              activeDot={{ r: 5, fill: '#10B981', stroke: 'rgba(255, 255, 255, 0.3)', strokeWidth: 2 }} 
+                            />
+                            <Line 
+                              type="monotone" 
+                              dataKey="opened" 
+                              stroke="#3B82F6" 
+                              strokeWidth={2} 
+                              dot={{ r: 3, fill: '#3B82F6', strokeWidth: 0 }} 
+                              activeDot={{ r: 5, fill: '#3B82F6', stroke: 'rgba(255, 255, 255, 0.3)', strokeWidth: 2 }} 
+                            />
+                            <Line 
+                              type="monotone" 
+                              dataKey="clicked" 
+                              stroke="#A855F7" 
+                              strokeWidth={2} 
+                              dot={{ r: 3, fill: '#A855F7', strokeWidth: 0 }} 
+                              activeDot={{ r: 5, fill: '#A855F7', stroke: 'rgba(255, 255, 255, 0.3)', strokeWidth: 2 }} 
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
+                    
+                    {isViewActive('overall') && (
+                      <div className="h-40">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={overallEmailCampaignData} margin={{ top: 5, right: 10, left: 0, bottom: 10 }}>
+                            <defs>
+                              <linearGradient id="sentGradientArea" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
+                                <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                              </linearGradient>
+                              <linearGradient id="openedGradientArea" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                              </linearGradient>
+                              <linearGradient id="clickedGradientArea" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#A855F7" stopOpacity={0.3}/>
+                                <stop offset="95%" stopColor="#A855F7" stopOpacity={0}/>
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.15)" vertical={false} />
+                            <XAxis 
+                              dataKey="quarter" 
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 10, fill: '#94A3B8' }}
+                              dy={5}
+                            />
+                            <YAxis 
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 10, fill: '#94A3B8' }}
+                              width={30}
+                            />
+                            <Tooltip 
+                              contentStyle={{ 
+                                backgroundColor: 'rgba(6, 78, 59, 0.8)', 
+                                border: '1px solid rgba(16, 185, 129, 0.4)',
+                                borderRadius: '0.5rem',
+                                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+                                color: 'white',
+                                fontSize: '12px',
+                                backdropFilter: 'blur(8px)'
+                              }}
+                              itemStyle={{ color: 'white', padding: 0, margin: 0 }}
+                              labelStyle={{ color: 'rgb(167, 243, 208)', fontWeight: 'bold', marginBottom: '4px' }}
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="sent" 
+                              stackId="1"
+                              stroke="#10B981" 
+                              strokeWidth={2}
+                              fill="url(#sentGradientArea)"
+                              dot={{ r: 3, fill: '#10B981', strokeWidth: 0 }} 
+                              activeDot={{ r: 5, fill: '#10B981', stroke: '#0C8A61', strokeWidth: 2 }} 
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="opened"
+                              stackId="2" 
+                              stroke="#3B82F6" 
+                              strokeWidth={2}
+                              fill="url(#openedGradientArea)"
+                              dot={{ r: 3, fill: '#3B82F6', strokeWidth: 0 }} 
+                              activeDot={{ r: 5, fill: '#3B82F6', stroke: '#2563EB', strokeWidth: 2 }} 
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="clicked" 
+                              stackId="3"
+                              stroke="#A855F7" 
+                              strokeWidth={2}
+                              fill="url(#clickedGradientArea)"
+                              dot={{ r: 3, fill: '#A855F7', strokeWidth: 0 }} 
+                              activeDot={{ r: 5, fill: '#A855F7', stroke: '#7E22CE', strokeWidth: 2 }} 
+                            />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
                     
                     {/* Legend */}
                     <div className="flex justify-center mt-4 space-x-4">
@@ -731,11 +1355,11 @@ const Home = () => {
                       </div>
                       <div className="flex items-center">
                         <div className="w-3 h-3 bg-blue-500 rounded-sm mr-1"></div>
-                        <span className="text-xs text-blue-400">Opened</span>
+                        <span className="text-xs text-blue-400">{isViewActive('weekly') ? 'Opened' : 'Opens'}</span>
                       </div>
                       <div className="flex items-center">
                         <div className="w-3 h-3 bg-purple-500 rounded-sm mr-1"></div>
-                        <span className="text-xs text-purple-400">Clicked</span>
+                        <span className="text-xs text-purple-400">{isViewActive('weekly') ? 'Clicked' : 'Clicks'}</span>
                       </div>
                     </div>
                   </div>
@@ -745,6 +1369,22 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Render ERP Landscape Info Modal */}
+      <ERPLandscapeInfoModal />
+
+      {/* Add animation styles as a regular style tag */}
+      <style>
+        {`
+          @keyframes popup-scale {
+            0% { opacity: 0; transform: scale(0.6); }
+            100% { opacity: 1; transform: scale(1); }
+          }
+          .animate-popup-scale {
+            animation: popup-scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          }
+        `}
+      </style>
     </div>
   );
 };

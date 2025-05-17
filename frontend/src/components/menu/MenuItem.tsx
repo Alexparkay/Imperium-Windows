@@ -21,6 +21,14 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
   
   const getColorScheme = () => {
     switch (item.colorScheme) {
+      case 'accent-primary':
+        return {
+          active: 'from-[#10ba82]/40 to-[#0c9a6c]/30',
+          hover: 'from-[#10ba82]/5 via-[#0c9a6c]/3 to-[#0c9a6c]/5',
+          border: 'border-[#10ba82]/10',
+          text: 'text-[#10ba82]',
+          shadow: 'shadow-[#10ba82]/10'
+        };
       case 'purple':
         return {
           active: 'from-purple-500/40 to-violet-500/30',
@@ -29,21 +37,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
           text: 'text-purple-300/70',
           shadow: 'shadow-purple-500/10'
         };
-      case 'green':
-        return {
-          active: 'from-green-500/40 to-emerald-500/30',
-          hover: 'from-green-500/5 via-emerald-500/3 to-green-600/5',
-          border: 'border-green-500/10',
-          text: 'text-green-300/70',
-          shadow: 'shadow-green-500/10'
-        };
       default:
         return {
-          active: 'from-green-500/40 to-emerald-500/30',
-          hover: 'from-green-500/5 via-emerald-500/3 to-green-600/5',
-          border: 'border-green-500/10',
-          text: 'text-green-300/70',
-          shadow: 'shadow-green-500/10'
+          active: 'from-[#10ba82]/40 to-[#0c9a6c]/30',
+          hover: 'from-[#10ba82]/5 via-[#0c9a6c]/3 to-[#0c9a6c]/5',
+          border: 'border-[#10ba82]/10',
+          text: 'text-[#10ba82]',
+          shadow: 'shadow-[#10ba82]/10'
         };
     }
   };
@@ -67,20 +67,19 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
         >
           {/* Active state indicator */}
           {isActive && (
-            <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-gradient-to-r ${colors.active} rounded-r-full shadow-[0_0_10px_rgba(16,185,129,0.4)]`} />
+            <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-gradient-to-r ${colors.active} rounded-r-full shadow-md`} />
           )}
           
           {/* Icon container */}
           <div className={`w-14 h-14 flex items-center justify-center rounded-xl transition-all duration-300 ${
             isActive 
-              ? `text-white bg-gradient-to-br ${colors.hover} shadow-inner ${colors.shadow} ${colors.border}` 
-              : `text-white/80 hover:text-white hover:bg-gradient-to-br hover:${colors.hover} border border-transparent hover:${colors.border}`
+              ? `text-white bg-[rgba(26,26,26,0.8)] backdrop-blur-sm shadow-lg ${colors.shadow} border ${colors.border}` 
+              : `text-white/70 hover:text-white bg-[rgba(26,26,26,0.4)] hover:bg-[rgba(26,26,26,0.7)] border border-transparent hover:${colors.border}`
           }`}>
             <div className="relative w-full h-full flex items-center justify-center">
               {isActive && (
                 <>
-                  <div className={`absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br ${colors.active} to-transparent rounded-full blur-lg transform rotate-12`}></div>
-                  <div className={`absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-tr ${colors.active} to-transparent rounded-full blur-lg transform -rotate-12`}></div>
+                  <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-[#10ba82]/5 rounded-full blur-xl`}></div>
                 </>
               )}
               {React.createElement(item.icon, { 
@@ -96,7 +95,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
-            className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[#0A0A0A] text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
+            className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[rgba(26,26,26,0.9)] backdrop-blur-md border border-white/10 text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
           >
             {tooltip || item.label}
           </motion.div>
@@ -114,10 +113,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
           onClick={item.onClick}
           className="block relative"
         >
-          <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-all duration-300 
-            text-slate-400 hover:text-white hover:bg-${colors.active}/5 border border-transparent hover:${colors.border}
+          <div className={`w-14 h-14 flex items-center justify-center rounded-xl transition-all duration-300 
+            bg-[rgba(26,26,26,0.4)] text-white/70 hover:text-white hover:bg-[rgba(26,26,26,0.7)] border border-transparent hover:${colors.border}
           `}>
-            <item.icon className={`text-2xl hover:${colors.text}`} />
+            <item.icon className="text-2xl" />
           </div>
         </button>
         
@@ -127,7 +126,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
-            className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[#0A0A0A] text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
+            className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-2 bg-[rgba(26,26,26,0.9)] backdrop-blur-md border border-white/10 text-white text-sm rounded-lg shadow-lg whitespace-nowrap z-50"
           >
             {tooltip || item.label}
           </motion.div>

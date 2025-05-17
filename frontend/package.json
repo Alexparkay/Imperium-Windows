@@ -18,6 +18,7 @@
     "@fullcalendar/list": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
+    "@mui/icons-material": "^5.15.7",
     "@mui/material": "^5.15.7",
     "@mui/x-data-grid": "^6.19.2",
     "@splinetool/react-spline": "^4.0.0",

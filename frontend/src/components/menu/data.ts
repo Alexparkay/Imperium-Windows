@@ -18,7 +18,8 @@ import {
   MdOutlineScanner,
   MdOutlineDataObject,
   MdOutlineInsights,
-  MdOutlineCampaign
+  MdOutlineCampaign,
+  MdOutlineDesignServices
 } from 'react-icons/md';
 
 export const menu = [
@@ -30,14 +31,14 @@ export const menu = [
         url: '/',
         icon: MdOutlineDashboard,
         label: 'Dashboard',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/profile',
         icon: MdOutlineBusiness,
         label: 'Partner Profile',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
     ],
   },
@@ -49,42 +50,42 @@ export const menu = [
         url: '/market-database',
         icon: MdOutlineSearch,
         label: 'Market Database',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/signal-scanner',
         icon: MdOutlineScanner,
         label: 'Signal Scanner',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/data-enrichment',
         icon: MdOutlineDataObject,
         label: 'Data Enrichment',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/migration-insights',
         icon: MdOutlineInsights,
         label: 'Migration Insights',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/outreach',
         icon: MdOutlineCampaign,
         label: 'Outreach',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/outreach-tracking',
         icon: MdOutlineTrackChanges,
         label: 'Outreach Tracking',
-        colorScheme: 'green'
+        colorScheme: 'accent-primary'
       },
     ],
   },
