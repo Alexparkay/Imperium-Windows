@@ -106,94 +106,184 @@ const EmailAutomation = () => {
   // Email templates
   const templates = [
     {
-      id: 'independent_research',
-      name: 'Independent Research',
-      subject: 'Independent analysis on {{company}}\'s SAP migration potential',
-      body: `Dear {{name}},
+      id: 'ai_highest_initial',
+      name: 'AI Highest Rated: Initial Contact',
+      subject: "Insights from Wood's training technology presentation at TechEd Houston",
+      rating: 98.7,
+      sequence: 'sequence_1',
+      sequencePosition: 1,
+      ai_metrics: {
+        openRate: 78.4,
+        responseRate: 42.1,
+        conversionRate: 31.5
+      },
+      body: `Dear Kyle,
 
-I hope this email finds you well. I noticed your presentation at the recent SAP User Group conference where you discussed {{company}}'s digital transformation challenges. Your insights about balancing legacy systems with innovation strategy were particularly compelling.
+I attended your recent presentation at the Houston TechEd conference where you discussed Wood's approach to integrating digital solutions into professional training. Your insights about leveraging technology while maintaining high-touch learning experiences particularly stood out.
 
-After connecting with some of our mutual colleagues in the SAP community, I conducted some independent research on your current SAP environment at {{location}} to evaluate potential cloud migration advantages.
+This prompted our team to analyze aspects of your SAP infrastructure. Based on industry benchmarks for professional training organizations of comparable scale (42-50 IT staff, 15+ training centers), we estimate that modernizing your current SAP ECC environment to S/4HANA Cloud could potentially reduce operational costs by approximately 23.4% annually, translating to roughly $712,000 in savings for a company of Wood's size.
 
-Based on our analysis, with approximately 1,250 SAP users across your organization, a migration to SAP S/4HANA Cloud could reduce your annual operational costs by roughly $894,250, representing a 73.5% cost reduction. Our calculations indicate a 14-month payback period with a first-year ROI of approximately 65.2%.
+Our preliminary calculations suggest an implementation timeframe of 6.5 months for training companies, with ROI beginning at month 14 post-implementation. With SAP ECC support ending in 2027, this timeline puts you well ahead of critical deadlines.
 
-I noticed your company is still running SAP ECC 6.0, which approaches end-of-support in 2027. Having helped other {{industry}} leaders with similar migration challenges, I'd be happy to share a more detailed analysis specific to your environment.
+These projections derive from analysis of 8 similar migrations across professional training organizations with comparable data complexity and certification tracking requirements.
 
-Would you be available for a brief conversation to discuss how these projections might align with your digital transformation roadmap?
+Hope this perspective proves useful for your IT modernization planning.
 
-Kind regards,
-Your Name
-SAP Migration Strategist`
+Regards,
+Alex Peterson`
     },
     {
-      id: 'sap_intro',
-      name: 'SAP Migration Introduction',
-      subject: 'Reducing SAP TCO - Personalized Analysis for {{company}}',
-      body: `Dear {{name}},
+      id: 'ai_highest_followup1',
+      name: 'AI Highest Rated: Follow-up 1',
+      subject: "Quick follow-up: Wood's SAP migration potential",
+      rating: 97.9,
+      sequence: 'sequence_1',
+      sequencePosition: 2,
+      ai_metrics: {
+        openRate: 82.1,
+        responseRate: 38.4,
+        conversionRate: 26.9
+      },
+      body: `Hi Kyle,
 
-I recently read your LinkedIn article about {{company}}'s IT modernization initiatives and was particularly impressed by your strategic approach to digital transformation.
+Following up briefly on my previous email about Wood's potential SAP migration benefits.
 
-As you're likely aware, SAP ECC 6.0 mainstream support ends in 2027, creating an inflection point for many enterprises in the {{industry}} sector. After analyzing your current infrastructure based on public information, we've identified significant potential for operational savings through cloud migration.
+I wanted to share that our recent analysis of training sector implementations shows particularly strong results for companies that integrate their training certification tracking with S/4HANA. Organizations similar to Wood have seen 43% faster processing of certification data and 37% reduction in compliance reporting time.
 
-Our preliminary assessment indicates:
-• Potential annual savings of $894,250
-• 73.5% reduction in operational costs
-• 42 servers consolidated, 18 databases optimized
-• 12,800 hours of annual maintenance time eliminated
-• 14-month ROI breakeven point
+If you're interested in these findings, I'd be happy to forward our industry benchmark report.
 
-With your teams at {{location}} already managing complex data environments, I believe our targeted migration approach could align perfectly with your stated goals of reducing technical debt while maintaining business continuity.
-
-Would you be open to a 20-minute call next week to discuss a tailored migration strategy specifically for {{company}}?
-
-Best regards,
-Your Name
-SAP Cloud Migration Specialist`
+Best,
+Alex`
     },
     {
-      id: 'sap_followup',
-      name: 'SAP Migration Follow-up',
-      subject: 'Following Up: S/4HANA Migration Strategy for {{company}}',
-      body: `Dear {{name}},
+      id: 'ai_highest_followup2',
+      name: 'AI Highest Rated: Follow-up 2',
+      subject: "Final thoughts on Wood's SAP migration opportunity",
+      rating: 96.2,
+      sequence: 'sequence_1',
+      sequencePosition: 3,
+      ai_metrics: {
+        openRate: 79.6,
+        responseRate: 31.2,
+        conversionRate: 18.7
+      },
+      body: `Dear Kyle,
 
-I wanted to follow up on my previous email regarding the SAP S/4HANA Cloud migration potential we identified for {{company}}. I noticed your recent presentation at the Enterprise Cloud Summit where you mentioned challenges with your current SAP landscape maintenance costs.
+I'm reaching out one final time regarding the SAP migration analysis we conducted for Wood.
 
-Our analysis indicates that implementing S/4HANA Cloud at your {{location}} headquarters could deliver:
-• Significant reduction in TCO (approximately $894,250 annually)
-• Protection against SAP ECC end-of-support risks approaching in 2027
-• 86% improvement in data processing efficiency
-• $125,000 in potential cloud incentives available this fiscal year
-• Implementation timeline of approximately 9 months
+Since my last email, we've completed an additional study of professional training companies who recently underwent SAP migrations. The data revealed three particularly relevant findings for your Houston operations:
 
-I've prepared a custom visualization showing your migration timeline and ROI projections based on your specific business processes and integration points. I'd be happy to share this detailed analysis with you. Would you have 15 minutes available this Thursday or Friday to review the findings?
+1. Training companies with sophisticated certification tracking requirements (which we understand is central to Wood's business model) achieved 28% greater ROI compared to general industry averages.
 
-Best regards,
-Your Name
-SAP S/4HANA Migration Consultant`
+2. The implementation timeline for companies that maintained parallel systems during migration averaged just 5.7 months - nearly 40% faster than standard approaches.
+
+3. Integration with virtual training environments (which featured prominently in your TechEd presentation) was completed with minimal disruption, with 92% of companies reporting zero downtime for learner-facing systems.
+
+The full dataset encompasses 14 professional training organizations across North America, with an average size of 750-1,200 employees and annual IT budgets of $4.2-7.1M.
+
+Should these findings align with your current modernization priorities, our complete analysis remains available.
+
+Wishing you continued success with Wood's digital initiatives.
+
+Regards,
+Alex Peterson`
     },
     {
-      id: 'sap_proposal',
-      name: 'SAP Migration Proposal',
-      subject: 'S/4HANA Cloud Migration Proposal for {{company}}',
-      body: `Dear {{name}},
+      id: 'sequence2_initial',
+      name: 'Value-Focused: Initial Contact',
+      subject: "Wood training technology modernization - potential $712K annual savings",
+      rating: 92.4,
+      sequence: 'sequence_2',
+      sequencePosition: 1,
+      ai_metrics: {
+        openRate: 71.3,
+        responseRate: 36.8,
+        conversionRate: 24.5
+      },
+      body: `Dear Kyle,
 
-Thank you for your interest in exploring SAP S/4HANA Cloud migration options for {{company}}. As promised, I've attached our detailed migration proposal for your enterprise systems at {{location}}.
+Your recent interview in Training Technology Quarterly about Wood's learning platform innovations caught my attention, particularly your emphasis on creating seamless digital experiences for professional certifications.
 
-Based on the system landscape documentation you shared and our technical assessment, here are the key highlights:
-• Annual Operational Savings: $894,250
-• System User Count: 1,250 users
-• Implementation Timeline: 9 months
-• ROI Timeline: 14 months
-• TCO Reduction: 73.5% over 5 years
-• Environmental Impact: 185 tons CO2 reduction annually through server consolidation
+After reviewing your technical infrastructure based on publicly available information, our team has identified potential optimization opportunities within your SAP environment. For professional training organizations like Wood with 5+ years on ECC systems, migration to S/4HANA typically yields annual operational savings between $650K-850K, with an implementation timeline of 6-8 months.
 
-The proposal includes a custom migration path that accounts for your critical customizations in the Finance and Supply Chain modules, as well as the third-party integrations you mentioned were essential to preserve. We've also included financial projections based on your current operational expenses and the specific RISE with SAP package that aligns with your business requirements.
+Key areas of improvement specific to training companies include:
+• 67% faster certification processing and validation
+• 73% reduction in manual data entry requirements
+• 42% more efficient compliance reporting for regulated industries
+• Enhanced integration with virtual learning environments
 
-I'm available to walk through the proposal with you and your technical team at your convenience.
+With SAP ECC end-of-support approaching in 2027, organizations in your sector are typically allowing 12-18 months for complete transition. Based on Wood's scale and complexity, our projected implementation would complete by Q2 2026, providing a comfortable buffer before support expires.
+
+These insights come from our analysis of 14 similar migrations within professional training and education companies during 2021-2023.
+
+I hope this information proves valuable as you evaluate your technology roadmap.
+
+Regards,
+Alex Peterson`
+    },
+    {
+      id: 'sequence2_followup1',
+      name: 'Value-Focused: Follow-up 1',
+      subject: "RE: Wood's SAP environment - specific training industry findings",
+      rating: 89.5,
+      sequence: 'sequence_2',
+      sequencePosition: 2,
+      ai_metrics: {
+        openRate: 68.7,
+        responseRate: 31.4,
+        conversionRate: 19.8
+      },
+      body: `Kyle,
+
+I wanted to follow up on my previous email with some additional findings specifically relevant to Wood's professional training operations in Houston.
+
+In analyzing similar companies that migrated from ECC to S/4HANA:
+
+- Training organizations with certification requirements saw average processing time improvements of 43% for student record management
+- Companies integrating virtual classrooms experienced 87% faster data synchronization
+- Houston-based enterprises benefited from local implementation partners, reducing project timelines by 23% compared to national averages
+
+If any of these areas align with your current challenges, I'd be happy to share the detailed findings from our industry analysis.
 
 Best regards,
-Your Name
-SAP Cloud Migration Strategist`
+Alex`
+    },
+    {
+      id: 'problem_solution',
+      name: 'Problem-Solution: Initial Contact',
+      subject: "Addressing Wood's training certification challenges with SAP modernization",
+      rating: 86.3,
+      sequence: 'sequence_3',
+      sequencePosition: 1,
+      ai_metrics: {
+        openRate: 65.9,
+        responseRate: 28.7,
+        conversionRate: 17.4
+      },
+      body: `Dear Kyle,
+
+I recently reviewed Wood's impressive growth in professional certification programs as highlighted in the Houston Business Journal. Your expansion into specialized industrial safety training particularly stands out in a competitive market.
+
+This prompted our research team to examine how similar training organizations are addressing technology challenges during growth phases. Our industry analysis reveals that companies with comparable certification volumes (12,000-18,000 annually) face three primary challenges with legacy SAP implementations:
+
+1. Certification tracking becomes increasingly manual as volume scales, with staff spending 23-37 hours weekly on data validation
+
+2. Reporting for regulatory compliance requires extensive customization, typically costing $140K-190K annually in development resources
+
+3. Integration with modern learning management systems creates synchronization issues, with error rates averaging 4-8% in cross-platform data
+
+In examining Wood's public technology footprint, we identified several indicators suggesting these challenges may be relevant to your operations. Professional training organizations that have addressed these issues through SAP modernization typically achieve:
+
+• 71% reduction in manual certification processing time
+• 83% decrease in compliance reporting development costs
+• 92% improved accuracy in cross-platform data synchronization
+
+These findings stem from our analysis of 17 professional training organizations that modernized legacy SAP systems between 2020-2023.
+
+I hope this perspective provides valuable context for your technology strategy.
+
+Regards,
+Alex Peterson`
     }
   ];
   
@@ -201,43 +291,75 @@ SAP Cloud Migration Strategist`
   const contacts = [
     {
       id: 1,
-      name: "Michael Chen",
-      email: "m.chen@example.com",
-      company: "Global Manufacturing Inc.",
-      location: "Chicago, IL",
-      position: "CIO"
+      name: "Kyle Flynn-Kasaba",
+      email: "k.flynn@wood.com",
+      company: "Wood",
+      location: "Houston, Texas",
+      position: "Head of IT Infrastructure and Operations",
+      phone: "+1 (713) 555-1234"
     },
     {
       id: 2,
-      name: "Sarah Johnson",
-      email: "s.johnson@example.com",
-      company: "Retail Innovations Group",
-      location: "Minneapolis, MN",
-      position: "VP of IT Infrastructure"
+      name: "Wells Shammout",
+      email: "w.shammout@ips.com",
+      company: "IPS",
+      location: "Rutherford, New Jersey",
+      position: "Vice President, Head of Information Technology",
+      phone: "+1 (201) 555-2345"
     },
     {
       id: 3,
-      name: "David Rodriguez",
-      email: "d.rodriguez@example.com",
-      company: "Western Healthcare Systems",
-      location: "Denver, CO",
-      position: "Head of SAP Applications"
+      name: "Sanjeev Sharma",
+      email: "s.sharma@ipgphotonics.com",
+      company: "IPG Photonics",
+      location: "Framingham, Massachusetts",
+      position: "Head of Information Technology - Info",
+      phone: "+1 (508) 555-3456"
     },
     {
       id: 4,
-      name: "Jennifer Lee",
-      email: "j.lee@example.com",
-      company: "Financial Services Corp",
-      location: "Charlotte, NC",
-      position: "Director of Cloud Strategy"
+      name: "Leah Sullivan",
+      email: "l.sullivan@henkel.com",
+      company: "Henkel",
+      location: "Watchung, New Jersey",
+      position: "Head of IT application Engineering",
+      phone: "+1 (908) 555-4567"
     },
     {
       id: 5,
-      name: "Robert Patel",
-      email: "r.patel@example.com",
-      company: "Tech Solutions International",
-      location: "Austin, TX",
-      position: "SAP Program Director"
+      name: "Benjamin Partout",
+      email: "b.partout@strive.com",
+      company: "Strive",
+      location: "Denver, Colorado",
+      position: "Head of Information Technology",
+      phone: "+1 (303) 555-5678"
+    },
+    {
+      id: 6,
+      name: "Henry Ifiuscati",
+      email: "h.ifiuscati@libertymutual.com",
+      company: "Liberty Mutual Insurance",
+      location: "Boston, Massachusetts",
+      position: "Head of Information Technology",
+      phone: "+1 (617) 555-6789"
+    },
+    {
+      id: 7,
+      name: "Brandon Thielen",
+      email: "b.thielen@fivescinetic.com",
+      company: "Fives Cinetic Corp.",
+      location: "Farmington, Michigan",
+      position: "Head of Information Technology",
+      phone: "+1 (248) 555-7890"
+    },
+    {
+      id: 8,
+      name: "Tayo Oshoel",
+      email: "t.oshoel@holcim.com",
+      company: "Holcim",
+      location: "Washington, District of Columbia",
+      position: "Head of Information Technology",
+      phone: "+1 (202) 555-8901"
     }
   ];
 
@@ -278,14 +400,14 @@ Best regards,
       setIsLoading(false);
       
       // Set default template
-      const defaultTemplate = templates.find(t => t.id === 'independent_research');
+      const defaultTemplate = templates.find(t => t.id === 'ai_highest_initial');
       if (defaultTemplate) {
         setEmailSubject(defaultTemplate.subject);
         setEmailBody(defaultTemplate.body);
       }
       
       // Set default selected contacts
-      setSelectedContacts([contacts[0].name, contacts[2].name]);
+      setSelectedContacts([contacts[0].name]);
       
       // Default scheduled date/time (tomorrow at 9am)
       const tomorrow = new Date();
@@ -459,6 +581,119 @@ Best regards,
                     </div>
                     
                     <div className="space-y-4">
+                      {/* Template Selection UI */}
+                      <div className="bg-gradient-to-br from-[#1e222b]/80 to-[#1e222b]/50 rounded-lg border border-emerald-500/10 p-4">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="bg-emerald-500/20 p-2 rounded">
+                            <FaRegLightbulb className="text-emerald-400" />
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-medium text-white">AI-Recommended Templates</h3>
+                            <p className="text-xs text-white/60">Our AI has analyzed performance metrics to suggest the most effective templates</p>
+                          </div>
+                          <div className="ml-auto bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">
+                            <span className="text-xs text-emerald-400 font-medium">Self-improving AI</span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                          {/* Template Sequence 1 */}
+                          <div className="space-y-2">
+                            <div className="text-white/80 text-xs font-medium flex items-center gap-1">
+                              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                              High-Conversion Sequence
+                            </div>
+                            
+                            {templates
+                              .filter(t => t.sequence === 'sequence_1')
+                              .sort((a, b) => a.sequencePosition - b.sequencePosition)
+                              .map(template => (
+                                <button
+                                  key={template.id}
+                                  onClick={() => handleTemplateChange(template.id)}
+                                  className={`w-full flex items-center p-2 rounded text-left hover:bg-[#28292b]/60 transition-colors ${
+                                    selectedTemplate === template.id ? 'bg-[#28292b]/80 border border-emerald-500/30' : 'bg-[#28292b]/40'
+                                  }`}
+                                >
+                                  <div className="flex-1">
+                                    <p className="text-sm text-white truncate">{template.name}</p>
+                                    <p className="text-xs text-white/60 truncate">Open rate: <span className="text-emerald-400">{template.ai_metrics.openRate}%</span></p>
+                                  </div>
+                                  <div className="text-xs bg-emerald-500/20 px-2 py-1 rounded">
+                                    <span className="text-emerald-400 font-medium">{template.rating.toFixed(1)}%</span>
+                                  </div>
+                                </button>
+                              ))}
+                          </div>
+                          
+                          {/* Template Sequence 2 */}
+                          <div className="space-y-2 pt-2 border-t border-white/10">
+                            <div className="text-white/80 text-xs font-medium flex items-center gap-1">
+                              <span className="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
+                              Value-Focused Sequence
+                            </div>
+                            
+                            {templates
+                              .filter(t => t.sequence === 'sequence_2')
+                              .sort((a, b) => a.sequencePosition - b.sequencePosition)
+                              .map(template => (
+                                <button
+                                  key={template.id}
+                                  onClick={() => handleTemplateChange(template.id)}
+                                  className={`w-full flex items-center p-2 rounded text-left hover:bg-[#28292b]/60 transition-colors ${
+                                    selectedTemplate === template.id ? 'bg-[#28292b]/80 border border-blue-500/30' : 'bg-[#28292b]/40'
+                                  }`}
+                                >
+                                  <div className="flex-1">
+                                    <p className="text-sm text-white truncate">{template.name}</p>
+                                    <p className="text-xs text-white/60 truncate">Open rate: <span className="text-blue-400">{template.ai_metrics.openRate}%</span></p>
+                                  </div>
+                                  <div className="text-xs bg-blue-500/20 px-2 py-1 rounded">
+                                    <span className="text-blue-400 font-medium">{template.rating.toFixed(1)}%</span>
+                                  </div>
+                                </button>
+                              ))}
+                          </div>
+                          
+                          {/* Problem-Solution (Single) */}
+                          <div className="space-y-2 pt-2 border-t border-white/10">
+                            <div className="text-white/80 text-xs font-medium flex items-center gap-1">
+                              <span className="inline-block w-2 h-2 rounded-full bg-purple-500"></span>
+                              Problem-Solution Approach
+                            </div>
+                            
+                            {templates
+                              .filter(t => t.sequence === 'sequence_3')
+                              .map(template => (
+                                <button
+                                  key={template.id}
+                                  onClick={() => handleTemplateChange(template.id)}
+                                  className={`w-full flex items-center p-2 rounded text-left hover:bg-[#28292b]/60 transition-colors ${
+                                    selectedTemplate === template.id ? 'bg-[#28292b]/80 border border-purple-500/30' : 'bg-[#28292b]/40'
+                                  }`}
+                                >
+                                  <div className="flex-1">
+                                    <p className="text-sm text-white truncate">{template.name}</p>
+                                    <p className="text-xs text-white/60 truncate">Open rate: <span className="text-purple-400">{template.ai_metrics.openRate}%</span></p>
+                                  </div>
+                                  <div className="text-xs bg-purple-500/20 px-2 py-1 rounded">
+                                    <span className="text-purple-400 font-medium">{template.rating.toFixed(1)}%</span>
+                                  </div>
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                        
+                        <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                          <div className="text-xs text-white/60">
+                            <span className="text-emerald-400 font-medium">AI Insight:</span> Personalized subject lines have increased open rates by 37.8%
+                          </div>
+                          <button className="btn btn-xs bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 text-white border border-emerald-500/20">
+                            View all templates
+                          </button>
+                        </div>
+                      </div>
+                      
                       <div className="form-control">
                         <label className="label">
                           <span className="label-text font-medium text-white/80">Subject</span>
@@ -535,6 +770,69 @@ Best regards,
                           </div>
                           <div className="whitespace-pre-line border-t border-emerald-500/20 pt-4 text-white">
                             {personalize(emailBody, contacts.find(c => c.name === selectedContacts[0]))}
+                          </div>
+                          
+                          {/* AI Insights Panel */}
+                          <div className="mt-6 pt-4 border-t border-emerald-500/20">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="text-emerald-500">
+                                <FaRegLightbulb size={18} />
+                              </div>
+                              <h3 className="text-white text-sm font-medium">AI Message Analysis</h3>
+                              <div className="ml-auto bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">
+                                <span className="text-xs text-emerald-400 font-medium">Continually learning</span>
+                              </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                                <div className="text-xs text-white/60 mb-1">Readability Score</div>
+                                <div className="flex items-center justify-between">
+                                  <div className="text-white font-medium">Excellent</div>
+                                  <div className="text-emerald-400 font-medium">92/100</div>
+                                </div>
+                                <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
+                                  <div className="h-full w-[92%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                                <div className="text-xs text-white/60 mb-1">Predicted Open Rate</div>
+                                <div className="flex items-center justify-between">
+                                  <div className="text-white font-medium">High</div>
+                                  <div className="text-emerald-400 font-medium">78.4%</div>
+                                </div>
+                                <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
+                                  <div className="h-full w-[78.4%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                                <div className="text-xs text-white/60 mb-1">CTR Prediction</div>
+                                <div className="flex items-center justify-between">
+                                  <div className="text-white font-medium">Above Average</div>
+                                  <div className="text-emerald-400 font-medium">42.1%</div>
+                                </div>
+                                <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
+                                  <div className="h-full w-[42.1%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                                <div className="text-xs text-white/60 mb-1">Meeting Conversion</div>
+                                <div className="flex items-center justify-between">
+                                  <div className="text-white font-medium">Outstanding</div>
+                                  <div className="text-emerald-400 font-medium">31.5%</div>
+                                </div>
+                                <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
+                                  <div className="h-full w-[31.5%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="mt-3 p-2 bg-emerald-500/10 border border-emerald-500/20 rounded text-xs text-white/80">
+                              <span className="text-emerald-400 font-medium">AI Recommendation:</span> This message is optimized for Kyle Flynn's profile as Head of IT at Wood. The specific mention of training industry challenges increases relevance by 47%.
+                            </div>
                           </div>
                         </div>
                       ) : (
@@ -760,10 +1058,10 @@ Best regards,
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
                     </td>
-                    <td className="font-medium text-white">Jeff Levy</td>
-                    <td className="text-white/80">j.levy@example.com</td>
-                    <td>Apple</td>
-                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="font-medium text-white">{contacts[0].name}</td>
+                    <td className="text-white/80">{contacts[0].email}</td>
+                    <td>{contacts[0].company}</td>
+                    <td className="text-white/80">{contacts[0].position}</td>
                     <td className="text-right">
                       <span className="text-emerald-400 text-sm">Opened previous email</span>
                     </td>
@@ -772,10 +1070,10 @@ Best regards,
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </td>
-                    <td className="font-medium text-white">Amy Huke</td>
-                    <td className="text-white/80">a.huke@example.com</td>
-                    <td>Honeywell</td>
-                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="font-medium text-white">{contacts[1].name}</td>
+                    <td className="text-white/80">{contacts[1].email}</td>
+                    <td>{contacts[1].company}</td>
+                    <td className="text-white/80">{contacts[1].position}</td>
                     <td className="text-right">
                       <span className="text-blue-400 text-sm">New contact</span>
                     </td>
@@ -784,10 +1082,10 @@ Best regards,
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
                     </td>
-                    <td className="font-medium text-white">Ryan Kuddes</td>
-                    <td className="text-white/80">r.kuddes@example.com</td>
-                    <td>Apple</td>
-                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="font-medium text-white">{contacts[2].name}</td>
+                    <td className="text-white/80">{contacts[2].email}</td>
+                    <td>{contacts[2].company}</td>
+                    <td className="text-white/80">{contacts[2].position}</td>
                     <td className="text-right">
                       <span className="text-emerald-400 text-sm">Opened previous email</span>
                     </td>
@@ -796,10 +1094,10 @@ Best regards,
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </td>
-                    <td className="font-medium text-white">Zuretti Carter</td>
-                    <td className="text-white/80">z.carter@example.com</td>
-                    <td>ChargePoint</td>
-                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="font-medium text-white">{contacts[3].name}</td>
+                    <td className="text-white/80">{contacts[3].email}</td>
+                    <td>{contacts[3].company}</td>
+                    <td className="text-white/80">{contacts[3].position}</td>
                     <td className="text-right">
                       <span className="text-yellow-400 text-sm">Clicked link</span>
                     </td>
@@ -808,10 +1106,10 @@ Best regards,
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </td>
-                    <td className="font-medium text-white">Scott Simpson</td>
-                    <td className="text-white/80">s.simpson@example.com</td>
-                    <td>Plexus Corp.</td>
-                    <td className="text-white/80">Facilities Manager</td>
+                    <td className="font-medium text-white">{contacts[4].name}</td>
+                    <td className="text-white/80">{contacts[4].email}</td>
+                    <td>{contacts[4].company}</td>
+                    <td className="text-white/80">{contacts[4].position}</td>
                     <td className="text-right"></td>
                   </tr>
                 </tbody>
@@ -819,7 +1117,7 @@ Best regards,
             </div>
             
             <div className="mt-4 flex items-center justify-between">
-              <div className="text-white/60 text-sm">2 contacts selected from 2,347 total</div>
+              <div className="text-white/60 text-sm">2 contacts selected from {contacts.length} total</div>
               <div className="flex gap-2">
                 <div className="join">
                   <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">«</button>
@@ -1030,6 +1328,138 @@ Best regards,
                   </div>
                 </div>
               </div>
+
+              {/* LinkedIn Contact Database Section */}
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#0A66C2]/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 mt-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-gradient-to-br from-[#0A66C2] to-[#0A66C2]/80 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                    <FaDatabase className="text-lg text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">LinkedIn Connections</h2>
+                    <p className="text-white/60 text-sm">Professional contacts for voice message outreach</p>
+                  </div>
+                  <div className="ml-auto flex items-center gap-2">
+                    <div className="bg-[#0A66C2]/20 px-3 py-1 rounded-full border border-[#0A66C2]/30 flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-[#0A66C2] animate-pulse"></div>
+                      <span className="text-xs text-[#0A66C2] font-medium">Connection Required</span>
+                    </div>
+                    <div className="bg-blue-500/20 px-3 py-1 rounded-full border border-blue-500/30">
+                      <span className="text-xs text-blue-400 font-medium">65% connection rate</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="table table-sm w-full">
+                    <thead>
+                      <tr className="border-b border-[#0A66C2]/20">
+                        <th className="w-10 bg-[#28292b]/80 text-white/80">
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-info" />
+                        </th>
+                        <th className="bg-[#28292b]/80 text-white/80">Name</th>
+                        <th className="bg-[#28292b]/80 text-white/80">Company</th>
+                        <th className="bg-[#28292b]/80 text-white/80">Position</th>
+                        <th className="bg-[#28292b]/80 text-white/80">Location</th>
+                        <th className="bg-[#28292b]/80 text-white/80 text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#0A66C2]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-info" checked />
+                        </td>
+                        <td className="font-medium text-white">{contacts[0].name}</td>
+                        <td className="text-white/80">{contacts[0].company}</td>
+                        <td className="text-white/80">{contacts[0].position}</td>
+                        <td>{contacts[0].location}</td>
+                        <td className="text-right">
+                          <span className="text-[#0A66C2] text-sm">Connected</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#0A66C2]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-info" />
+                        </td>
+                        <td className="font-medium text-white">{contacts[1].name}</td>
+                        <td className="text-white/80">{contacts[1].company}</td>
+                        <td className="text-white/80">{contacts[1].position}</td>
+                        <td>{contacts[1].location}</td>
+                        <td className="text-right">
+                          <span className="text-blue-400 text-sm">Connection pending</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#0A66C2]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-info" checked />
+                        </td>
+                        <td className="font-medium text-white">{contacts[5].name}</td>
+                        <td className="text-white/80">{contacts[5].company}</td>
+                        <td className="text-white/80">{contacts[5].position}</td>
+                        <td>{contacts[5].location}</td>
+                        <td className="text-right">
+                          <span className="text-[#0A66C2] text-sm">Connected</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#0A66C2]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-info" />
+                        </td>
+                        <td className="font-medium text-white">{contacts[6].name}</td>
+                        <td className="text-white/80">{contacts[6].company}</td>
+                        <td className="text-white/80">{contacts[6].position}</td>
+                        <td>{contacts[6].location}</td>
+                        <td className="text-right">
+                          <span className="text-yellow-400 text-sm">Viewed profile</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#0A66C2]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-info" />
+                        </td>
+                        <td className="font-medium text-white">{contacts[7].name}</td>
+                        <td className="text-white/80">{contacts[7].company}</td>
+                        <td className="text-white/80">{contacts[7].position}</td>
+                        <td>{contacts[7].location}</td>
+                        <td className="text-right">
+                          <span className="text-red-400 text-sm">Not connected</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="text-white/60 text-sm">2 contacts selected from {contacts.length} total</div>
+                  <div className="flex gap-2">
+                    <div className="join">
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#0A66C2]/20">«</button>
+                      <button className="join-item btn btn-sm bg-[#0A66C2] text-white border-[#0A66C2]">1</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#0A66C2]/20">2</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#0A66C2]/20">3</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#0A66C2]/20">4</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#0A66C2]/20">5</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#0A66C2]/20">»</button>
+                    </div>
+                    <button className="btn btn-sm bg-gradient-to-br from-[#0A66C2] to-[#0A66C2]/80 hover:from-[#0A66C2]/90 hover:to-[#0A66C2]/70 text-white border-0 gap-2 shadow-lg hover:shadow-[#0A66C2]/20 transition-all">
+                      Import Connections
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="mt-6 p-4 bg-[#0A66C2]/10 border border-[#0A66C2]/20 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <div className="text-[#0A66C2]">
+                      <MdOutlineSettings className="text-xl animate-spin-slow" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-white/90">
+                        <span className="font-medium text-[#0A66C2]">Connection requirement:</span> LinkedIn voice messages can only be sent to users who have accepted your connection request. Our system will automatically filter your selected contacts based on connection status.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </>
           )}
 
@@ -1044,12 +1474,29 @@ Best regards,
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">WhatsApp Message Flow</h2>
-                    <p className="text-white/60 text-sm">Automated follow-up sequence for prospects</p>
+                    <p className="text-white/60 text-sm">Automated follow-up sequence for connected contacts</p>
+                  </div>
+                  <div className="ml-auto bg-[#25D366]/20 px-3 py-1 rounded-full border border-[#25D366]/30 flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></div>
+                    <span className="text-xs text-[#25D366] font-medium">Previous contact required</span>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-[#25D366]/10 border border-[#25D366]/20 rounded-lg mb-6">
+                  <div className="flex items-center gap-2">
+                    <div className="text-[#25D366]">
+                      <FaWhatsapp size={18} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-white/90">
+                        <span className="font-medium text-[#25D366]">Important:</span> WhatsApp business messages can only be sent to contacts who have previously connected with your organization. This ensures compliance with WhatsApp's business messaging policies and maintains high engagement rates.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 <div className="mt-6 relative">
-                  {/* Flow diagram for WhatsApp sequence */}
+                  {/* Flow diagram for WhatsApp sequence - keep this section */}
                   <div className="flex flex-wrap justify-between items-center gap-4 px-4">
                     {/* Initial Contact */}
                     <div className="relative flex flex-col items-center w-40">
@@ -1155,26 +1602,6 @@ Best regards,
                       </div>
                     </div>
                   </div>
-
-                  {/* Stats about the sequence */}
-                  <div className="mt-8 grid grid-cols-4 gap-4">
-                    <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-[#25D366]/10">
-                      <div className="text-sm text-[#25D366] mb-1">Average Response Time</div>
-                      <div className="text-lg text-white font-bold">4.2 hours</div>
-                    </div>
-                    <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-[#25D366]/10">
-                      <div className="text-sm text-[#25D366] mb-1">Response Rate</div>
-                      <div className="text-lg text-white font-bold">68% reply</div>
-                    </div>
-                    <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-[#25D366]/10">
-                      <div className="text-sm text-[#25D366] mb-1">Meeting Rate</div>
-                      <div className="text-lg text-white font-bold">32% book</div>
-                    </div>
-                    <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-[#25D366]/10">
-                      <div className="text-sm text-[#25D366] mb-1">Sequence Complete</div>
-                      <div className="text-lg text-white font-bold">85% of flow</div>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -1210,84 +1637,135 @@ Best regards,
                     <button className="btn btn-sm bg-[#1e222b] text-white border border-[#25D366]/20">Close</button>
                     <button className="btn btn-sm bg-[#25D366] hover:bg-[#128C7E] text-white border-0">
                       Send Message
-                </button>
+                    </button>
                   </div>
                 </div>
               </dialog>
 
-              {/* Campaign Performance */}
+              {/* WhatsApp Contacts Database Section - ADDING NEW SECTION */}
               <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#25D366]/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 mt-6">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="bg-gradient-to-br from-[#25D366] to-[#128C7E] p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                    <FaRegChartBar size={24} />
-                </div>
+                    <FaDatabase className="text-lg text-white" />
+                  </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-white">Campaign Performance</h2>
-                    <p className="text-white/60 text-sm">Real-time messaging statistics</p>
-              </div>
-            </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Message Templates */}
-                  <div className="backdrop-blur-md bg-[#28292b]/40 rounded-lg p-4 border border-[#25D366]/10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#25D366] to-[#128C7E] flex items-center justify-center">
-                        <FaComments size={20} className="text-white" />
-          </div>
-                      <div>
-                        <h3 className="text-white font-medium">Message Templates</h3>
-                        <p className="text-white/60 text-sm">Pre-approved business templates</p>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      {whatsappFlow.map(message => (
-                        <div key={message.id} className="bg-[#1A1A1A] rounded-lg p-4">
-                          <h4 className="text-[#25D366] font-medium mb-2">{message.name}</h4>
-                          <p className="text-white/80 text-sm">{message.message}</p>
-                        </div>
-                      ))}
+                    <h2 className="text-lg font-semibold text-white">WhatsApp Contacts</h2>
+                    <p className="text-white/60 text-sm">Contacts who have previously connected with your organization</p>
+                  </div>
+                  <div className="ml-auto flex items-center gap-2">
+                    <div className="bg-[#25D366]/20 px-3 py-1 rounded-full border border-[#25D366]/30 flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></div>
+                      <span className="text-xs text-[#25D366] font-medium">Pre-qualified Contacts</span>
                     </div>
                   </div>
-
-                  {/* Performance Chart */}
-                  <div className="backdrop-blur-md bg-[#28292b]/40 rounded-lg p-4 border border-[#25D366]/10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#25D366] to-[#128C7E] flex items-center justify-center">
-                        <FaRegChartBar size={20} className="text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-medium">Response Metrics</h3>
-                        <p className="text-white/60 text-sm">Weekly engagement analysis</p>
-                      </div>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="table table-sm w-full">
+                    <thead>
+                      <tr className="border-b border-[#25D366]/20">
+                        <th className="w-10 bg-[#28292b]/80 text-white/80">
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                        </th>
+                        <th className="bg-[#28292b]/80 text-white/80">Name</th>
+                        <th className="bg-[#28292b]/80 text-white/80">Phone</th>
+                        <th className="bg-[#28292b]/80 text-white/80">Company</th>
+                        <th className="bg-[#28292b]/80 text-white/80">Position</th>
+                        <th className="bg-[#28292b]/80 text-white/80 text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#25D366]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
+                        </td>
+                        <td className="font-medium text-white">{contacts[0].name}</td>
+                        <td className="text-white/80">{contacts[0].phone}</td>
+                        <td>{contacts[0].company}</td>
+                        <td className="text-white/80">{contacts[0].position}</td>
+                        <td className="text-right">
+                          <span className="text-[#25D366] text-sm">Previously contacted</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#25D366]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                        </td>
+                        <td className="font-medium text-white">{contacts[3].name}</td>
+                        <td className="text-white/80">{contacts[3].phone}</td>
+                        <td>{contacts[3].company}</td>
+                        <td className="text-white/80">{contacts[3].position}</td>
+                        <td className="text-right">
+                          <span className="text-[#25D366] text-sm">Previously contacted</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#25D366]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
+                        </td>
+                        <td className="font-medium text-white">{contacts[4].name}</td>
+                        <td className="text-white/80">{contacts[4].phone}</td>
+                        <td>{contacts[4].company}</td>
+                        <td className="text-white/80">{contacts[4].position}</td>
+                        <td className="text-right">
+                          <span className="text-green-400 text-sm">Responded to email</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#25D366]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
+                        </td>
+                        <td className="font-medium text-white">{contacts[7].name}</td>
+                        <td className="text-white/80">{contacts[7].phone}</td>
+                        <td>{contacts[7].company}</td>
+                        <td className="text-white/80">{contacts[7].position}</td>
+                        <td className="text-right">
+                          <span className="text-yellow-400 text-sm">Scheduled meeting</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-[#28292b]/40 border-b border-[#25D366]/10">
+                        <td>
+                          <input type="checkbox" className="checkbox checkbox-xs checkbox-success" disabled />
+                        </td>
+                        <td className="font-medium text-white opacity-50">{contacts[2].name}</td>
+                        <td className="text-white/80 opacity-50">{contacts[2].phone}</td>
+                        <td className="opacity-50">{contacts[2].company}</td>
+                        <td className="text-white/80 opacity-50">{contacts[2].position}</td>
+                        <td className="text-right">
+                          <span className="text-red-400 text-sm">No prior contact</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="text-white/60 text-sm">2 contacts selected from {contacts.length} total</div>
+                  <div className="flex gap-2">
+                    <div className="join">
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#25D366]/20">«</button>
+                      <button className="join-item btn btn-sm bg-[#25D366] text-white border-[#25D366]">1</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#25D366]/20">2</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#25D366]/20">3</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#25D366]/20">4</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#25D366]/20">5</button>
+                      <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-[#25D366]/20">»</button>
                     </div>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
-                          data={[
-                            { name: 'Mon', sent: 45, delivered: 45, read: 38, responded: 12 },
-                            { name: 'Tue', sent: 52, delivered: 52, read: 45, responded: 18 },
-                            { name: 'Wed', sent: 48, delivered: 48, read: 42, responded: 15 },
-                            { name: 'Thu', sent: 55, delivered: 55, read: 48, responded: 20 },
-                            { name: 'Fri', sent: 47, delivered: 47, read: 40, responded: 14 }
-                          ]}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                          <XAxis dataKey="name" stroke="#94a3b8" />
-                          <YAxis stroke="#94a3b8" />
-                          <Tooltip
-                            contentStyle={{
-                              backgroundColor: '#1e222b',
-                              border: 'none',
-                              borderRadius: '8px',
-                              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                            }}
-                          />
-                          <Line type="monotone" dataKey="sent" stroke="#25D366" strokeWidth={2} dot={{ r: 4 }} />
-                          <Line type="monotone" dataKey="delivered" stroke="#34D399" strokeWidth={2} dot={{ r: 4 }} />
-                          <Line type="monotone" dataKey="read" stroke="#60A5FA" strokeWidth={2} dot={{ r: 4 }} />
-                          <Line type="monotone" dataKey="responded" stroke="#F59E0B" strokeWidth={2} dot={{ r: 4 }} />
-                        </LineChart>
-                      </ResponsiveContainer>
+                    <button className="btn btn-sm bg-gradient-to-br from-[#25D366] to-[#128C7E] hover:from-[#25D366]/90 hover:to-[#128C7E]/70 text-white border-0 gap-2 shadow-lg hover:shadow-[#25D366]/20 transition-all">
+                      Sync WhatsApp
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="mt-6 p-4 bg-[#25D366]/10 border border-[#25D366]/20 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <div className="text-[#25D366]">
+                      <MdOutlineRule className="text-xl" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-white/90">
+                        <span className="font-medium text-[#25D366]">WhatsApp Business Policy:</span> Messages can only be sent to contacts who have previously interacted with your business. Contacts without prior interaction are automatically filtered out to maintain compliance with WhatsApp's business messaging guidelines.
+                      </p>
                     </div>
                   </div>
                 </div>
