@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #3b82f6;
+        }
+        .status {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background: #2a2a2a;
+        }
+        .success { border-left: 4px solid #10b981; }
+        .error { border-left: 4px solid #ef4444; }
+        .loading { border-left: 4px solid #f59e0b; }
+    </style>
+</head>
+<body>
+    <h1>Google Maps Integration Test</h1>
+    <div id="status" class="status loading">
+        🔄 Loading Google Maps API...
+    </div>
+    <div id="map"></div>
+
+    <script>
+        function updateStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = message;
+            statusEl.className = `status ${type}`;
+        }
+
+        function initMap() {
+            try {
+                updateStatus('🗺️ Initializing map...', 'loading');
+                
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: 42.33361, lng: -83.06028 }, // MGM Grand Detroit
+                    zoom: 16,
+                    mapTypeId: google.maps.MapTypeId.SATELLITE,
+                    tilt: 45,
+                    heading: 0
+                });
+
+                // Add a marker for MGM Grand Detroit
+                const marker = new google.maps.Marker({
+                    position: { lat: 42.33361, lng: -83.06028 },
+                    map: map,
+                    title: 'MGM Grand Detroit',
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 12,
+                        fillColor: '#3b82f6',
+                        fillOpacity: 1,
+                        strokeColor: '#ffffff',
+                        strokeWeight: 3
+                    }
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="color: #000; padding: 12px;">
+                            <h3 style="margin: 0 0 8px 0; color: #1e40af;">MGM Grand Detroit</h3>
+                            <p style="margin: 4px 0; font-size: 12px;"><strong>Type:</strong> Casino/Hotel</p>
+                            <p style="margin: 4px 0; font-size: 12px;"><strong>Energy Analysis:</strong> Available</p>
+                        </div>
+                    `
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+
+                // Open info window by default
+                setTimeout(() => {
+                    infoWindow.open(map, marker);
+                }, 1000);
+
+                updateStatus('✅ Google Maps loaded successfully! Click the blue marker for building info.', 'success');
+            } catch (error) {
+                console.error('Map initialization error:', error);
+                updateStatus(`❌ Error initializing map: ${error.message}`, 'error');
+            }
+        }
+
+        function loadGoogleMaps() {
+            if (window.google && window.google.maps) {
+                initMap();
+                return;
+            }
+
+            updateStatus('📡 Loading Google Maps API...', 'loading');
+            
+            const script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBHLett8djBo62dDXj0EjCpF6vWLwXNkuM&libraries=geometry,places&callback=initMap';
+            script.async = true;
+            script.defer = true;
+            script.onerror = () => {
+                updateStatus('❌ Failed to load Google Maps API. Check your internet connection and API key.', 'error');
+            };
+            
+            document.head.appendChild(script);
+        }
+
+        // Start loading when page loads
+        window.addEventListener('load', loadGoogleMaps);
+    </script>
+</body>
+</html> 

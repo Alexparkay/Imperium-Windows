@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
+
 import { useFilters } from '../contexts/FilterContext';
 import { 
   MdSearch, 
@@ -58,18 +59,18 @@ import {
 import { toast } from 'react-hot-toast';
 import { FaLinkedin, FaFilter } from 'react-icons/fa';
 
-// Add company types
-const companyTypes = [
-  "Manufacturing", 
-  "Distribution", 
-  "Retail", 
-  "Professional Services", 
-  "Healthcare", 
-  "Financial Services", 
-  "Public Sector", 
-  "Utilities", 
-  "Education", 
-  "Hospitality"
+// Building types
+const buildingTypes = [
+  "Office Buildings",
+  "Retail Centers", 
+  "Industrial Facilities",
+  "Warehouses",
+  "Healthcare Facilities",
+  "Educational Buildings",
+  "Hospitality Properties",
+  "Mixed-Use Developments",
+  "Government Buildings",
+  "Religious Buildings"
 ];
 
 const MarketDatabase = () => {
@@ -86,7 +87,7 @@ const MarketDatabase = () => {
     medium: 106500,
     large: 36500,
     enriched: 0,
-    highPotential: 1964,
+    highPotential: 9964,
   });
   
   const [pagination, setPagination] = useState({
@@ -105,247 +106,400 @@ const MarketDatabase = () => {
     "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
   ];
 
-  // Industry/sector options
-  const sectors = [
-    "Manufacturing", "Technology", "Healthcare", "Retail", "Wholesale Distribution", "Energy", 
-    "Financial Services", "Education", "Food & Beverage", "Automotive", "Electronics", 
-    "Pharmaceuticals", "Logistics", "Aerospace", "Telecommunications"
+  // Add Detroit as a city option for testing
+  const locations = [
+    "Detroit, Michigan", "Houston, Texas", "New York, New York", "Los Angeles, California", 
+    "Chicago, Illinois", "Phoenix, Arizona", "Philadelphia, Pennsylvania", "San Antonio, Texas",
+    "San Diego, California", "Dallas, Texas", "San Jose, California", "Austin, Texas",
+    "Jacksonville, Florida", "Fort Worth, Texas", "Columbus, Ohio", "Charlotte, North Carolina",
+    "San Francisco, California", "Indianapolis, Indiana", "Seattle, Washington", "Denver, Colorado",
+    "Boston, Massachusetts", "El Paso, Texas", "Nashville, Tennessee", "Baltimore, Maryland",
+    "Oklahoma City, Oklahoma", "Portland, Oregon", "Las Vegas, Nevada", "Louisville, Kentucky",
+    "Milwaukee, Wisconsin", "Albuquerque, New Mexico", "Tucson, Arizona", "Fresno, California",
+    "Sacramento, California", "Mesa, Arizona", "Kansas City, Missouri", "Atlanta, Georgia",
+    "Long Beach, California", "Colorado Springs, Colorado", "Raleigh, North Carolina", "Miami, Florida",
+    "Virginia Beach, Virginia", "Omaha, Nebraska", "Oakland, California", "Minneapolis, Minnesota",
+    "Tulsa, Oklahoma", "Arlington, Texas", "Tampa, Florida", "New Orleans, Louisiana"
   ];
 
-  // Revenue ranges
-  const revenueRanges = [
-    "Under $10M annual revenue",
-    "$10M - $50M annual revenue",
-    "$50M - $100M annual revenue", 
-    "$100M - $500M annual revenue",
-    "$500M - $1B annual revenue",
-    "Over $1B annual revenue"
+  // Building size options (square footage)
+  const buildingSizes = [
+    "Under 5,000 sq ft",
+    "5,000 - 10,000 sq ft",
+    "10,000 - 25,000 sq ft",
+    "25,000 - 50,000 sq ft",
+    "50,000 - 100,000 sq ft",
+    "100,000 - 250,000 sq ft",
+    "250,000 - 500,000 sq ft",
+    "Over 500,000 sq ft"
   ];
 
-  // ERP modules ranges
-  const erpModulesRanges = [
-    "Basic (FI/CO only)",
-    "Standard (FI/CO, MM, SD)",
-    "Advanced (FI/CO, MM, SD, PP, QM)",
-    "Enterprise (Full SAP Suite)"
+  // Number of windows ranges
+  const windowCounts = [
+    "1-10 windows",
+    "11-25 windows",
+    "26-50 windows",
+    "51-100 windows",
+    "101-250 windows",
+    "251-500 windows",
+    "Over 500 windows"
   ];
 
-  // Cost ranges for filters
-  const annualSpendRanges = [
-    "Under $100,000",
-    "$100,000 - $250,000",
-    "$250,000 - $500,000",
-    "$500,000 - $1,000,000",
-    "$1,000,000 - $2,500,000",
-    "Over $2,500,000"
+  // Age of building ranges
+  const buildingAges = [
+    "Built in 2020s",
+    "Built in 2010s",
+    "Built in 2000s",
+    "Built in 1990s",
+    "Built in 1980s",
+    "Built in 1970s",
+    "Built before 1970"
   ];
 
-  const implementationSizeRanges = [
-    "Small (< 50 users)",
-    "Medium (50 - 200 users)",
-    "Large (200 - 500 users)",
-    "Enterprise (> 500 users)"
+  // Property value ranges
+  const propertyValues = [
+    "Under $500K",
+    "$500K - $1M",
+    "$1M - $2.5M",
+    "$2.5M - $5M",
+    "$5M - $10M",
+    "$10M - $25M",
+    "Over $25M"
   ];
 
-  const dealSizeRanges = [
-    "Under $250,000",
-    "$250,000 - $500,000",
-    "$500,000 - $1,000,000",
-    "$1,000,000 - $2,500,000",
-    "Over $2,500,000"
+  // Decision making authority levels
+  const decisionMakingAuthority = [
+    "Property Owner",
+    "Property Manager",
+    "Facilities Manager",
+    "Building Operations Manager",
+    "Maintenance Supervisor",
+    "Tenant Representative",
+    "Board Member",
+    "Executive Decision Maker"
   ];
 
-  // Add employee count ranges
-  const employeeCountRanges = [
-    "1-50 employees",
-    "51-200 employees",
-    "201-500 employees",
-    "501-1,000 employees",
-    "1,001-5,000 employees",
-    "5,001-10,000 employees",
-    "10,000+ employees"
+  // Building condition options
+  const buildingConditions = [
+    "Excellent",
+    "Good",
+    "Fair",
+    "Needs Renovation",
+    "Under Construction",
+    "Recently Renovated"
   ];
 
-  // Add employee count filter state
-  const [employeeCountFilter, setEmployeeCountFilter] = useState('');
-  const [companyNameFilter, setCompanyNameFilter] = useState('');
+  // Occupancy status
+  const occupancyStatus = [
+    "Fully Occupied",
+    "Partially Occupied",
+    "Vacant",
+    "Under Lease",
+    "For Sale",
+    "For Rent"
+  ];
+
+  // Building filter states
+  const [buildingNameFilter, setBuildingNameFilter] = useState('');
+  const [buildingSizeFilter, setBuildingSizeFilter] = useState('');
+  const [windowCountFilter, setWindowCountFilter] = useState('');
+  const [buildingAgeFilter, setBuildingAgeFilter] = useState('');
+  const [propertyValueFilter, setPropertyValueFilter] = useState('');
+  const [decisionMakerFilter, setDecisionMakerFilter] = useState('');
+  const [buildingConditionFilter, setBuildingConditionFilter] = useState('');
+  const [occupancyStatusFilter, setOccupancyStatusFilter] = useState('');
   const [verifiedEmailFilter, setVerifiedEmailFilter] = useState(false);
   const [verifiedPhoneFilter, setVerifiedPhoneFilter] = useState(false);
 
-  // Sample company data
-  const [companies, setCompanies] = useState([
-    {
-      id: 2,
-      name: "Kyle Flynn-Kasaba",
-      jobTitle: "Head of IT Infrastructure and Operations",
-      company: "Wood",
-      emails: true,
-      phoneNumbers: true,
-      location: "Houston, Texas",
-      enriched: true,
-      verified: true,
-      employeeCount: 36000,
-      industry: "Professional Training & Coaching"
-    },
-    {
-      id: 3,
-      name: "Wells Shammout",
-      jobTitle: "Vice President, Head of Information Technology",
-      company: "IPS",
-      emails: true,
-      phoneNumbers: true,
-      location: "Rutherford, New Jersey",
-      enriched: true,
-      verified: true,
-      employeeCount: 3400,
-      industry: "Information Services"
-    },
-    {
-      id: 4,
-      name: "Sanjeev Sharma",
-      jobTitle: "Head of Information Technology - Info",
-      company: "IPG Photonics",
-      emails: true,
-      phoneNumbers: true,
-      location: "Framingham, Massachusetts",
-      enriched: true,
-      verified: true,
-      employeeCount: 1600,
-      industry: "Electrical/Electronic Manufacturing"
-    },
-    {
-      id: 5,
-      name: "Leah Sullivan",
-      jobTitle: "Head of IT application Engineering",
-      company: "Henkel",
-      emails: true,
-      phoneNumbers: true,
-      location: "Watchung, New Jersey",
-      enriched: true,
-      verified: true,
-      employeeCount: 48000,
-      industry: "Mechanical Or Industrial Engineering"
-    },
-    {
-      id: 6,
-      name: "Benjamin Partout",
-      jobTitle: "Head of Information Technology",
-      company: "Strive",
-      emails: true,
-      phoneNumbers: true,
-      location: "Denver, Colorado",
-      enriched: true,
-      verified: true,
-      employeeCount: 160,
-      industry: "Chemicals - Research"
-    },
-    {
-      id: 7,
-      name: "Henry Ifiuscati",
-      jobTitle: "Head of Information Technology",
-      company: "Liberty Mutual Insurance",
-      emails: true,
-      phoneNumbers: true,
-      location: "Boston, Massachusetts",
-      enriched: true,
-      verified: true,
-      employeeCount: 45000,
-      industry: "Insurance - Financial Services"
-    },
-    {
-      id: 8,
-      name: "Brandon Thielen",
-      jobTitle: "Head of Information Technology",
-      company: "Fives Cinetic Corp.",
-      emails: true,
-      phoneNumbers: true,
-      location: "Farmington, Michigan",
-      enriched: true,
-      verified: true,
-      employeeCount: 2600,
-      industry: "Machinery"
-    },
-    {
-      id: 9,
-      name: "Tayo Oshoei",
-      jobTitle: "Head of Information Technology",
-      company: "Holcim",
-      emails: true,
-      phoneNumbers: true,
-      location: "Washington, District of Columbia",
-      enriched: true,
-      verified: true,
-      employeeCount: 10100,
-      industry: "Building Materials"
-    },
-    {
-      id: 10,
-      name: "Rahul Chaudhary",
-      jobTitle: "Head of Information Technology",
-      company: "TEK Inspirations LLC",
-      emails: true,
-      phoneNumbers: true,
-      location: "Frisco, Texas",
-      enriched: true,
-      verified: true,
-      employeeCount: 440,
-      industry: "Information Technology & Services"
-    },
-    {
-      id: 11,
-      name: "Vidyasagar Gurupalli",
-      jobTitle: "Senior Information Technology Manager",
-      company: "MSRcosmos LLC",
-      emails: true,
-      phoneNumbers: true,
-      location: "United States",
-      enriched: true,
-      verified: true,
-      employeeCount: 480,
-      industry: "Information Technology & Services"
-    },
-    {
-      id: 12,
-      name: "Jose Pastor",
-      jobTitle: "Head of Information Technology",
-      company: "MAPFRE",
-      emails: true,
-      phoneNumbers: true,
-      location: "Miami, Florida",
-      enriched: true,
-      verified: true,
-      employeeCount: 36000,
-      industry: "Insurance"
-    },
-    {
-      id: 13,
-      name: "Don Lebert",
-      jobTitle: "Head of IT & Security",
-      company: "Pinecone",
-      emails: true,
-      phoneNumbers: true,
-      location: "Winterport, Maine",
-      enriched: true,
-      verified: true,
-      employeeCount: 150,
-      industry: "Information Technology & Services"
-    },
-    {
-      id: 14,
-      name: "Chris Webster",
-      jobTitle: "Head of IT - Americas",
-      company: "Lendlease",
-      emails: true,
-      phoneNumbers: true,
-      location: "Charlotte, North Carolina",
-      enriched: true,
-      verified: true,
-      employeeCount: 11000,
-      industry: "Real Estate - Construction"
-    }
-  ]);
+  // Building interface based on CSV structure
+  interface Building {
+    id: number;
+    name: string;
+    jobTitle: string;
+    buildingName: string;
+    emails: boolean;
+    phoneNumbers: boolean;
+    location: string;
+    enriched: boolean;
+    verified: boolean;
+    buildingSize: string;
+    buildingType: string;
+    windowCount: string;
+    propertyValue: string;
+    floors: string;
+    year: string;
+    status: string;
+    address: string;
+    propertyOwner: string;
+  }
 
-  // Custom select component to fix white dropdown issue
+  // Function to parse CSV data with proper handling of quoted fields and multi-line content
+  const parseCSV = (csvText: string): Building[] => {
+    const buildings: Building[] = [];
+    let currentRow = '';
+    let inQuotes = false;
+    let rowCount = 0;
+    
+    // Split by lines but handle multi-line quoted fields
+    const lines = csvText.split('\n');
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      currentRow += (currentRow ? '\n' : '') + line;
+      
+      // Count quotes to determine if we're inside a quoted field
+      let quoteCount = 0;
+      for (let j = 0; j < currentRow.length; j++) {
+        if (currentRow[j] === '"') {
+          quoteCount++;
+        }
+      }
+      
+      // If quote count is even, we're not inside a quoted field
+      inQuotes = quoteCount % 2 !== 0;
+      
+      if (!inQuotes) {
+        // Process the complete row
+        if (rowCount === 0) {
+          // Skip header row
+          rowCount++;
+          currentRow = '';
+          continue;
+        }
+        
+        if (currentRow.trim()) {
+          const values = parseCSVRow(currentRow);
+          
+          if (values.length >= 39 && rowCount <= 12) { // Only take first 12 buildings
+            const building: Building = {
+              id: rowCount,
+              name: generateContactName(rowCount - 1), // Use fixed contact names based on index
+              jobTitle: generateJobTitle(), // Generate realistic job titles
+              buildingName: values[0] || '',
+              emails: true,
+              phoneNumbers: true,
+              location: values[2] || '', // address
+              enriched: false,
+              verified: true,
+              buildingSize: formatSquareFootage(values[7] || ''),
+              buildingType: mapBuildingType(values[4] || ''),
+              windowCount: formatWindowCount(values[12] || ''),
+              propertyValue: estimatePropertyValue(values[7] || ''),
+              floors: values[37] || '',
+              year: values[36] || '',
+              status: values[38] || '',
+              address: values[2] || '',
+              propertyOwner: values[5] || ''
+            };
+            buildings.push(building);
+          }
+          rowCount++;
+        }
+        currentRow = '';
+      }
+    }
+
+    console.log(`Parsed ${buildings.length} buildings from CSV for Market Database`);
+    return buildings;
+  };
+
+  // Helper function to parse a single CSV row
+  const parseCSVRow = (row: string): string[] => {
+    const values: string[] = [];
+    let currentValue = '';
+    let inQuotes = false;
+    let i = 0;
+    
+    while (i < row.length) {
+      const char = row[i];
+      
+      if (char === '"') {
+        if (inQuotes && i + 1 < row.length && row[i + 1] === '"') {
+          // Handle escaped quotes ("")
+          currentValue += '"';
+          i += 2;
+        } else {
+          // Toggle quote state
+          inQuotes = !inQuotes;
+          i++;
+        }
+      } else if (char === ',' && !inQuotes) {
+        // End of field
+        values.push(currentValue.trim());
+        currentValue = '';
+        i++;
+      } else {
+        currentValue += char;
+        i++;
+      }
+    }
+    
+    // Add the last value
+    values.push(currentValue.trim());
+    
+    // Clean up quoted values
+    return values.map(value => value.replace(/^"|"$/g, ''));
+  };
+
+  // Helper functions for data transformation
+  const extractNumericValue = (value: string): number => {
+    if (!value) return 0;
+    const match = value.match(/[\d,]+\.?\d*/);
+    if (match) {
+      return parseFloat(match[0].replace(/,/g, ''));
+    }
+    return 0;
+  };
+
+  const formatSquareFootage = (value: string): string => {
+    const num = extractNumericValue(value);
+    if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M sq ft`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(0)}K sq ft`;
+    }
+    return `${num.toFixed(0)} sq ft`;
+  };
+
+  const formatWindowCount = (value: string): string => {
+    const num = extractNumericValue(value);
+    if (num > 500) return "500+ windows";
+    if (num > 250) return "251-500 windows";
+    if (num > 100) return "101-250 windows";
+    if (num > 50) return "51-100 windows";
+    if (num > 25) return "26-50 windows";
+    if (num > 10) return "11-25 windows";
+    return "1-10 windows";
+  };
+
+  const mapBuildingType = (type: string): string => {
+    const typeMap: { [key: string]: string } = {
+      'mixed-use': 'Mixed-Use Developments',
+      'residential high-rise': 'Residential Buildings',
+      'office': 'Office Buildings',
+      'retail': 'Retail Centers',
+      'industrial': 'Industrial Facilities',
+      'warehouse': 'Warehouses',
+      'healthcare': 'Healthcare Facilities',
+      'educational': 'Educational Buildings',
+      'hospitality': 'Hospitality Properties',
+      'government': 'Government Buildings',
+      'religious': 'Religious Buildings'
+    };
+    
+    const lowerType = type.toLowerCase();
+    for (const [key, value] of Object.entries(typeMap)) {
+      if (lowerType.includes(key)) {
+        return value;
+      }
+    }
+    return 'Office Buildings'; // Default
+  };
+
+  const estimatePropertyValue = (squareFootage: string): string => {
+    const sqft = extractNumericValue(squareFootage);
+    if (sqft > 500000) return "Over $25M";
+    if (sqft > 250000) return "$10M-$25M";
+    if (sqft > 100000) return "$5M-$10M";
+    if (sqft > 50000) return "$2.5M-$5M";
+    if (sqft > 25000) return "$1M-$2.5M";
+    if (sqft > 10000) return "$500K-$1M";
+    return "Under $500K";
+  };
+
+  // Fixed contact names for consistent display
+  const fixedContactNames = [
+    "Michael Chen",
+    "John Smith",
+    "Sarah Johnson", 
+    "Emily Rodriguez",
+    "David Wilson",
+    "Lisa Thompson",
+    "Robert Garcia",
+    "Jennifer Lee",
+    "Mark Anderson",
+    "Amanda White",
+    "Carlos Martinez",
+    "Rachel Brown"
+  ];
+
+  const generateContactName = (index: number): string => {
+    return fixedContactNames[index] || fixedContactNames[0];
+  };
+
+  const generateJobTitle = (): string => {
+    const titles = ["Property Manager", "Facilities Manager", "Building Operations Manager", "Property Owner", "Maintenance Supervisor"];
+    return titles[Math.floor(Math.random() * titles.length)];
+  };
+
+  // Building data state
+  const [buildings, setBuildings] = useState<Building[]>([]);
+
+  // Load CSV data on component mount
+  useEffect(() => {
+    const loadCSVData = async () => {
+      try {
+        console.log('Loading CSV data for Market Database...');
+        const response = await fetch('/Spreadsheet/LuxWall - High rise Buildings - Detroit Michigan - Complete_Detroit_Highrise_Database-Default-view-export-1747802457903 (1).csv');
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const csvText = await response.text();
+        console.log('CSV text length:', csvText.length);
+        
+        const parsedBuildings = parseCSV(csvText);
+        console.log('Parsed buildings for Market Database:', parsedBuildings.length);
+        
+        setBuildings(parsedBuildings);
+        
+        // Update stats with actual data
+        setCompaniesStats(prev => ({
+          ...prev,
+          filtered: parsedBuildings.length
+        }));
+        
+      } catch (error) {
+        console.error('Error loading CSV data:', error);
+        
+        // Fallback sample data
+        const sampleBuildings: Building[] = [
+          {
+            id: 1,
+            name: "John Smith",
+            jobTitle: "Property Manager",
+            buildingName: "MGM Grand Detroit Hotel & Casino",
+            emails: true,
+            phoneNumbers: true,
+            location: "Detroit, Michigan",
+            enriched: false,
+            verified: true,
+            buildingSize: "1.7M sq ft",
+            buildingType: "Mixed-Use Developments",
+            windowCount: "500+ windows",
+            propertyValue: "Over $25M",
+            floors: "17",
+            year: "2008",
+            status: "built",
+            address: "1777 3rd Ave, Detroit, MI 48226",
+            propertyOwner: "Vici Properties and MGM Resorts International"
+          }
+        ];
+        
+        setBuildings(sampleBuildings);
+        setCompaniesStats(prev => ({
+          ...prev,
+          filtered: sampleBuildings.length
+        }));
+      }
+    };
+
+    loadCSVData();
+  }, []);
+
+  // Custom select component with portal for guaranteed top-level rendering
   const CustomSelect = ({ 
     value, 
     onChange, 
@@ -358,44 +512,69 @@ const MarketDatabase = () => {
     placeholder?: string;
   }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const selectRef = useRef<HTMLDivElement>(null);
+    const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     
+    // Update button position when dropdown opens
+    useEffect(() => {
+      if (isOpen && buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        setButtonRect(rect);
+      }
+    }, [isOpen]);
+    
+    // Handle clicks outside dropdown
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+        if (
+          buttonRef.current && 
+          !buttonRef.current.contains(event.target as Node) &&
+          dropdownRef.current && 
+          !dropdownRef.current.contains(event.target as Node)
+        ) {
           setIsOpen(false);
         }
       };
       
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+      if (isOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+      }
+    }, [isOpen]);
+    
+    // Handle scroll to update position
+    useEffect(() => {
+      const handleScroll = () => {
+        if (isOpen && buttonRef.current) {
+          const rect = buttonRef.current.getBoundingClientRect();
+          setButtonRect(rect);
+        }
       };
-    }, []);
+      
+      if (isOpen) {
+        window.addEventListener('scroll', handleScroll, true);
+        return () => window.removeEventListener('scroll', handleScroll, true);
+      }
+    }, [isOpen]);
     
     const selectedOption = options.find(option => option.value === value);
     
-    // Get dropdown position based on button position
-    const getDropdownPosition = () => {
-      if (!buttonRef.current) return { top: 0, left: 0, width: 0 };
-      
-      const rect = buttonRef.current.getBoundingClientRect();
-      return {
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width
-      };
-    };
-    
-    const position = getDropdownPosition();
+    // Calculate dropdown position
+    const dropdownStyle = buttonRect ? {
+      position: 'fixed' as const,
+      top: buttonRect.bottom + 4,
+      left: buttonRect.left,
+      width: buttonRect.width,
+      zIndex: 999999
+    } : {};
     
     return (
-      <div className="relative" ref={selectRef}>
+      <>
         <button
           ref={buttonRef}
           type="button"
-          className="w-full py-2 px-3 rounded-lg border border-white/20 bg-[#28292b] backdrop-blur-sm text-white focus:ring-2 focus:ring-[#10ba82] focus:border-transparent transition-all flex justify-between items-center"
+          className="w-full py-2 px-3 rounded-lg border border-white/20 bg-[#28292b] backdrop-blur-sm text-white focus:ring-2 focus:ring-[#2a64f5] focus:border-transparent transition-all flex justify-between items-center"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className={`${!selectedOption ? 'text-white/50' : 'text-white'} truncate pr-2`}>
@@ -404,14 +583,11 @@ const MarketDatabase = () => {
           <MdKeyboardArrowRight className={`transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-90' : ''}`} />
         </button>
         
-        {isOpen && createPortal(
+        {isOpen && buttonRect && createPortal(
           <div 
-            className="fixed z-[9999] rounded-md bg-[#28292b] border border-white/10 shadow-lg max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800"
-            style={{
-              top: `${position.top}px`,
-              left: `${position.left}px`,
-              width: `${position.width}px`
-            }}
+            ref={dropdownRef}
+            style={dropdownStyle}
+            className="rounded-md bg-[#28292b] border border-white/10 shadow-2xl max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800"
           >
             <div className="py-1">
               {options.map((option) => (
@@ -419,10 +595,12 @@ const MarketDatabase = () => {
                   key={option.value}
                   className={`cursor-pointer select-none relative py-2 px-3 ${
                     option.value === value 
-                      ? 'bg-gradient-to-r from-[#10ba82]/40 to-[#0c9a6c]/30 text-white' 
-                      : 'text-white/70 hover:bg-gradient-to-r hover:from-[#10ba82]/5 hover:via-[#0c9a6c]/3 hover:to-[#0c9a6c]/5'
+                      ? 'bg-gradient-to-r from-[#2a64f5]/40 to-[#7a94b8]/30 text-white' 
+                      : 'text-white/70 hover:bg-gradient-to-r hover:from-[#2a64f5]/5 hover:via-[#7a94b8]/3 hover:to-[#7a94b8]/5'
                   }`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     onChange(option.value);
                     setIsOpen(false);
                   }}
@@ -434,15 +612,13 @@ const MarketDatabase = () => {
           </div>,
           document.body
         )}
-      </div>
+      </>
     );
   };
 
-  const [activeFilters, setActiveFilters] = useState<{[key: string]: string | boolean}>({});
+  const [activeFilters, setActiveFilters] = useState<{[key: string]: string | boolean | string[]}>({});
   const [stateFilter, setStateFilter] = useState('');
-  const [sectorFilter, setSectorFilter] = useState('');
-  const [revenueFilter, setRevenueFilter] = useState('');
-  const [erpModulesFilter, setErpModulesFilter] = useState('');
+  const [buildingTypeFilter, setBuildingTypeFilter] = useState<string[]>([]);
 
   // Toggle filter sections
   const toggleSection = (section: string) => {
@@ -453,9 +629,50 @@ const MarketDatabase = () => {
     }
   };
 
-  const handleFilterChange = (category: string, value: string | boolean) => {
+  const handleFilterChange = (category: string, value: string | boolean | string[]) => {
+    
+    // Update the corresponding state variable first
+    switch (category) {
+      case 'buildingName':
+        setBuildingNameFilter(value as string);
+        break;
+      case 'buildingSize':
+        setBuildingSizeFilter(value as string);
+        break;
+      case 'windowCount':
+        setWindowCountFilter(value as string);
+        break;
+      case 'buildingAge':
+        setBuildingAgeFilter(value as string);
+        break;
+      case 'propertyValue':
+        setPropertyValueFilter(value as string);
+        break;
+      case 'decisionMaker':
+        setDecisionMakerFilter(value as string);
+        break;
+      case 'buildingCondition':
+        setBuildingConditionFilter(value as string);
+        break;
+      case 'occupancyStatus':
+        setOccupancyStatusFilter(value as string);
+        break;
+      case 'state':
+        setStateFilter(value as string);
+        break;
+      case 'buildingType':
+        setBuildingTypeFilter(value as string[]);
+        break;
+      case 'verifiedEmail':
+        setVerifiedEmailFilter(value as boolean);
+        break;
+      case 'verifiedPhone':
+        setVerifiedPhoneFilter(value as boolean);
+        break;
+    }
+
     // Update activeFilters state
-    if (typeof value === 'string' && value === '') {
+    if ((typeof value === 'string' && value === '') || (Array.isArray(value) && value.length === 0)) {
       // Clear this filter
       const newActiveFilters = { ...activeFilters };
       delete newActiveFilters[category];
@@ -466,34 +683,6 @@ const MarketDatabase = () => {
         ...prev,
         [category]: value
       }));
-    }
-    
-    // Update the corresponding state variable
-    switch (category) {
-      case 'companyName':
-        setCompanyNameFilter(value as string);
-        break;
-      case 'employeeCount':
-        setEmployeeCountFilter(value as string);
-        break;
-      case 'state':
-        setStateFilter(value as string);
-        break;
-      case 'sector':
-        setSectorFilter(value as string);
-        break;
-      case 'revenue':
-        setRevenueFilter(value as string);
-        break;
-      case 'erpModules':
-        setErpModulesFilter(value as string);
-        break;
-      case 'verifiedEmail':
-        setVerifiedEmailFilter(value as boolean);
-        break;
-      case 'verifiedPhone':
-        setVerifiedPhoneFilter(value as boolean);
-        break;
     }
     
     // Calculate how many filters are applied (excluding empty string filters)
@@ -559,31 +748,35 @@ const MarketDatabase = () => {
 
   // Add a useEffect to update high potential and enriched counts when filtered count changes
   useEffect(() => {
-    // Update enriched count based on filtered count, but keep highPotential fixed at 1964
+    // Update enriched count based on filtered count, but keep highPotential fixed at 9964
     setCompaniesStats(prev => ({
       ...prev,
       enriched: 0,
-      highPotential: 1964,
+      highPotential: 9964,
     }));
   }, [companiesStats.filtered]);
 
   // Update the clearAllFilters function
   const clearAllFilters = () => {
-    setCompanyNameFilter('');
-    setEmployeeCountFilter('');
+    setBuildingNameFilter('');
+    setBuildingSizeFilter('');
+    setWindowCountFilter('');
+    setBuildingAgeFilter('');
+    setPropertyValueFilter('');
+    setDecisionMakerFilter('');
+    setBuildingConditionFilter('');
+    setOccupancyStatusFilter('');
     setStateFilter('');
-    setSectorFilter('');
-    setRevenueFilter('');
-    setErpModulesFilter('');
+    setBuildingTypeFilter([]);
     setVerifiedEmailFilter(false);
     setVerifiedPhoneFilter(false);
     setActiveFilters({});
     
-    // Reset filtered count to total, but keep highPotential fixed at 1964
+    // Reset filtered count to total, but keep highPotential fixed at 9964
     setCompaniesStats(prev => ({
       ...prev,
       filtered: prev.total,
-      highPotential: 1964,
+      highPotential: 9964,
       enriched: 0
     }));
     
@@ -627,34 +820,48 @@ const MarketDatabase = () => {
       
       toast.success(`Company data for ${searchDescription} scraped successfully`);
       
-      // Add new companies with required employeeCount and industry properties
-      setCompanies(prev => [
+      // Add new buildings with required building properties
+      setBuildings(prev => [
         ...prev,
         {
           id: 15,
-          name: "Company O",
-          jobTitle: "Head of IT",
-          company: "Enterprise Corp",
+          name: generateContactName(0),
+          jobTitle: "Property Manager",
+          buildingName: "Enterprise Office Complex",
           emails: true,
           phoneNumbers: true,
           location: "Austin, TX",
           enriched: true,
           verified: true,
-          employeeCount: 3500,
-          industry: "Technology"
+          buildingSize: "180,000 sq ft",
+          buildingType: "Office Buildings",
+          windowCount: "251-500 windows",
+          propertyValue: "$15M-$25M",
+          floors: "22",
+          year: "2018",
+          status: "built",
+          address: "123 Enterprise Blvd, Austin, TX",
+          propertyOwner: "Enterprise Properties"
         },
         {
           id: 16,
-          name: "Company P",
-          jobTitle: "Head of IT",
-          company: "Tech Solutions Inc",
+          name: generateContactName(1),
+          jobTitle: "Facilities Manager",
+          buildingName: "Tech Solutions Campus",
           emails: true,
           phoneNumbers: true,
           location: "Chandler, AZ",
           enriched: true,
           verified: true,
-          employeeCount: 1200,
-          industry: "Software"
+          buildingSize: "120,000 sq ft",
+          buildingType: "Office Buildings",
+          windowCount: "101-250 windows",
+          propertyValue: "$10M-$25M",
+          floors: "15",
+          year: "2020",
+          status: "built",
+          address: "456 Tech Way, Chandler, AZ",
+          propertyOwner: "Tech Solutions LLC"
         }
       ]);
       setCompaniesStats(prev => ({
@@ -677,15 +884,15 @@ const MarketDatabase = () => {
       setIsLoading(false);
       toast.success(`${selectedCompanies.length} companies enriched successfully`);
       
-      // Update enriched companies
-      setCompanies(prev => prev.map(company => {
-        if (selectedCompanies.includes(company.id)) {
+      // Update enriched buildings
+      setBuildings(prev => prev.map(building => {
+        if (selectedCompanies.includes(building.id)) {
           return {
-            ...company,
+            ...building,
             enriched: true
           };
         }
-        return company;
+        return building;
       }));
       
       setSelectedCompanies([]);
@@ -693,17 +900,17 @@ const MarketDatabase = () => {
   };
 
   const handleContinue = () => {
-    if (companies.filter(f => f.enriched).length === 0) {
-      toast.error('Please enrich at least one company before continuing');
+    if (buildings.filter(f => f.enriched).length === 0) {
+      toast.error('Please enrich at least one building before continuing');
       return;
     }
-    navigate('/company-enrichment');
+    navigate('/building-enrichment');
   };
 
-  const handleSelectCompany = (id: number) => {
+  const handleSelectBuilding = (id: number) => {
     setSelectedCompanies(prev => {
       if (prev.includes(id)) {
-        return prev.filter(companyId => companyId !== id);
+        return prev.filter(buildingId => buildingId !== id);
       } else {
         return [...prev, id];
       }
@@ -714,41 +921,41 @@ const MarketDatabase = () => {
   const getRandomGradient = () => {
     const patterns = [
       {
-        base: "bg-gradient-to-tr from-green-500/30 via-emerald-500/20 to-green-600/15",
+        base: "bg-gradient-to-tr from-blue-500/30 via-blue-500/20 to-green-600/15",
         blobs: [
-          "absolute -top-20 left-1/4 w-40 h-40 bg-gradient-to-br from-green-500/40",
-          "absolute bottom-1/3 -right-10 w-32 h-32 bg-gradient-to-tl from-emerald-500/30",
+          "absolute -top-20 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-500/40",
+          "absolute bottom-1/3 -right-10 w-32 h-32 bg-gradient-to-tl from-blue-500/30",
           "absolute top-1/2 left-1/3 w-24 h-24 bg-gradient-to-br from-green-600/25"
         ]
       },
       {
-        base: "bg-gradient-to-bl from-green-600/30 via-emerald-600/20 to-green-500/15",
+        base: "bg-gradient-to-bl from-green-600/30 via-emerald-600/20 to-blue-500/15",
         blobs: [
-          "absolute top-1/3 -left-16 w-48 h-48 bg-gradient-to-tr from-green-500/40",
-          "absolute -bottom-10 right-1/4 w-36 h-36 bg-gradient-to-bl from-emerald-500/35",
+          "absolute top-1/3 -left-16 w-48 h-48 bg-gradient-to-tr from-blue-500/40",
+          "absolute -bottom-10 right-1/4 w-36 h-36 bg-gradient-to-bl from-blue-500/35",
           "absolute top-1/4 right-1/3 w-28 h-28 bg-gradient-to-tr from-green-600/30"
         ]
       },
       {
-        base: "bg-gradient-to-r from-green-500/30 via-emerald-500/20 to-green-600/25",
+        base: "bg-gradient-to-r from-blue-500/30 via-blue-500/20 to-green-600/25",
         blobs: [
-          "absolute -top-10 right-1/3 w-44 h-44 bg-gradient-to-bl from-green-500/45",
+          "absolute -top-10 right-1/3 w-44 h-44 bg-gradient-to-bl from-blue-500/45",
           "absolute bottom-1/4 -left-12 w-40 h-40 bg-gradient-to-tr from-emerald-600/40",
-          "absolute top-2/3 right-1/4 w-32 h-32 bg-gradient-to-bl from-green-500/35"
+          "absolute top-2/3 right-1/4 w-32 h-32 bg-gradient-to-bl from-blue-500/35"
         ]
       }
     ];
     return patterns[Math.floor(Math.random() * patterns.length)];
   };
 
-  // Function to get filtered companies
-  const getFilteredCompanies = () => {
-    // Return all companies by default
-    return companies;
+  // Function to get filtered buildings
+  const getFilteredBuildings = () => {
+    // Return all buildings by default
+    return buildings;
   };
 
-  // Get filtered companies
-  const filteredCompanies = getFilteredCompanies();
+  // Get filtered buildings
+  const filteredBuildings = getFilteredBuildings();
 
   // Stats card component for the dashboard
   const StatsCard = ({ 
@@ -767,12 +974,12 @@ const MarketDatabase = () => {
     borderColor?: string;
   }) => {
     return (
-      <div className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-green-500/20 hover:-translate-y-1 relative overflow-hidden group`}>
+      <div className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-blue-500/20 hover:-translate-y-1 relative overflow-hidden group`}>
         {/* Enhanced gradient effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/30 via-emerald-500/20 to-teal-500/30 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-        <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-green-500/40 to-transparent rounded-full blur-2xl transform rotate-12 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-blue-500/20 to-teal-500/30 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+        <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-blue-500/40 to-transparent rounded-full blur-2xl transform rotate-12 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-teal-500/30 to-transparent rounded-full blur-xl transform -rotate-12 opacity-80 group-hover:opacity-90"></div>
-        <div className="absolute top-1/3 -right-8 w-20 h-20 bg-gradient-to-bl from-emerald-500/30 to-transparent rounded-full blur-lg transform rotate-45 opacity-70"></div>
+        <div className="absolute top-1/3 -right-8 w-20 h-20 bg-gradient-to-bl from-blue-500/30 to-transparent rounded-full blur-lg transform rotate-45 opacity-70"></div>
         
         <div className="relative z-10 p-6 bg-gradient-to-br from-white/[0.07] to-white/[0.02] rounded-2xl">
           <div className="flex justify-between items-start">
@@ -785,7 +992,7 @@ const MarketDatabase = () => {
                 </div>
               )}
             </div>
-            <div className={`rounded-2xl p-3 ${colorClass} shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md border border-white/20`}>
+            <div className={`rounded-2xl p-3 ${colorClass} shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md border border-white/20`}>
               {icon}
             </div>
           </div>
@@ -810,7 +1017,7 @@ const MarketDatabase = () => {
       <button 
         onClick={onClick} 
         className={`${isActive 
-          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/20' 
+          ? 'bg-gradient-to-r from-blue-500 to-green-600 text-white shadow-lg shadow-blue-500/20' 
           : 'bg-white/10 text-white/80 hover:bg-white/20'} 
           backdrop-blur-md rounded-full px-4 py-2 transition-all duration-300 text-sm font-medium border border-white/10 flex items-center gap-2`}
       >
@@ -863,14 +1070,14 @@ const MarketDatabase = () => {
       // Set fixed number of filtered results
       setCompaniesStats(prev => ({
         ...prev,
-        filtered: companies.length
+        filtered: buildings.length
       }));
       
       // Update page stats
       setPagination(prev => ({
         ...prev,
         currentPage: 1,
-        totalPages: Math.ceil(companies.length / prev.itemsPerPage)
+        totalPages: Math.ceil(buildings.length / prev.itemsPerPage)
       }));
       
       // Build a description of what's being searched for based on active filters
@@ -895,34 +1102,21 @@ const MarketDatabase = () => {
       }
       
       toast.success(`Searching for ${searchDescription}`);
-      
-      // Update active filters to include Head of IT, >100 employees, and verified contacts as fixed filters
-      setActiveFilters(prev => ({
-        ...prev,
-        jobTitle: "Head of IT",
-        employeeCount: ">100 employees",
-        verifiedEmail: true,
-        verifiedPhone: true
-      }));
-      
-      // Also set the verified filters state
-      setVerifiedEmailFilter(true);
-      setVerifiedPhoneFilter(true);
     }, 5000); // 5 second delay
   };
 
   return (
     <div className="w-full px-32 py-12 bg-[#020305] min-h-screen relative">
       {/* Background gradient orbs */}
-      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-[#10ba82]/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-[#10ba82]/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-[#2a64f5]/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-[#2a64f5]/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
 
       {/* Main content with single scrollbar */}
       <div className="flex flex-col">
         {/* Header with title and stats */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] p-3 rounded-xl text-white shadow-lg shadow-[#10ba82]/20">
+            <div className="bg-gradient-to-br from-[#2a64f5] via-[#7a94b8] to-[#0a8a5c] p-3 rounded-xl text-white shadow-lg shadow-[#2a64f5]/20">
               <MdBusinessCenter className="text-xl" />
             </div>
             <h1 className="text-2xl font-bold text-white">Market Database</h1>
@@ -930,12 +1124,12 @@ const MarketDatabase = () => {
           
           {showDashboard && (
             <div className="text-white/70 text-sm flex items-center gap-2">
-              <MdInfoOutline className="text-[#10ba82]" />
-              <span>Showing <span className="text-[#10ba82] font-medium">{formatNumber(companiesStats.filtered)}</span> of {formatNumber(companiesStats.total)} companies</span>
+              <MdInfoOutline className="text-[#2a64f5]" />
+              <span>Showing <span className="text-[#2a64f5] font-medium">{formatNumber(companiesStats.filtered)}</span> of {formatNumber(companiesStats.total)} companies</span>
               
               <button 
                 onClick={clearAllFilters}
-                className="ml-4 px-3 py-1 text-xs text-[#10ba82] hover:text-[#0c9a6c] bg-[#10ba82]/10 rounded-lg transition-colors"
+                className="ml-4 px-3 py-1 text-xs text-[#2a64f5] hover:text-[#7a94b8] bg-[#2a64f5]/10 rounded-lg transition-colors"
               >
                 Clear Filters
               </button>
@@ -946,23 +1140,25 @@ const MarketDatabase = () => {
         {/* Main content area */}
         <div className="flex gap-6">
           {/* Filter sidebar - now wider */}
-          <div className="w-96 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#10ba82]/20 overflow-hidden">
+          <div className="w-96 backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#2a64f5]/20 overflow-hidden">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-white">Filters</h2>
                 {Object.keys(activeFilters).length > 0 && (
                   <button 
                     onClick={clearAllFilters}
-                    className="px-3 py-1 text-xs text-[#10ba82] hover:text-[#0c9a6c] bg-[#10ba82]/10 rounded-lg transition-colors border border-[#10ba82]/20"
+                    className="px-3 py-1 text-xs text-[#2a64f5] hover:text-[#7a94b8] bg-[#2a64f5]/10 rounded-lg transition-colors border border-[#2a64f5]/20"
                   >
                     Clear All
                   </button>
                 )}
               </div>
               
+
+
               {/* Active filters display */}
               {Object.keys(activeFilters).length > 0 && (
-                <div className="mb-4 p-3 bg-[rgba(40,41,43,0.6)] rounded-xl border border-[#10ba82]/10">
+                <div className="mb-4 p-3 bg-[rgba(40,41,43,0.6)] rounded-xl border border-[#2a64f5]/10">
                   <h3 className="text-sm font-medium text-white/80 mb-2">Active Filters:</h3>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(activeFilters).map(([key, value]) => {
@@ -972,9 +1168,12 @@ const MarketDatabase = () => {
                         return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
                       };
                       
-                      const formatFilterValue = (key: string, value: string | boolean) => {
+                      const formatFilterValue = (key: string, value: string | boolean | string[]) => {
                         if (typeof value === 'boolean') {
                           return value ? 'Yes' : 'No';
+                        }
+                        if (Array.isArray(value)) {
+                          return value.join(', ');
                         }
                         return value;
                       };
@@ -982,7 +1181,7 @@ const MarketDatabase = () => {
                       return (
                         <div 
                           key={key}
-                          className="inline-flex items-center gap-2 py-1 px-3 rounded-full text-sm font-medium bg-gradient-to-r from-[#10ba82]/40 to-[#0c9a6c]/30 text-white border border-[#10ba82]/20 shadow-sm shadow-[#10ba82]/10 transition-all hover:shadow-md hover:scale-105"
+                          className="inline-flex items-center gap-2 py-1 px-3 rounded-full text-sm font-medium bg-gradient-to-r from-[#2a64f5]/40 to-[#7a94b8]/30 text-white border border-[#2a64f5]/20 shadow-sm shadow-[#2a64f5]/10 transition-all hover:shadow-md hover:scale-105"
                         >
                           <span>{formatFilterLabel(key)}: {formatFilterValue(key, value)}</span>
                           <button 
@@ -999,36 +1198,36 @@ const MarketDatabase = () => {
               )}
               
               {/* Filter sections in a scrollable container with fancy scrollbar */}
-              <div className="max-h-[calc(100vh-300px)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-[#10ba82]/40 scrollbar-track-white/5">
-              {/* Collapsible Company Name Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+              <div className="max-h-[calc(100vh-300px)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-[#2a64f5]/40 scrollbar-track-white/5">
+              {/* Collapsible Building Name Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
-                  onClick={() => toggleSection('companyName')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                  onClick={() => toggleSection('buildingName')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdOutlineBusiness className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdOutlineBusiness className="text-[#2a64f5]" />
                       </div>
-                    <span className="font-medium">Company Name</span>
-                    {companyNameFilter && companyNameFilter !== '' && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                    <span className="font-medium">Building Name</span>
+                    {buildingNameFilter && buildingNameFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
                   </div>
-                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'companyName' ? 'rotate-90' : ''}`} />
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'buildingName' ? 'rotate-90' : ''}`} />
                 </button>
                 
-                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'companyName' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'buildingName' ? 'max-h-[200px]' : 'max-h-0'}`}>
                   <div className="p-3 bg-[rgba(40,41,43,0.2)]">
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="Search company name..."
-                        value={companyNameFilter}
-                        onChange={(e) => handleFilterChange('companyName', e.target.value)}
-                          className="w-full py-2 px-3 rounded-lg border border-white/20 bg-[#28292b] backdrop-blur-sm text-white focus:ring-2 focus:ring-[#10ba82] focus:border-transparent transition-all"
+                        placeholder="Search building name..."
+                        value={buildingNameFilter}
+                        onChange={(e) => handleFilterChange('buildingName', e.target.value)}
+                          className="w-full py-2 px-3 rounded-lg border border-white/20 bg-[#28292b] backdrop-blur-sm text-white focus:ring-2 focus:ring-[#2a64f5] focus:border-transparent transition-all"
                       />
                       <MdSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50" />
                     </div>
@@ -1036,51 +1235,83 @@ const MarketDatabase = () => {
                   </div>
               </div>
               
-              {/* Collapsible Company Size Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+              {/* Collapsible Building Size Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
-                  onClick={() => toggleSection('employeeCount')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                  onClick={() => toggleSection('buildingSize')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdBusinessCenter className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdOutlineRoofing className="text-[#2a64f5]" />
                       </div>
-                    <span className="font-medium">Company Size</span>
-                    {employeeCountFilter && employeeCountFilter !== '' && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                    <span className="font-medium">Building Size</span>
+                    {buildingSizeFilter && buildingSizeFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
                   </div>
-                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'employeeCount' ? 'rotate-90' : ''}`} />
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'buildingSize' ? 'rotate-90' : ''}`} />
                 </button>
                 
-                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'employeeCount' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'buildingSize' ? 'max-h-[200px]' : 'max-h-0'}`}>
                   <div className="p-3 bg-[rgba(40,41,43,0.2)]">
                     <CustomSelect
-                      value={employeeCountFilter}
-                      onChange={(value) => handleFilterChange('employeeCount', value)}
-                      options={employeeCountRanges.map(range => ({ value: range, label: range }))}
-                      placeholder="Select company size..."
+                      value={buildingSizeFilter}
+                      onChange={(value) => handleFilterChange('buildingSize', value)}
+                      options={buildingSizes.map(size => ({ value: size, label: size }))}
+                      placeholder="Select building size..."
+                    />
+                  </div>
+                  </div>
+              </div>
+              
+              {/* Collapsible Window Count Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
+                <button
+                  onClick={() => toggleSection('windowCount')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdOutlineWbSunny className="text-[#2a64f5]" />
+                      </div>
+                    <span className="font-medium">Number of Windows</span>
+                    {windowCountFilter && windowCountFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'windowCount' ? 'rotate-90' : ''}`} />
+                </button>
+                
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'windowCount' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className="p-3 bg-[rgba(40,41,43,0.2)]">
+                    <CustomSelect
+                      value={windowCountFilter}
+                      onChange={(value) => handleFilterChange('windowCount', value)}
+                      options={windowCounts.map(count => ({ value: count, label: count }))}
+                      placeholder="Select window count..."
                     />
                   </div>
                   </div>
               </div>
               
               {/* Collapsible Location Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
                   onClick={() => toggleSection('location')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdLocationOn className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdLocationOn className="text-[#2a64f5]" />
                       </div>
                     <span className="font-medium">Location</span>
                     {stateFilter && stateFilter !== '' && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
@@ -1093,122 +1324,230 @@ const MarketDatabase = () => {
                     <CustomSelect
                       value={stateFilter}
                       onChange={(value) => handleFilterChange('state', value)}
-                      options={usStates.map(state => ({ value: state, label: state }))}
+                      options={locations.map(location => ({ value: location, label: location }))}
                       placeholder="Select location..."
                     />
                   </div>
                   </div>
               </div>
               
-              {/* Collapsible Industry/Sector Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+              {/* Collapsible Building Type Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
-                  onClick={() => toggleSection('sector')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                  onClick={() => toggleSection('buildingType')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdFactory className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdHomeWork className="text-[#2a64f5]" />
                       </div>
-                    <span className="font-medium">Industry/Sector</span>
-                    {sectorFilter && sectorFilter !== '' && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                    <span className="font-medium">Building Type</span>
+                    {buildingTypeFilter && buildingTypeFilter.length > 0 && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
                   </div>
-                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'sector' ? 'rotate-90' : ''}`} />
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'buildingType' ? 'rotate-90' : ''}`} />
                 </button>
                 
-                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'sector' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'buildingType' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className="p-3 bg-[rgba(40,41,43,0.2)]">
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {buildingTypes.map((type) => (
+                        <label key={type} className="flex items-center gap-2 text-white cursor-pointer hover:bg-white/5 p-2 rounded">
+                          <input
+                            type="checkbox"
+                            checked={buildingTypeFilter.includes(type)}
+                            onChange={(e) => {
+                              const newSelection = e.target.checked
+                                ? [...buildingTypeFilter, type]
+                                : buildingTypeFilter.filter(t => t !== type);
+                              handleFilterChange('buildingType', newSelection);
+                            }}
+                            className="rounded border-[#2a64f5] text-[#2a64f5] focus:ring-[#2a64f5] h-4 w-4 bg-white/10"
+                          />
+                          <span className="text-sm">{type}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  </div>
+              </div>
+              
+              {/* Collapsible Building Age Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
+                <button
+                  onClick={() => toggleSection('buildingAge')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdAccessTime className="text-[#2a64f5]" />
+                      </div>
+                    <span className="font-medium">Building Age</span>
+                    {buildingAgeFilter && buildingAgeFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'buildingAge' ? 'rotate-90' : ''}`} />
+                </button>
+                
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'buildingAge' ? 'max-h-[200px]' : 'max-h-0'}`}>
                   <div className="p-3 bg-[rgba(40,41,43,0.2)]">
                     <CustomSelect
-                      value={sectorFilter}
-                      onChange={(value) => handleFilterChange('sector', value)}
-                      options={sectors.map(sector => ({ value: sector, label: sector }))}
-                      placeholder="Select industry/sector..."
+                      value={buildingAgeFilter}
+                      onChange={(value) => handleFilterChange('buildingAge', value)}
+                      options={buildingAges.map(age => ({ value: age, label: age }))}
+                      placeholder="Select building age..."
                     />
                   </div>
                   </div>
               </div>
               
-              {/* Collapsible Revenue Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+              {/* Collapsible Property Value Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
-                  onClick={() => toggleSection('revenue')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                  onClick={() => toggleSection('propertyValue')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdAttachMoney className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdAttachMoney className="text-[#2a64f5]" />
                       </div>
-                    <span className="font-medium">Revenue</span>
-                    {revenueFilter && revenueFilter !== '' && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                    <span className="font-medium">Property Value</span>
+                    {propertyValueFilter && propertyValueFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
                   </div>
-                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'revenue' ? 'rotate-90' : ''}`} />
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'propertyValue' ? 'rotate-90' : ''}`} />
                 </button>
                 
-                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'revenue' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'propertyValue' ? 'max-h-[200px]' : 'max-h-0'}`}>
                   <div className="p-3 bg-[rgba(40,41,43,0.2)]">
                     <CustomSelect
-                      value={revenueFilter}
-                      onChange={(value) => handleFilterChange('revenue', value)}
-                      options={revenueRanges.map(range => ({ value: range, label: range }))}
-                      placeholder="Select revenue range..."
+                      value={propertyValueFilter}
+                      onChange={(value) => handleFilterChange('propertyValue', value)}
+                      options={propertyValues.map(value => ({ value: value, label: value }))}
+                      placeholder="Select property value..."
                     />
                   </div>
                   </div>
               </div>
               
-              {/* Collapsible ERP Modules Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+              {/* Collapsible Decision Maker Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
-                  onClick={() => toggleSection('erpModules')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                  onClick={() => toggleSection('decisionMaker')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdStorage className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdBusinessCenter className="text-[#2a64f5]" />
                       </div>
-                    <span className="font-medium">ERP Modules</span>
-                    {erpModulesFilter && erpModulesFilter !== '' && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                    <span className="font-medium">Decision Making Authority</span>
+                    {decisionMakerFilter && decisionMakerFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
                   </div>
-                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'erpModules' ? 'rotate-90' : ''}`} />
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'decisionMaker' ? 'rotate-90' : ''}`} />
                 </button>
                 
-                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'erpModules' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'decisionMaker' ? 'max-h-[200px]' : 'max-h-0'}`}>
                   <div className="p-3 bg-[rgba(40,41,43,0.2)]">
                     <CustomSelect
-                      value={erpModulesFilter}
-                      onChange={(value) => handleFilterChange('erpModules', value)}
-                      options={erpModulesRanges.map(range => ({ value: range, label: range }))}
-                      placeholder="Select ERP modules..."
+                      value={decisionMakerFilter}
+                      onChange={(value) => handleFilterChange('decisionMaker', value)}
+                      options={decisionMakingAuthority.map(authority => ({ value: authority, label: authority }))}
+                      placeholder="Select decision maker..."
+                    />
+                  </div>
+                  </div>
+              </div>
+              
+              {/* Collapsible Building Condition Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
+                <button
+                  onClick={() => toggleSection('buildingCondition')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdShowChart className="text-[#2a64f5]" />
+                      </div>
+                    <span className="font-medium">Building Condition</span>
+                    {buildingConditionFilter && buildingConditionFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'buildingCondition' ? 'rotate-90' : ''}`} />
+                </button>
+                
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'buildingCondition' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className="p-3 bg-[rgba(40,41,43,0.2)]">
+                    <CustomSelect
+                      value={buildingConditionFilter}
+                      onChange={(value) => handleFilterChange('buildingCondition', value)}
+                      options={buildingConditions.map(condition => ({ value: condition, label: condition }))}
+                      placeholder="Select building condition..."
+                    />
+                  </div>
+                  </div>
+              </div>
+              
+              {/* Collapsible Occupancy Status Filter */}
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
+                <button
+                  onClick={() => toggleSection('occupancyStatus')}
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdDashboard className="text-[#2a64f5]" />
+                      </div>
+                    <span className="font-medium">Occupancy Status</span>
+                    {occupancyStatusFilter && occupancyStatusFilter !== '' && (
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <MdKeyboardArrowRight className={`transition-transform duration-300 ${expandedSection === 'occupancyStatus' ? 'rotate-90' : ''}`} />
+                </button>
+                
+                  <div className={`overflow-hidden transition-all duration-300 ${expandedSection === 'occupancyStatus' ? 'max-h-[200px]' : 'max-h-0'}`}>
+                  <div className="p-3 bg-[rgba(40,41,43,0.2)]">
+                    <CustomSelect
+                      value={occupancyStatusFilter}
+                      onChange={(value) => handleFilterChange('occupancyStatus', value)}
+                      options={occupancyStatus.map(status => ({ value: status, label: status }))}
+                      placeholder="Select occupancy status..."
                     />
                   </div>
                   </div>
               </div>
               
               {/* Collapsible Verification Filter */}
-                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-hidden border border-white/5 hover:border-[#10ba82]/20 transition-colors">
+                <div className="mb-3 bg-[rgba(40,41,43,0.4)] rounded-lg overflow-visible border border-white/5 hover:border-[#2a64f5]/20 transition-colors">
                 <button
                   onClick={() => toggleSection('verification')}
-                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#10ba82]/10 transition-colors"
+                    className="w-full p-3.5 flex justify-between items-center text-white hover:bg-[#2a64f5]/10 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                      <div className="bg-[#10ba82]/20 p-2 rounded-lg">
-                        <MdCheck className="text-[#10ba82]" />
+                      <div className="bg-[#2a64f5]/20 p-2 rounded-lg">
+                        <MdCheck className="text-[#2a64f5]" />
                       </div>
                     <span className="font-medium">Verification</span>
                     {(verifiedEmailFilter || verifiedPhoneFilter) && (
-                        <span className="text-xs bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full">
+                        <span className="text-xs bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
@@ -1224,7 +1563,7 @@ const MarketDatabase = () => {
                           type="checkbox"
                           checked={verifiedEmailFilter}
                           onChange={(e) => handleFilterChange('verifiedEmail', e.target.checked)}
-                            className="rounded border-[#10ba82] text-[#10ba82] focus:ring-[#10ba82] h-4 w-4 bg-white/10"
+                            className="rounded border-[#2a64f5] text-[#2a64f5] focus:ring-[#2a64f5] h-4 w-4 bg-white/10"
                         />
                         <span>Verified Emails</span>
                       </label>
@@ -1234,7 +1573,7 @@ const MarketDatabase = () => {
                           type="checkbox"
                           checked={verifiedPhoneFilter}
                           onChange={(e) => handleFilterChange('verifiedPhone', e.target.checked)}
-                            className="rounded border-[#10ba82] text-[#10ba82] focus:ring-[#10ba82] h-4 w-4 bg-white/10"
+                            className="rounded border-[#2a64f5] text-[#2a64f5] focus:ring-[#2a64f5] h-4 w-4 bg-white/10"
                         />
                         <span>Verified Phone Numbers</span>
                       </label>
@@ -1249,7 +1588,7 @@ const MarketDatabase = () => {
                 <button 
                   onClick={handleSearch}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] hover:from-[#0c9a6c] hover:to-[#0a8a5c] text-white py-3 px-4 rounded-lg font-medium transition-all text-sm shadow-md hover:shadow-xl flex items-center justify-center gap-2 group border border-white/20 relative overflow-hidden"
+                  className="w-full bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] hover:from-[#7a94b8] hover:to-[#0a8a5c] text-white py-3 px-4 rounded-lg font-medium transition-all text-sm shadow-md hover:shadow-xl flex items-center justify-center gap-2 group border border-white/20 relative overflow-hidden"
                 >
                   {isLoading ? (
                     <>
@@ -1280,7 +1619,7 @@ const MarketDatabase = () => {
                       {[...Array(8)].map((_, i) => (
                         <div 
                           key={i} 
-                          className="absolute h-2 w-2 rounded-full bg-[#10ba82]"
+                          className="absolute h-2 w-2 rounded-full bg-[#2a64f5]"
                           style={{
                             animation: `particle${i + 1} 5s infinite linear`,
                             opacity: 0.7,
@@ -1291,12 +1630,12 @@ const MarketDatabase = () => {
                     
                     <div className="relative h-32 w-32 mx-auto">
                       {/* Spinner rings */}
-                      <div className="absolute inset-0 rounded-full border-4 border-[#10ba82]/20 animate-ping"></div>
-                      <div className="absolute inset-0 rounded-full border-4 border-[#10ba82]/30 animate-pulse"></div>
+                      <div className="absolute inset-0 rounded-full border-4 border-[#2a64f5]/20 animate-ping"></div>
+                      <div className="absolute inset-0 rounded-full border-4 border-[#2a64f5]/30 animate-pulse"></div>
                       
                       {/* Main spinner */}
-                      <div className="h-full w-full animate-spin rounded-full border-4 border-[#10ba82] border-t-transparent flex items-center justify-center">
-                        <div className="h-24 w-24 rounded-full border-4 border-[#10ba82]/40 border-b-transparent animate-spin"></div>
+                      <div className="h-full w-full animate-spin rounded-full border-4 border-[#2a64f5] border-t-transparent flex items-center justify-center">
+                        <div className="h-24 w-24 rounded-full border-4 border-[#2a64f5]/40 border-b-transparent animate-spin"></div>
                       </div>
                     </div>
                   </div>
@@ -1309,48 +1648,48 @@ const MarketDatabase = () => {
                   <div className="space-y-4">
                     {/* Loading steps with animations */}
                     <div className="flex items-center gap-3 opacity-0 animate-[fadeIn_0.5s_ease-in-out_0.2s_forwards]">
-                      <div className="h-8 w-8 rounded-full bg-[#10ba82]/20 flex items-center justify-center">
-                        <MdSearch className="text-[#10ba82]" />
+                      <div className="h-8 w-8 rounded-full bg-[#2a64f5]/20 flex items-center justify-center">
+                        <MdSearch className="text-[#2a64f5]" />
                       </div>
                       <div className="flex-1">
-                        <div className="h-2 bg-[#10ba82]/20 rounded-full overflow-hidden relative">
-                          <div className="absolute top-0 left-0 h-full bg-[#10ba82] animate-[searchingData_1.5s_ease-in-out_forwards]"></div>
+                        <div className="h-2 bg-[#2a64f5]/20 rounded-full overflow-hidden relative">
+                          <div className="absolute top-0 left-0 h-full bg-[#2a64f5] animate-[searchingData_1.5s_ease-in-out_forwards]"></div>
                         </div>
                       </div>
                       <span className="text-sm text-white/60">Searching</span>
                     </div>
                     
                     <div className="flex items-center gap-3 opacity-0 animate-[fadeIn_0.5s_ease-in-out_1.5s_forwards]">
-                      <div className="h-8 w-8 rounded-full bg-[#10ba82]/20 flex items-center justify-center">
-                        <MdFilterList className="text-[#10ba82]" />
+                      <div className="h-8 w-8 rounded-full bg-[#2a64f5]/20 flex items-center justify-center">
+                        <MdFilterList className="text-[#2a64f5]" />
                       </div>
                       <div className="flex-1">
-                        <div className="h-2 bg-[#10ba82]/20 rounded-full overflow-hidden relative">
-                          <div className="absolute top-0 left-0 h-full bg-[#10ba82] animate-[filteringData_1.5s_ease-in-out_forwards_1.5s]"></div>
+                        <div className="h-2 bg-[#2a64f5]/20 rounded-full overflow-hidden relative">
+                          <div className="absolute top-0 left-0 h-full bg-[#2a64f5] animate-[filteringData_1.5s_ease-in-out_forwards_1.5s]"></div>
                         </div>
                       </div>
                       <span className="text-sm text-white/60">Filtering</span>
                     </div>
                     
                     <div className="flex items-center gap-3 opacity-0 animate-[fadeIn_0.5s_ease-in-out_3s_forwards]">
-                      <div className="h-8 w-8 rounded-full bg-[#10ba82]/20 flex items-center justify-center">
-                        <MdDataUsage className="text-[#10ba82]" />
+                      <div className="h-8 w-8 rounded-full bg-[#2a64f5]/20 flex items-center justify-center">
+                        <MdDataUsage className="text-[#2a64f5]" />
                       </div>
                       <div className="flex-1">
-                        <div className="h-2 bg-[#10ba82]/20 rounded-full overflow-hidden relative">
-                          <div className="absolute top-0 left-0 h-full bg-[#10ba82] animate-[analyzingData_1.5s_ease-in-out_forwards_3s]"></div>
+                        <div className="h-2 bg-[#2a64f5]/20 rounded-full overflow-hidden relative">
+                          <div className="absolute top-0 left-0 h-full bg-[#2a64f5] animate-[analyzingData_1.5s_ease-in-out_forwards_3s]"></div>
                         </div>
                       </div>
                       <span className="text-sm text-white/60">Analyzing</span>
                     </div>
                     
                     <div className="flex items-center gap-3 opacity-0 animate-[fadeIn_0.5s_ease-in-out_4.5s_forwards]">
-                      <div className="h-8 w-8 rounded-full bg-[#10ba82]/20 flex items-center justify-center animate-pulse">
-                        <MdCheck className="text-[#10ba82]" />
+                      <div className="h-8 w-8 rounded-full bg-[#2a64f5]/20 flex items-center justify-center animate-pulse">
+                        <MdCheck className="text-[#2a64f5]" />
                       </div>
                       <div className="flex-1">
-                        <div className="h-2 bg-[#10ba82]/20 rounded-full overflow-hidden relative">
-                          <div className="absolute top-0 left-0 h-full bg-[#10ba82] animate-[finalizing_0.5s_ease-in-out_forwards_4.5s]"></div>
+                        <div className="h-2 bg-[#2a64f5]/20 rounded-full overflow-hidden relative">
+                          <div className="absolute top-0 left-0 h-full bg-[#2a64f5] animate-[finalizing_0.5s_ease-in-out_forwards_4.5s]"></div>
                         </div>
                       </div>
                       <span className="text-sm text-white/60">Finalizing</span>
@@ -1363,8 +1702,8 @@ const MarketDatabase = () => {
               <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
                 <div className="max-w-2xl mx-auto">
                   <div className="mb-8 relative">
-                    <div className="w-32 h-32 mx-auto bg-gradient-to-br from-[#10ba82]/20 via-[#10ba82]/10 to-transparent rounded-3xl flex items-center justify-center shadow-2xl shadow-[#10ba82]/20 border border-[#10ba82]/20">
-                      <MdBusinessCenter className="text-6xl text-[#10ba82]" />
+                    <div className="w-32 h-32 mx-auto bg-gradient-to-br from-[#2a64f5]/20 via-[#2a64f5]/10 to-transparent rounded-3xl flex items-center justify-center shadow-2xl shadow-[#2a64f5]/20 border border-[#2a64f5]/20">
+                      <MdBusinessCenter className="text-6xl text-[#2a64f5]" />
                     </div>
                     <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent rounded-2xl flex items-center justify-center shadow-xl shadow-teal-500/20 border border-teal-500/20">
                       <MdComputer className="text-3xl text-teal-400" />
@@ -1377,7 +1716,7 @@ const MarketDatabase = () => {
                     Based on the selections for your company profile, we have tailored everything towards your ideal customer profile.
                   </p>
                   <p className="text-lg text-white/70 mb-8">
-                    We have identified <span className="text-[#10ba82] font-semibold">426,000</span> facilities which are eligible. Use the filters to narrow down your selection and obtain the specific demographic that matches your target audience.
+                    We have identified <span className="text-[#2a64f5] font-semibold">426,000</span> facilities which are eligible. Use the filters to narrow down your selection and obtain the specific demographic that matches your target audience.
                   </p>
                   
                   {/* Previous Lists Section */}
@@ -1386,8 +1725,8 @@ const MarketDatabase = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="backdrop-blur-sm bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg p-4 transition-all hover:shadow-lg cursor-pointer text-left">
                         <div className="flex items-start gap-3">
-                          <div className="p-2 rounded-md bg-[#10ba82]/20">
-                            <MdInsights className="text-[#10ba82]" />
+                          <div className="p-2 rounded-md bg-[#2a64f5]/20">
+                            <MdInsights className="text-[#2a64f5]" />
                           </div>
                           <div>
                             <h4 className="font-medium text-white">Manufacturing Sector - Q2 2023</h4>
@@ -1398,8 +1737,8 @@ const MarketDatabase = () => {
                       
                       <div className="backdrop-blur-sm bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg p-4 transition-all hover:shadow-lg cursor-pointer text-left">
                         <div className="flex items-start gap-3">
-                          <div className="p-2 rounded-md bg-[#10ba82]/20">
-                            <MdInsights className="text-[#10ba82]" />
+                          <div className="p-2 rounded-md bg-[#2a64f5]/20">
+                            <MdInsights className="text-[#2a64f5]" />
                           </div>
                           <div>
                             <h4 className="font-medium text-white">Financial Services - High Value</h4>
@@ -1410,8 +1749,8 @@ const MarketDatabase = () => {
                       
                       <div className="backdrop-blur-sm bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg p-4 transition-all hover:shadow-lg cursor-pointer text-left">
                         <div className="flex items-start gap-3">
-                          <div className="p-2 rounded-md bg-[#10ba82]/20">
-                            <MdOutlineStarOutline className="text-[#10ba82]" />
+                          <div className="p-2 rounded-md bg-[#2a64f5]/20">
+                            <MdOutlineStarOutline className="text-[#2a64f5]" />
                           </div>
                           <div>
                             <h4 className="font-medium text-white">Favorite Leads - East Coast</h4>
@@ -1435,7 +1774,7 @@ const MarketDatabase = () => {
                         <p className="text-white/70 text-sm mb-2">Searching with these filters:</p>
                         <div className="flex flex-wrap gap-2">
                           {Object.entries(activeFilters).map(([key, value]) => (
-                            <div key={key} className="bg-[#10ba82]/20 text-[#10ba82] px-2 py-0.5 rounded-full text-xs">
+                            <div key={key} className="bg-[#2a64f5]/20 text-[#2a64f5] px-2 py-0.5 rounded-full text-xs">
                               {key}: {value.toString()}
                             </div>
                           ))}
@@ -1445,7 +1784,7 @@ const MarketDatabase = () => {
                     <button
                       onClick={handleSearch}
                       disabled={isLoading}
-                      className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] hover:from-[#0c9a6c] hover:to-[#0a8a5c] text-white py-3 px-6 rounded-lg font-medium transition-all text-lg shadow-md hover:shadow-lg inline-flex items-center gap-2 group border border-white/20"
+                      className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] hover:from-[#7a94b8] hover:to-[#0a8a5c] text-white py-3 px-6 rounded-lg font-medium transition-all text-lg shadow-md hover:shadow-lg inline-flex items-center gap-2 group border border-white/20"
                     >
                       {isLoading ? (
                         <>
@@ -1455,7 +1794,7 @@ const MarketDatabase = () => {
                       ) : (
                         <>
                       <MdSearch className="text-xl" />
-                      Search Companies
+                      Search Buildings
                         </>
                       )}
                     </button>
@@ -1465,11 +1804,11 @@ const MarketDatabase = () => {
             ) : (
               <>
                 {/* Filter criteria summary */}
-                <div className="mb-4 py-3 px-4 backdrop-blur-md bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-xl border border-[#10ba82]/15 text-white/80">
+                <div className="mb-4 py-3 px-4 backdrop-blur-md bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-xl border border-[#2a64f5]/15 text-white/80">
                   <p className="flex items-center gap-2">
-                    <FaFilter className="text-[#10ba82] text-sm" />
-                    <span className="text-sm">Criteria: <span className="font-medium text-white">Head of IT</span> at companies with <span className="font-medium text-white">&gt;100 employees</span> with <span className="font-medium text-white">verified emails</span>, <span className="font-medium text-white">verified phone numbers</span>, location: <span className="font-medium text-white">United States</span></span>
-                    <span className="ml-auto text-[#10ba82] font-medium">14 Back end data points</span>
+                    <FaFilter className="text-[#2a64f5] text-sm" />
+                    <span className="text-sm">Criteria: <span className="font-medium text-white">Facility Managers</span> in <span className="font-medium text-white">Detroit</span> with <span className="font-medium text-white">verified emails</span> and <span className="font-medium text-white">phone numbers</span></span>
+                    <span className="ml-auto text-[#2a64f5] font-medium">14 Back end data points</span>
                   </p>
                 </div>
               
@@ -1477,35 +1816,35 @@ const MarketDatabase = () => {
                 <div className="grid grid-cols-3 gap-4 mb-4">
                   <StatsCard
                     title="Total Contacts"
-                    value="2.3K"
+                    value="14.5K"
                     change="+2.5% this month"
                     icon={<MdBusinessCenter className="text-white text-xl" />}
-                    colorClass="bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c]"
+                    colorClass="bg-gradient-to-br from-[#2a64f5] via-[#7a94b8] to-[#0a8a5c]"
                   />
                   
                   <StatsCard
-                    title="High Potential Companies"
-                    value="1,964"
+                    title="High Potential Buildings"
+                    value="9,964"
                     change="+3.1% this month"
                     icon={<MdDataUsage className="text-white text-xl" />}
                     colorClass="bg-gradient-to-br from-teal-500 via-teal-600 to-cyan-600"
                   />
                   
                   <StatsCard
-                    title="Enriched Companies"
+                    title="Enriched Buildings"
                     value="0"
                     change="+0.0% this month"
                     icon={<MdCheck className="text-white text-xl" />}
-                    colorClass="bg-gradient-to-br from-emerald-500 via-emerald-600 to-[#10ba82]"
+                    colorClass="bg-gradient-to-br from-blue-500 via-emerald-600 to-[#2a64f5]"
                   />
                 </div>
                 
-                {/* Companies table */}
-                <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#10ba82]/15 relative overflow-hidden">
+                {/* Buildings table */}
+                <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#2a64f5]/15 relative overflow-hidden">
                   {/* Table content */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#10ba82]/30 via-[#0c9a6c]/20 to-[#0a8a5c]/25 opacity-25"></div>
-                  <div className="absolute -top-10 right-1/3 w-44 h-44 bg-gradient-to-bl from-[#10ba82]/45 to-transparent rounded-full blur-3xl transform rotate-90"></div>
-                  <div className="absolute bottom-1/4 -left-12 w-40 h-40 bg-gradient-to-tr from-[#0c9a6c]/40 to-transparent rounded-full blur-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#2a64f5]/30 via-[#7a94b8]/20 to-[#0a8a5c]/25 opacity-25"></div>
+                  <div className="absolute -top-10 right-1/3 w-44 h-44 bg-gradient-to-bl from-[#2a64f5]/45 to-transparent rounded-full blur-3xl transform rotate-90"></div>
+                  <div className="absolute bottom-1/4 -left-12 w-40 h-40 bg-gradient-to-tr from-[#7a94b8]/40 to-transparent rounded-full blur-2xl"></div>
                   
                   <div className="relative z-10 overflow-x-auto rounded-2xl">
                     <table className="w-full">
@@ -1514,66 +1853,74 @@ const MarketDatabase = () => {
                           <th className="w-10 py-3 px-2">
                             <input 
                               type="checkbox" 
-                              className="rounded border-[#10ba82] text-[#10ba82] focus:ring-[#10ba82] h-4 w-4 bg-white/10"
+                              className="rounded border-[#2a64f5] text-[#2a64f5] focus:ring-[#2a64f5] h-4 w-4 bg-white/10"
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setSelectedCompanies(companies.map(f => f.id));
+                                  setSelectedCompanies(buildings.map(f => f.id));
                                 } else {
                                   setSelectedCompanies([]);
                                 }
                               }}
-                              checked={selectedCompanies.length === companies.length && companies.length > 0}
+                              checked={selectedCompanies.length === buildings.length && buildings.length > 0}
                             />
                           </th>
-                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Name</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Contact Name</th>
                           <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Job Title</th>
-                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Company</th>
-                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Contact</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Building Name</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Contact Info</th>
                           <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Location</th>
-                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Industry</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Building Type</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Size</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Floors</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Year Built</th>
+                          <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Windows</th>
                           <th className="py-3 px-2 text-left text-xs font-medium text-white uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/10">
-                        {companies.map((company) => (
-                            <tr key={company.id} className={`${
-                              selectedCompanies.includes(company.id) 
-                              ? "bg-[#10ba82]/20" 
+                        {buildings.map((building) => (
+                            <tr key={building.id} className={`${
+                              selectedCompanies.includes(building.id) 
+                              ? "bg-[#2a64f5]/20" 
                                 : "hover:bg-white/5"
                               } transition-colors`}
                             >
                               <td className="py-2 px-2">
                                 <input 
                                   type="checkbox" 
-                                className="rounded border-[#10ba82] text-[#10ba82] focus:ring-[#10ba82] h-4 w-4 bg-white/10"
-                                  checked={selectedCompanies.includes(company.id)}
-                                  onChange={() => handleSelectCompany(company.id)}
+                                className="rounded border-[#2a64f5] text-[#2a64f5] focus:ring-[#2a64f5] h-4 w-4 bg-white/10"
+                                  checked={selectedCompanies.includes(building.id)}
+                                  onChange={() => handleSelectBuilding(building.id)}
                                 />
                               </td>
-                            <td className="py-2 px-2 text-sm font-medium text-[#10ba82] hover:text-[#0c9a6c] cursor-pointer">{company.name}</td>
-                            <td className="py-2 px-2 text-sm text-white/80">{company.jobTitle}</td>
-                              <td className="py-2 px-2 text-sm text-white/80">{company.company}</td>
+                            <td className="py-2 px-2 text-sm font-medium text-[#2a64f5] hover:text-[#7a94b8] cursor-pointer">{building.name}</td>
+                            <td className="py-2 px-2 text-sm text-white/80">{building.jobTitle}</td>
+                              <td className="py-2 px-2 text-sm text-white/80">{building.buildingName}</td>
                               <td className="py-2 px-2 text-sm">
                                 <div className="flex items-center gap-1">
-                                {company.emails && <MdEmail className="text-[#10ba82] text-sm" />}
-                                {company.phoneNumbers && <MdOutlinePhone className="text-[#10ba82] text-sm" />}
+                                {building.emails && <MdEmail className="text-[#2a64f5] text-sm" />}
+                                {building.phoneNumbers && <MdOutlinePhone className="text-[#2a64f5] text-sm" />}
                                 </div>
                               </td>
-                              <td className="py-2 px-2 text-sm text-white/80">{company.location}</td>
-                            <td className="py-2 px-2 text-sm text-white/80">{company.industry}</td>
+                              <td className="py-2 px-2 text-sm text-white/80">{building.location}</td>
+                            <td className="py-2 px-2 text-sm text-white/80">{building.buildingType}</td>
+                              <td className="py-2 px-2 text-sm text-white/80">{building.buildingSize}</td>
+                              <td className="py-2 px-2 text-sm text-white/80">{building.floors}</td>
+                              <td className="py-2 px-2 text-sm text-white/80">{building.year}</td>
+                              <td className="py-2 px-2 text-sm text-white/80">{building.windowCount}</td>
                               <td className="py-2 px-2 text-sm">
                                 <div className="flex gap-1">
                                   <button 
                                     onClick={() => {
-                                      // Store the filtered companies in localStorage so SignalScanner can use them
+                                      // Store the filtered buildings in localStorage so SignalScanner can use them
                                       try {
-                                      localStorage.setItem('filteredCompanies', JSON.stringify(companies));
+                                      localStorage.setItem('filteredBuildings', JSON.stringify(buildings));
                                       } catch (error) {
-                                        console.error('Error saving filtered companies to localStorage', error);
+                                        console.error('Error saving filtered buildings to localStorage', error);
                                       }
                                       navigate('/signal-scanner');
                                     }}
-                                  className="p-1.5 rounded-lg bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white shadow-sm"
+                                  className="p-1.5 rounded-lg bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] text-white shadow-sm"
                                   >
                                     <MdArrowForward size={14} />
                                   </button>
@@ -1589,7 +1936,7 @@ const MarketDatabase = () => {
                 {/* Add pagination at the bottom */}
                 <div className="flex justify-between items-center mt-6 mb-3">
                   <div className="text-white/70 text-sm">
-                    Showing <span className="text-white">1-{companies.length}</span> of <span className="text-white">{formatNumber(companiesStats.total)}</span> contacts
+                    Showing <span className="text-white">1-{buildings.length}</span> of <span className="text-white">{formatNumber(companiesStats.total)}</span> contacts
                   </div>
                   <div className="flex gap-1">
                       <button 
@@ -1598,7 +1945,7 @@ const MarketDatabase = () => {
                       >
                       Previous
                       </button>
-                    <button className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white px-3 py-1 rounded-md hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all">1</button>
+                    <button className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] text-white px-3 py-1 rounded-md hover:from-[#7a94b8] hover:to-[#0a8a5c] transition-all">1</button>
                     <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">2</button>
                     <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">3</button>
                     <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">...</button>
@@ -1615,15 +1962,15 @@ const MarketDatabase = () => {
                 <div className="flex justify-end mt-6 mb-8">
                   <button
                     onClick={() => {
-                      // Store the filtered companies in localStorage so SignalScanner can use them
+                      // Store the filtered buildings in localStorage so SignalScanner can use them
                       try {
-                        localStorage.setItem('filteredCompanies', JSON.stringify(companies));
+                        localStorage.setItem('filteredBuildings', JSON.stringify(buildings));
                       } catch (error) {
-                        console.error('Error saving filtered companies to localStorage', error);
+                        console.error('Error saving filtered buildings to localStorage', error);
                       }
                       navigate('/signal-scanner');
                     }}
-                    className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] hover:from-[#0c9a6c] hover:to-[#0a8a5c] text-white py-2 px-6 rounded-lg font-medium transition-all text-sm shadow-md hover:shadow-lg inline-flex items-center gap-2 group border border-white/20"
+                    className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] hover:from-[#7a94b8] hover:to-[#0a8a5c] text-white py-2 px-6 rounded-lg font-medium transition-all text-sm shadow-md hover:shadow-lg inline-flex items-center gap-2 group border border-white/20"
                   >
                     <MdInsights className="text-lg" />
                     Search for Signals

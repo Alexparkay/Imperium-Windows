@@ -63,28 +63,28 @@ const whatsappFlow: WhatsAppMessage[] = [
     id: 'initial',
     type: 'initial',
     name: 'Initial Contact',
-    message: "Hello [name], I'm reaching out regarding [company]'s SAP migration potential. Our analysis shows significant cost savings opportunities. Would you be interested in a brief discussion?",
+    message: "Hello [name], I'm reaching out regarding [company]'s energy efficiency potential. Our analysis shows significant cost savings opportunities through window optimization. Would you be interested in a brief discussion?",
     day: 0
   },
   {
     id: 'followup1',
     type: 'followup1',
     name: 'First Follow-up',
-    message: "Hi [name], just following up on the SAP migration analysis for [company]. The potential annual savings of $894,250 (73.5% reduction) might be of interest. When would be a good time to discuss?",
+    message: "Hi [name], just following up on the energy efficiency analysis for [company]. The potential annual savings of $847,000 (34% reduction) might be of interest. When would be a good time to discuss?",
     day: 3
   },
   {
     id: 'followup2',
     type: 'followup2',
     name: 'Second Follow-up',
-    message: "Hello [name], I wanted to ensure you received our analysis of [company]'s SAP migration potential. Given your focus on digital transformation, I believe our findings about 73.5% operational cost reduction would be valuable to discuss.",
+    message: "Hello [name], I wanted to ensure you received our analysis of [company]'s energy optimization potential. Given your focus on operational efficiency, I believe our findings about 34% energy cost reduction would be valuable to discuss.",
     day: 5
   },
   {
     id: 'final',
     type: 'final',
     name: 'Final Message',
-    message: "Hi [name], this is my final note regarding [company]'s SAP migration opportunity. Our analysis showing $894,250 in annual savings remains available if you'd like to review it in the future. Feel free to reach out when the timing is better.",
+    message: "Hi [name], this is my final note regarding [company]'s energy efficiency opportunity. Our analysis showing $847,000 in annual savings remains available if you'd like to review it in the future. Feel free to reach out when the timing is better.",
     day: 7
   }
 ];
@@ -108,7 +108,7 @@ const EmailAutomation = () => {
     {
       id: 'ai_highest_initial',
       name: 'AI Highest Rated: Initial Contact',
-      subject: "Insights from Wood's training technology presentation at TechEd Houston",
+      subject: "Your vintage Tigers collection caught my eye at MGM Grand Detroit",
       rating: 98.7,
       sequence: 'sequence_1',
       sequencePosition: 1,
@@ -117,25 +117,29 @@ const EmailAutomation = () => {
         responseRate: 42.1,
         conversionRate: 31.5
       },
-      body: `Dear Kyle,
+      body: `Dear Carlos,
 
-I attended your recent presentation at the Houston TechEd conference where you discussed Wood's approach to integrating digital solutions into professional training. Your insights about leveraging technology while maintaining high-touch learning experiences particularly stood out.
+Visited MGM Grand Detroit a few weeks ago and couldn't help but notice your incredible vintage Detroit Tigers memorabilia collection in your office - that 1984 World Series signed ball is absolutely stunning.
 
-This prompted our team to analyze aspects of your SAP infrastructure. Based on industry benchmarks for professional training organizations of comparable scale (42-50 IT staff, 15+ training centers), we estimate that modernizing your current SAP ECC environment to S/4HANA Cloud could potentially reduce operational costs by approximately 23.4% annually, translating to roughly $712,000 in savings for a company of Wood's size.
+That visit actually made me take a closer look at your facility's windows. After running preliminary calculations based on your building's square footage and current HVAC load, I've identified a significant opportunity: upgrading to high-performance energy-efficient windows could reduce your annual energy costs by approximately $847,000 - that's a 34% reduction in your current energy spend.
 
-Our preliminary calculations suggest an implementation timeframe of 6.5 months for training companies, with ROI beginning at month 14 post-implementation. With SAP ECC support ending in 2027, this timeline puts you well ahead of critical deadlines.
+For a facility of MGM Grand's scale (630,000 sq ft), this translates to:
+• $70,583 in monthly energy savings
+• 18-24 month payback period
+• $2.1M in total savings over 3 years
+• 42% reduction in HVAC operational costs
 
-These projections derive from analysis of 8 similar migrations across professional training organizations with comparable data complexity and certification tracking requirements.
+These projections are based on analysis of 12 similar casino retrofits across the Midwest, all showing consistent 30-40% energy cost reductions. Given Detroit's climate variations, the thermal efficiency gains are particularly significant during both winter heating and summer cooling seasons.
 
-Hope this perspective proves useful for your IT modernization planning.
+Hope this perspective proves valuable for your facility optimization planning.
 
-Regards,
-Alex Peterson`
+Best regards,
+{{name}}`
     },
     {
       id: 'ai_highest_followup1',
       name: 'AI Highest Rated: Follow-up 1',
-      subject: "Quick follow-up: Wood's SAP migration potential",
+      subject: "Quick follow-up: MGM Grand Detroit energy efficiency opportunity",
       rating: 97.9,
       sequence: 'sequence_1',
       sequencePosition: 2,
@@ -144,21 +148,21 @@ Alex Peterson`
         responseRate: 38.4,
         conversionRate: 26.9
       },
-      body: `Hi Kyle,
+      body: `Hi Carlos,
 
-Following up briefly on my previous email about Wood's potential SAP migration benefits.
+Following up briefly on my previous email about MGM Grand Detroit's $847,000 annual energy savings opportunity.
 
-I wanted to share that our recent analysis of training sector implementations shows particularly strong results for companies that integrate their training certification tracking with S/4HANA. Organizations similar to Wood have seen 43% faster processing of certification data and 37% reduction in compliance reporting time.
+I wanted to share that our recent analysis of casino retrofits shows particularly strong results for facilities that upgrade their window systems during off-peak seasons. Properties similar to MGM Grand have seen 38% faster ROI realization and 42% reduction in ongoing maintenance costs when installations are completed during slower winter months.
 
-If you're interested in these findings, I'd be happy to forward our industry benchmark report.
+If you're interested in these findings, I'd be happy to forward our casino industry benchmark report.
 
 Best,
-Alex`
+{{name}}`
     },
     {
       id: 'ai_highest_followup2',
       name: 'AI Highest Rated: Follow-up 2',
-      subject: "Final thoughts on Wood's SAP migration opportunity",
+      subject: "Final thoughts on MGM Grand Detroit's energy efficiency opportunity",
       rating: 96.2,
       sequence: 'sequence_1',
       sequencePosition: 3,
@@ -167,31 +171,31 @@ Alex`
         responseRate: 31.2,
         conversionRate: 18.7
       },
-      body: `Dear Kyle,
+      body: `Dear Carlos,
 
-I'm reaching out one final time regarding the SAP migration analysis we conducted for Wood.
+I'm reaching out one final time regarding the $847,000 annual energy savings analysis we conducted for MGM Grand Detroit.
 
-Since my last email, we've completed an additional study of professional training companies who recently underwent SAP migrations. The data revealed three particularly relevant findings for your Houston operations:
+Since my last email, we've completed an additional study of casino properties who recently upgraded their window systems. The data revealed three particularly relevant findings for your Detroit operations:
 
-1. Training companies with sophisticated certification tracking requirements (which we understand is central to Wood's business model) achieved 28% greater ROI compared to general industry averages.
+1. Casino facilities with 24/7 operations (which we understand is central to MGM Grand's business model) achieved 31% greater energy savings compared to standard commercial buildings due to consistent HVAC demands.
 
-2. The implementation timeline for companies that maintained parallel systems during migration averaged just 5.7 months - nearly 40% faster than standard approaches.
+2. The installation timeline for properties that utilized phased approaches averaged just 4.2 months - nearly 45% faster than full-facility shutdowns, with zero impact on guest experience.
 
-3. Integration with virtual training environments (which featured prominently in your TechEd presentation) was completed with minimal disruption, with 92% of companies reporting zero downtime for learner-facing systems.
+3. Integration with existing building management systems was completed seamlessly, with 94% of properties reporting improved climate control precision and guest comfort scores.
 
-The full dataset encompasses 14 professional training organizations across North America, with an average size of 750-1,200 employees and annual IT budgets of $4.2-7.1M.
+The full dataset encompasses 16 casino properties across the Great Lakes region, with an average size of 500,000-800,000 sq ft and annual energy costs of $2.1-3.8M.
 
-Should these findings align with your current modernization priorities, our complete analysis remains available.
+Should these findings align with your current facility optimization priorities, our complete analysis remains available.
 
-Wishing you continued success with Wood's digital initiatives.
+Wishing you continued success with MGM Grand's operational excellence.
 
-Regards,
-Alex Peterson`
+Best regards,
+{{name}}`
     },
     {
       id: 'sequence2_initial',
       name: 'Value-Focused: Initial Contact',
-      subject: "Wood training technology modernization - potential $712K annual savings",
+      subject: "MGM Grand Detroit energy optimization - potential $847K annual savings",
       rating: 92.4,
       sequence: 'sequence_2',
       sequencePosition: 1,
@@ -200,31 +204,33 @@ Alex Peterson`
         responseRate: 36.8,
         conversionRate: 24.5
       },
-      body: `Dear Kyle,
+      body: `Dear Carlos,
 
-Your recent interview in Training Technology Quarterly about Wood's learning platform innovations caught my attention, particularly your emphasis on creating seamless digital experiences for professional certifications.
+Your recent feature in Casino Operations Magazine about MGM Grand Detroit's sustainability initiatives caught my attention, particularly your emphasis on creating energy-efficient operations while maintaining exceptional guest experiences.
 
-After reviewing your technical infrastructure based on publicly available information, our team has identified potential optimization opportunities within your SAP environment. For professional training organizations like Wood with 5+ years on ECC systems, migration to S/4HANA typically yields annual operational savings between $650K-850K, with an implementation timeline of 6-8 months.
+After reviewing your facility's energy profile, our team has identified a significant optimization opportunity: upgrading to high-performance energy-efficient windows could yield $847,000 in annual energy savings - that's a 34% reduction in your current energy costs.
 
-Key areas of improvement specific to training companies include:
-• 67% faster certification processing and validation
-• 73% reduction in manual data entry requirements
-• 42% more efficient compliance reporting for regulated industries
-• Enhanced integration with virtual learning environments
+Specific benefits for MGM Grand Detroit:
+• $70,583 monthly energy cost reduction
+• 18-24 month payback period
+• $2.1M total savings over 3 years
+• 42% improvement in guest comfort consistency across all floors
+• Enhanced noise reduction from Detroit's urban environment
+• 28% decrease in peak demand charges during summer months
 
-With SAP ECC end-of-support approaching in 2027, organizations in your sector are typically allowing 12-18 months for complete transition. Based on Wood's scale and complexity, our projected implementation would complete by Q2 2026, providing a comfortable buffer before support expires.
+With energy costs continuing to rise and sustainability becoming increasingly important to guests, properties in your sector are typically seeing these results within 4-6 months of installation. Based on MGM Grand's scale and operational requirements, our projected installation would complete by Q3 2024, positioning you ahead of the peak summer cooling season.
 
-These insights come from our analysis of 14 similar migrations within professional training and education companies during 2021-2023.
+These insights come from our analysis of 16 similar retrofits within casino and hospitality properties during 2022-2024.
 
-I hope this information proves valuable as you evaluate your technology roadmap.
+I hope this information proves valuable as you evaluate your facility optimization roadmap.
 
-Regards,
-Alex Peterson`
+Best regards,
+{{name}}`
     },
     {
       id: 'sequence2_followup1',
       name: 'Value-Focused: Follow-up 1',
-      subject: "RE: Wood's SAP environment - specific training industry findings",
+      subject: "RE: MGM Grand Detroit's energy profile - specific casino industry findings",
       rating: 89.5,
       sequence: 'sequence_2',
       sequencePosition: 2,
@@ -233,25 +239,25 @@ Alex Peterson`
         responseRate: 31.4,
         conversionRate: 19.8
       },
-      body: `Kyle,
+      body: `Carlos,
 
-I wanted to follow up on my previous email with some additional findings specifically relevant to Wood's professional training operations in Houston.
+I wanted to follow up on my previous email about the $847,000 annual savings opportunity for MGM Grand Detroit.
 
-In analyzing similar companies that migrated from ECC to S/4HANA:
+In analyzing similar properties that upgraded to high-performance window systems:
 
-- Training organizations with certification requirements saw average processing time improvements of 43% for student record management
-- Companies integrating virtual classrooms experienced 87% faster data synchronization
-- Houston-based enterprises benefited from local implementation partners, reducing project timelines by 23% compared to national averages
+- Casino facilities with gaming floors saw average energy cost reductions of 36% for climate control systems
+- Properties with hotel towers experienced 42% improvement in guest comfort scores and noise reduction
+- Detroit-area installations benefited from local weather patterns, achieving 28% better performance than national averages during winter months
 
-If any of these areas align with your current challenges, I'd be happy to share the detailed findings from our industry analysis.
+If any of these areas align with your current operational challenges, I'd be happy to share the detailed findings from our casino industry analysis.
 
 Best regards,
-Alex`
+{{name}}`
     },
     {
       id: 'problem_solution',
       name: 'Problem-Solution: Initial Contact',
-      subject: "Addressing Wood's training certification challenges with SAP modernization",
+      subject: "Addressing MGM Grand Detroit's energy efficiency challenges with window optimization",
       rating: 86.3,
       sequence: 'sequence_3',
       sequencePosition: 1,
@@ -260,106 +266,109 @@ Alex`
         responseRate: 28.7,
         conversionRate: 17.4
       },
-      body: `Dear Kyle,
+      body: `Dear Carlos,
 
-I recently reviewed Wood's impressive growth in professional certification programs as highlighted in the Houston Business Journal. Your expansion into specialized industrial safety training particularly stands out in a competitive market.
+I recently reviewed MGM Grand Detroit's impressive sustainability initiatives as highlighted in the Detroit Business Journal. Your commitment to reducing operational costs while enhancing guest experience particularly stands out in a competitive market.
 
-This prompted our research team to examine how similar training organizations are addressing technology challenges during growth phases. Our industry analysis reveals that companies with comparable certification volumes (12,000-18,000 annually) face three primary challenges with legacy SAP implementations:
+This prompted our research team to examine energy efficiency opportunities for your facility. Our analysis reveals that upgrading to high-performance energy-efficient windows could deliver $847,000 in annual savings - a 34% reduction in energy costs.
 
-1. Certification tracking becomes increasingly manual as volume scales, with staff spending 23-37 hours weekly on data validation
+Specific benefits for MGM Grand Detroit:
+• $70,583 monthly energy savings
+• 18-24 month payback period
+• $2.1M total savings over 3 years
+• 67% decrease in guest comfort complaints
+• 89% improved climate control consistency across all zones
 
-2. Reporting for regulatory compliance requires extensive customization, typically costing $140K-190K annually in development resources
+These findings address three primary challenges we've identified in facilities with comparable square footage (600,000-700,000 sq ft):
 
-3. Integration with modern learning management systems creates synchronization issues, with error rates averaging 4-8% in cross-platform data
+1. Energy loss becomes increasingly costly as utility rates rise, with facilities spending 35-42% more on HVAC than necessary due to poor thermal performance
 
-In examining Wood's public technology footprint, we identified several indicators suggesting these challenges may be relevant to your operations. Professional training organizations that have addressed these issues through SAP modernization typically achieve:
+2. Guest comfort complaints require constant HVAC adjustments, typically costing $180K-240K annually in additional maintenance and energy costs
 
-• 71% reduction in manual certification processing time
-• 83% decrease in compliance reporting development costs
-• 92% improved accuracy in cross-platform data synchronization
+3. Integration with modern building management systems creates inefficiencies, with temperature variance averaging 4-6 degrees across different zones
 
-These findings stem from our analysis of 17 professional training organizations that modernized legacy SAP systems between 2020-2023.
+These findings stem from our analysis of 19 casino and hospitality properties that upgraded their window systems between 2021-2024.
 
-I hope this perspective provides valuable context for your technology strategy.
+I hope this perspective provides valuable context for your facility optimization strategy.
 
-Regards,
-Alex Peterson`
+Best regards,
+{{name}}`
     }
   ];
   
-  // Contact data - SAP/Cloud leadership contacts
+  // Contact data - Facility/Building Operations leadership contacts
   const contacts = [
     {
       id: 1,
-      name: "Kyle Flynn-Kasaba",
-      email: "k.flynn@wood.com",
-      company: "Wood",
-      location: "Houston, Texas",
-      position: "Head of IT Infrastructure and Operations",
-      phone: "+1 (713) 555-1234"
+      name: "Carlos Lee",
+      email: "c.lee@mgmgrand.com",
+      company: "MGM Grand Detroit Hotel & Casino",
+      location: "Detroit, Michigan",
+      position: "Building Operations Manager",
+      phone: "+1 (313) 555-1234"
     },
     {
       id: 2,
-      name: "Wells Shammout",
-      email: "w.shammout@ips.com",
-      company: "IPS",
-      location: "Rutherford, New Jersey",
-      position: "Vice President, Head of Information Technology",
-      phone: "+1 (201) 555-2345"
+      name: "Maria Rodriguez",
+      email: "m.rodriguez@caesars.com",
+      company: "Caesars Palace",
+      location: "Las Vegas, Nevada",
+      position: "Facilities Director",
+      phone: "+1 (702) 555-2345"
     },
     {
       id: 3,
-      name: "Sanjeev Sharma",
-      email: "s.sharma@ipgphotonics.com",
-      company: "IPG Photonics",
-      location: "Framingham, Massachusetts",
-      position: "Head of Information Technology - Info",
-      phone: "+1 (508) 555-3456"
+      name: "David Chen",
+      email: "d.chen@mohegansun.com",
+      company: "Mohegan Sun",
+      location: "Uncasville, Connecticut",
+      position: "Energy Management Director",
+      phone: "+1 (860) 555-3456"
     },
     {
       id: 4,
-      name: "Leah Sullivan",
-      email: "l.sullivan@henkel.com",
-      company: "Henkel",
-      location: "Watchung, New Jersey",
-      position: "Head of IT application Engineering",
-      phone: "+1 (908) 555-4567"
+      name: "Jennifer Walsh",
+      email: "j.walsh@foxwoods.com",
+      company: "Foxwoods Resort Casino",
+      location: "Mashantucket, Connecticut",
+      position: "Building Operations Manager",
+      phone: "+1 (860) 555-4567"
     },
     {
       id: 5,
-      name: "Benjamin Partout",
-      email: "b.partout@strive.com",
-      company: "Strive",
-      location: "Denver, Colorado",
-      position: "Head of Information Technology",
-      phone: "+1 (303) 555-5678"
+      name: "Michael Thompson",
+      email: "m.thompson@hardrock.com",
+      company: "Hard Rock Hotel & Casino",
+      location: "Atlantic City, New Jersey",
+      position: "Facilities Manager",
+      phone: "+1 (609) 555-5678"
     },
     {
       id: 6,
-      name: "Henry Ifiuscati",
-      email: "h.ifiuscati@libertymutual.com",
-      company: "Liberty Mutual Insurance",
-      location: "Boston, Massachusetts",
-      position: "Head of Information Technology",
-      phone: "+1 (617) 555-6789"
+      name: "Sarah Kim",
+      email: "s.kim@borgata.com",
+      company: "Borgata Hotel Casino & Spa",
+      location: "Atlantic City, New Jersey",
+      position: "Energy Efficiency Manager",
+      phone: "+1 (609) 555-6789"
     },
     {
       id: 7,
-      name: "Brandon Thielen",
-      email: "b.thielen@fivescinetic.com",
-      company: "Fives Cinetic Corp.",
-      location: "Farmington, Michigan",
-      position: "Head of Information Technology",
-      phone: "+1 (248) 555-7890"
+      name: "Robert Martinez",
+      email: "r.martinez@windcreek.com",
+      company: "Wind Creek Casino",
+      location: "Bethlehem, Pennsylvania",
+      position: "Building Operations Director",
+      phone: "+1 (610) 555-7890"
     },
     {
       id: 8,
-      name: "Tayo Oshoel",
-      email: "t.oshoel@holcim.com",
-      company: "Holcim",
-      location: "Washington, District of Columbia",
-      position: "Head of Information Technology",
-      phone: "+1 (202) 555-8901"
+      name: "Lisa Johnson",
+      email: "l.johnson@motorcity.com",
+      company: "MotorCity Casino Hotel",
+      location: "Detroit, Michigan",
+      position: "Facilities Operations Manager",
+      phone: "+1 (313) 555-8901"
     }
   ];
 
@@ -369,9 +378,9 @@ Alex Peterson`
     name: 'LinkedIn Voice Message',
     message: `Hi {{name}},
 
-I noticed your recent post about {{company}}'s SAP migration journey and was particularly impressed by your insights on balancing legacy systems with innovation.
+I noticed your recent post about {{company}}'s sustainability initiatives and was particularly impressed by your insights on balancing operational efficiency with guest experience.
 
-After analyzing your current SAP environment, I've identified some compelling opportunities for optimization. Specifically, with your 1,250 SAP users, a migration to S/4HANA Cloud could reduce your annual operational costs by approximately $894,250 - that's a 73.5% reduction.
+After analyzing your facility's energy profile, I've identified some compelling opportunities for optimization. Specifically, with your 630,000 sq ft facility, upgrading to high-performance energy-efficient windows could reduce your annual energy costs by approximately $847,000 - that's a 34% reduction.
 
 I'd love to share a detailed analysis of how this could work for {{company}}. Would you be open to a brief conversation?
 
@@ -475,13 +484,13 @@ Best regards,
     return (
       <div className="min-h-screen bg-[#020305] flex items-center justify-center relative overflow-hidden">
         {/* Background gradient orbs */}
-        <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-        <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+        <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-blue-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+        <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-blue-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
         
         <div className="relative z-10 flex flex-col items-center gap-8">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-            <div className="loading loading-spinner loading-lg text-emerald-500 relative"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+            <div className="loading loading-spinner loading-lg text-blue-500 relative"></div>
           </div>
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-2">Loading Email Automation</h2>
@@ -497,7 +506,7 @@ Best regards,
       <div className="max-w-[1800px] mx-auto">
         {/* Title */}
         <div className="flex items-center gap-3 mb-6 px-2">
-          <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg">
+          <div className="bg-gradient-to-br from-blue-500 to-green-600 p-4 rounded-xl text-white shadow-lg">
                     <MdOutlineEmail size={24} />
                   </div>
           <h1 className="text-2xl font-bold text-white">Outreach</h1>
@@ -508,12 +517,12 @@ Best regards,
           {/* Email Tab */}
           <button
             onClick={() => setActiveTab('email')}
-            className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
-              activeTab === 'email' ? 'ring-2 ring-emerald-500' : ''
+            className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+              activeTab === 'email' ? 'ring-2 ring-blue-500' : ''
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-br from-blue-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                 <MdOutlineEmail size={24} />
                         </div>
               <div>
@@ -566,12 +575,12 @@ Best regards,
           {activeTab === 'email' && (
             <>
               {/* Email Editor */}
-              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Email Editor */}
                   <div>
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                      <div className="bg-gradient-to-br from-blue-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                         <FaRegEdit size={24} />
                       </div>
                       <div>
@@ -582,17 +591,17 @@ Best regards,
                     
                     <div className="space-y-4">
                       {/* Template Selection UI */}
-                      <div className="bg-gradient-to-br from-[#1e222b]/80 to-[#1e222b]/50 rounded-lg border border-emerald-500/10 p-4">
+                      <div className="bg-gradient-to-br from-[#1e222b]/80 to-[#1e222b]/50 rounded-lg border border-blue-500/10 p-4">
                         <div className="flex items-center gap-2 mb-4">
-                          <div className="bg-emerald-500/20 p-2 rounded">
-                            <FaRegLightbulb className="text-emerald-400" />
+                          <div className="bg-blue-500/20 p-2 rounded">
+                            <FaRegLightbulb className="text-blue-400" />
                           </div>
                           <div>
                             <h3 className="text-sm font-medium text-white">AI-Recommended Templates</h3>
                             <p className="text-xs text-white/60">Our AI has analyzed performance metrics to suggest the most effective templates</p>
                           </div>
-                          <div className="ml-auto bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">
-                            <span className="text-xs text-emerald-400 font-medium">Self-improving AI</span>
+                          <div className="ml-auto bg-blue-500/10 px-2 py-1 rounded-full border border-blue-500/20">
+                            <span className="text-xs text-blue-400 font-medium">Self-improving AI</span>
                           </div>
                         </div>
 
@@ -600,7 +609,7 @@ Best regards,
                           {/* Template Sequence 1 */}
                           <div className="space-y-2">
                             <div className="text-white/80 text-xs font-medium flex items-center gap-1">
-                              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                              <span className="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
                               High-Conversion Sequence
                             </div>
                             
@@ -612,15 +621,15 @@ Best regards,
                                   key={template.id}
                                   onClick={() => handleTemplateChange(template.id)}
                                   className={`w-full flex items-center p-2 rounded text-left hover:bg-[#28292b]/60 transition-colors ${
-                                    selectedTemplate === template.id ? 'bg-[#28292b]/80 border border-emerald-500/30' : 'bg-[#28292b]/40'
+                                    selectedTemplate === template.id ? 'bg-[#28292b]/80 border border-blue-500/30' : 'bg-[#28292b]/40'
                                   }`}
                                 >
                                   <div className="flex-1">
                                     <p className="text-sm text-white truncate">{template.name}</p>
-                                    <p className="text-xs text-white/60 truncate">Open rate: <span className="text-emerald-400">{template.ai_metrics.openRate}%</span></p>
+                                    <p className="text-xs text-white/60 truncate">Open rate: <span className="text-blue-400">{template.ai_metrics.openRate}%</span></p>
                                   </div>
-                                  <div className="text-xs bg-emerald-500/20 px-2 py-1 rounded">
-                                    <span className="text-emerald-400 font-medium">{template.rating.toFixed(1)}%</span>
+                                  <div className="text-xs bg-blue-500/20 px-2 py-1 rounded">
+                                    <span className="text-blue-400 font-medium">{template.rating.toFixed(1)}%</span>
                                   </div>
                                 </button>
                               ))}
@@ -686,9 +695,9 @@ Best regards,
                         
                         <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
                           <div className="text-xs text-white/60">
-                            <span className="text-emerald-400 font-medium">AI Insight:</span> Personalized subject lines have increased open rates by 37.8%
+                            <span className="text-blue-400 font-medium">AI Insight:</span> Personalized subject lines have increased open rates by 37.8%
                           </div>
-                          <button className="btn btn-xs bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 text-white border border-emerald-500/20">
+                          <button className="btn btn-xs bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 text-white border border-blue-500/20">
                             View all templates
                           </button>
                         </div>
@@ -706,7 +715,7 @@ Best regards,
                           type="text" 
                           value={emailSubject}
                           onChange={(e) => setEmailSubject(e.target.value)}
-                          className="input w-full backdrop-blur-md bg-[#28292b]/60 border border-emerald-500/20 text-white focus:border-emerald-500"
+                          className="input w-full backdrop-blur-md bg-[#28292b]/60 border border-blue-500/20 text-white focus:border-blue-500"
                         />
                       </div>
                       
@@ -721,16 +730,16 @@ Best regards,
                         <textarea 
                           value={emailBody}
                           onChange={(e) => setEmailBody(e.target.value)}
-                          className="textarea h-96 backdrop-blur-md bg-[#28292b]/60 border border-emerald-500/20 text-white focus:border-emerald-500"
+                          className="textarea h-96 backdrop-blur-md bg-[#28292b]/60 border border-blue-500/20 text-white focus:border-blue-500"
                         />
                       </div>
                       
                       <div className="flex justify-end gap-2">
-                        <button className="btn btn-sm bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 hover:from-[#28292b]/90 hover:to-[#28292b]/70 text-white border border-emerald-500/20 gap-2 shadow-lg hover:shadow-emerald-500/10 transition-all">
+                        <button className="btn btn-sm bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 hover:from-[#28292b]/90 hover:to-[#28292b]/70 text-white border border-blue-500/20 gap-2 shadow-lg hover:shadow-blue-500/10 transition-all">
                           <FaRegCopy size={16} />
                           Copy
                         </button>
-                        <button className="btn btn-sm bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white border-0 gap-2 shadow-lg hover:shadow-emerald-500/20 transition-all">
+                        <button className="btn btn-sm bg-gradient-to-br from-blue-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white border-0 gap-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                           <FaRegSave size={16} />
                           Save as Template
                         </button>
@@ -741,7 +750,7 @@ Best regards,
                   {/* Email Preview */}
                   <div>
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                      <div className="bg-gradient-to-br from-blue-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                         <MdOutlineEmail size={24} />
                       </div>
                       <div>
@@ -752,92 +761,92 @@ Best regards,
                     
                     <div>
                       {selectedContacts.length > 0 ? (
-                        <div className="backdrop-blur-md bg-[#28292b]/40 rounded-lg p-4 border border-emerald-500/10">
+                        <div className="backdrop-blur-md bg-[#28292b]/40 rounded-lg p-4 border border-blue-500/10">
                           <div className="mb-2 text-white/80 flex items-center gap-2">
                             <span className="font-medium">To:</span>
                             <div className="flex items-center gap-1">
-                              <span className="bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20 text-white">{contacts.find(c => c.name === selectedContacts[0])?.email}</span>
+                              <span className="bg-blue-500/10 px-2 py-1 rounded border border-blue-500/20 text-white">{contacts.find(c => c.name === selectedContacts[0])?.email}</span>
                               {selectedContacts.length > 1 && (
-                                <span className="bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20 text-white">+{selectedContacts.length - 1} more</span>
+                                <span className="bg-blue-500/10 px-2 py-1 rounded border border-blue-500/20 text-white">+{selectedContacts.length - 1} more</span>
                               )}
                             </div>
                           </div>
                           <div className="mb-4 text-white/80">
                             <span className="font-medium">Subject:</span>
-                            <div className="bg-emerald-500/10 px-3 py-2 rounded mt-1 border border-emerald-500/20 text-white">
+                            <div className="bg-blue-500/10 px-3 py-2 rounded mt-1 border border-blue-500/20 text-white">
                               {personalize(emailSubject, contacts.find(c => c.name === selectedContacts[0]))}
                             </div>
                           </div>
-                          <div className="whitespace-pre-line border-t border-emerald-500/20 pt-4 text-white">
+                          <div className="whitespace-pre-line border-t border-blue-500/20 pt-4 text-white">
                             {personalize(emailBody, contacts.find(c => c.name === selectedContacts[0]))}
                           </div>
                           
                           {/* AI Insights Panel */}
-                          <div className="mt-6 pt-4 border-t border-emerald-500/20">
+                          <div className="mt-6 pt-4 border-t border-blue-500/20">
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="text-emerald-500">
+                              <div className="text-blue-500">
                                 <FaRegLightbulb size={18} />
                               </div>
                               <h3 className="text-white text-sm font-medium">AI Message Analysis</h3>
-                              <div className="ml-auto bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">
-                                <span className="text-xs text-emerald-400 font-medium">Continually learning</span>
+                              <div className="ml-auto bg-blue-500/10 px-2 py-1 rounded-full border border-blue-500/20">
+                                <span className="text-xs text-blue-400 font-medium">Continually learning</span>
                               </div>
                             </div>
                             
                             <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-blue-500/5">
                                 <div className="text-xs text-white/60 mb-1">Readability Score</div>
                                 <div className="flex items-center justify-between">
                                   <div className="text-white font-medium">Excellent</div>
-                                  <div className="text-emerald-400 font-medium">92/100</div>
+                                  <div className="text-blue-400 font-medium">92/100</div>
                                 </div>
                                 <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
-                                  <div className="h-full w-[92%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                  <div className="h-full w-[92%] bg-gradient-to-r from-blue-500 to-green-400 rounded-full"></div>
                                 </div>
                               </div>
                               
-                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-blue-500/5">
                                 <div className="text-xs text-white/60 mb-1">Predicted Open Rate</div>
                                 <div className="flex items-center justify-between">
                                   <div className="text-white font-medium">High</div>
-                                  <div className="text-emerald-400 font-medium">78.4%</div>
+                                  <div className="text-blue-400 font-medium">78.4%</div>
                                 </div>
                                 <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
-                                  <div className="h-full w-[78.4%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                  <div className="h-full w-[78.4%] bg-gradient-to-r from-blue-500 to-green-400 rounded-full"></div>
                                 </div>
                               </div>
                               
-                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-blue-500/5">
                                 <div className="text-xs text-white/60 mb-1">CTR Prediction</div>
                                 <div className="flex items-center justify-between">
                                   <div className="text-white font-medium">Above Average</div>
-                                  <div className="text-emerald-400 font-medium">42.1%</div>
+                                  <div className="text-blue-400 font-medium">42.1%</div>
                                 </div>
                                 <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
-                                  <div className="h-full w-[42.1%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                  <div className="h-full w-[42.1%] bg-gradient-to-r from-blue-500 to-green-400 rounded-full"></div>
                                 </div>
                               </div>
                               
-                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-emerald-500/5">
+                              <div className="bg-[#1e222b]/50 p-3 rounded-lg border border-blue-500/5">
                                 <div className="text-xs text-white/60 mb-1">Meeting Conversion</div>
                                 <div className="flex items-center justify-between">
                                   <div className="text-white font-medium">Outstanding</div>
-                                  <div className="text-emerald-400 font-medium">31.5%</div>
+                                  <div className="text-blue-400 font-medium">31.5%</div>
                                 </div>
                                 <div className="w-full h-1.5 bg-[#28292b] rounded-full mt-1 overflow-hidden">
-                                  <div className="h-full w-[31.5%] bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"></div>
+                                  <div className="h-full w-[31.5%] bg-gradient-to-r from-blue-500 to-green-400 rounded-full"></div>
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="mt-3 p-2 bg-emerald-500/10 border border-emerald-500/20 rounded text-xs text-white/80">
-                              <span className="text-emerald-400 font-medium">AI Recommendation:</span> This message is optimized for Kyle Flynn's profile as Head of IT at Wood. The specific mention of training industry challenges increases relevance by 47%.
+                            <div className="mt-3 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-white/80">
+                              <span className="text-blue-400 font-medium">AI Recommendation:</span> This message is optimized for Carlos Lee's profile as Building Operations Manager at MGM Grand Detroit. The specific mention of his Tigers memorabilia collection increases personal connection by 52%.
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div className="text-center py-12 backdrop-blur-md bg-[#28292b]/40 rounded-lg border border-emerald-500/10">
-                          <div className="text-emerald-500 mb-4">
+                        <div className="text-center py-12 backdrop-blur-md bg-[#28292b]/40 rounded-lg border border-blue-500/10">
+                          <div className="text-blue-500 mb-4">
                             <MdOutlineEmail size={48} className="mx-auto" />
                           </div>
                           <p className="text-white/60">
@@ -851,9 +860,9 @@ Best regards,
           </div>
 
           {/* Email Sequencing Visualization */}
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-br from-blue-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                 <RiFlowChart size={24} />
               </div>
               <div>
@@ -861,7 +870,7 @@ Best regards,
                 <p className="text-white/60 text-sm">Automated follow-up flow based on recipient actions</p>
               </div>
               <div className="ml-auto">
-                <button className="btn btn-sm bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 hover:from-[#28292b]/90 hover:to-[#28292b]/70 text-white border border-emerald-500/20 gap-2 shadow-lg hover:shadow-emerald-500/10 transition-all">
+                <button className="btn btn-sm bg-gradient-to-br from-[#28292b]/80 to-[#28292b]/60 hover:from-[#28292b]/90 hover:to-[#28292b]/70 text-white border border-blue-500/20 gap-2 shadow-lg hover:shadow-blue-500/10 transition-all">
                   <RiSplitCellsHorizontal size={16} />
                   Edit Sequence
                 </button>
@@ -873,30 +882,30 @@ Best regards,
               <div className="flex flex-wrap justify-between items-center gap-4 px-4">
                 {/* Initial Email */}
                 <div className="relative flex flex-col items-center w-40">
-                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/20 relative group/node">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-green-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-blue-500/20 relative group/node">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                     <div className="flex flex-col items-center gap-2">
-                      <RiMailSendLine size={28} className="text-emerald-400" />
+                      <RiMailSendLine size={28} className="text-blue-400" />
                       <div className="text-white text-center font-medium">Initial Email</div>
                       <div className="text-xs text-white/60 text-center">Day 0</div>
                     </div>
                   </div>
-                  <div className="h-8 w-1 bg-gradient-to-b from-emerald-500 to-emerald-300 mt-2"></div>
+                  <div className="h-8 w-1 bg-gradient-to-b from-blue-500 to-emerald-300 mt-2"></div>
                 </div>
                 
                 {/* Conditional: Opened? */}
                 <div className="relative flex flex-col items-center">
-                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl py-3 px-4 border border-emerald-500/20 relative group/node">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-green-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl py-3 px-4 border border-blue-500/20 relative group/node">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                     <div className="text-white text-center text-sm font-medium">Opened?</div>
                   </div>
                   
                   {/* Yes/No paths */}
                   <div className="flex gap-10 mt-2">
                     <div className="flex flex-col items-center">
-                      <div className="h-6 w-1 bg-green-500"></div>
+                      <div className="h-6 w-1 bg-blue-500"></div>
                       <div className="text-green-400 text-xs">Yes</div>
-                      <div className="h-6 w-1 bg-green-500"></div>
+                      <div className="h-6 w-1 bg-blue-500"></div>
                     </div>
                     <div className="flex flex-col items-center">
                       <div className="h-6 w-1 bg-red-500"></div>
@@ -908,30 +917,30 @@ Best regards,
                 
                 {/* Follow-up Email 1 */}
                 <div className="relative flex flex-col items-center w-40">
-                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/20 relative group/node">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-green-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-blue-500/20 relative group/node">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                     <div className="flex flex-col items-center gap-2">
-                      <RiMailCloseLine size={28} className="text-emerald-400" />
+                      <RiMailCloseLine size={28} className="text-blue-400" />
                       <div className="text-white text-center font-medium">Follow-up Email 1</div>
                       <div className="text-xs text-white/60 text-center">Day 3</div>
                     </div>
                   </div>
-                  <div className="h-8 w-1 bg-gradient-to-b from-emerald-500 to-emerald-300 mt-2"></div>
+                  <div className="h-8 w-1 bg-gradient-to-b from-blue-500 to-emerald-300 mt-2"></div>
                 </div>
                 
                 {/* Conditional: Replied? */}
                 <div className="relative flex flex-col items-center">
-                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl py-3 px-4 border border-emerald-500/20 relative group/node">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-green-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl py-3 px-4 border border-blue-500/20 relative group/node">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                     <div className="text-white text-center text-sm font-medium">Replied?</div>
                   </div>
                   
                   {/* Yes/No paths */}
                   <div className="flex gap-10 mt-2">
                     <div className="flex flex-col items-center">
-                      <div className="h-6 w-1 bg-green-500"></div>
+                      <div className="h-6 w-1 bg-blue-500"></div>
                       <div className="text-green-400 text-xs">Yes</div>
-                      <div className="h-6 w-1 bg-green-500"></div>
+                      <div className="h-6 w-1 bg-blue-500"></div>
                     </div>
                     <div className="flex flex-col items-center">
                       <div className="h-6 w-1 bg-red-500"></div>
@@ -943,10 +952,10 @@ Best regards,
                 
                 {/* Follow-up Email 2 */}
                 <div className="relative flex flex-col items-center w-40">
-                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/20 relative group/node">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-green-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                  <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-blue-500/20 relative group/node">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                     <div className="flex flex-col items-center gap-2">
-                      <RiMailCloseLine size={28} className="text-emerald-400" />
+                      <RiMailCloseLine size={28} className="text-blue-400" />
                       <div className="text-white text-center font-medium">Follow-up Email 2</div>
                           <div className="text-xs text-white/60 text-center">Day 5</div>
                         </div>
@@ -969,18 +978,18 @@ Best regards,
               
               {/* Bottom row outcomes */}
               <div className="mt-12 flex justify-center gap-12">
-                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-green-500/20 relative group/node">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-green-500/10 via-green-300/5 to-green-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-blue-500/20 relative group/node">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-green-300/5 to-green-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                   <div className="flex flex-col items-center gap-2">
                     <RiMailCheckLine size={24} className="text-green-400" />
                     <div className="text-white text-center font-medium">Move to Opportunities</div>
                   </div>
                 </div>
                 
-                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/20 relative group/node">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-green-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
+                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-xl p-4 border border-blue-500/20 relative group/node">
+                      <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-emerald-600/10 opacity-25 group-hover/node:opacity-40 transition-opacity rounded-xl"></div>
                   <div className="flex flex-col items-center gap-2">
-                    <RiMailCloseLine size={24} className="text-emerald-400" />
+                    <RiMailCloseLine size={24} className="text-blue-400" />
                     <div className="text-white text-center font-medium">Final Email</div>
                     <div className="text-xs text-white/60 text-center">Day 14</div>
                   </div>
@@ -998,20 +1007,20 @@ Best regards,
               
               {/* Stats about the sequence */}
               <div className="mt-8 grid grid-cols-4 gap-4">
-                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-emerald-500/10">
-                  <div className="text-sm text-emerald-400 mb-1">Average Sequence Length</div>
+                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-blue-500/10">
+                  <div className="text-sm text-blue-400 mb-1">Average Sequence Length</div>
                   <div className="text-lg text-white font-bold">9 days</div>
                 </div>
-                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-emerald-500/10">
-                  <div className="text-sm text-emerald-400 mb-1">Response Rate</div>
+                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-blue-500/10">
+                  <div className="text-sm text-blue-400 mb-1">Response Rate</div>
                   <div className="text-lg text-white font-bold">30% by 2nd email</div>
                 </div>
-                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-emerald-500/10">
-                  <div className="text-sm text-emerald-400 mb-1">Meeting Bookings</div>
+                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-blue-500/10">
+                  <div className="text-sm text-blue-400 mb-1">Meeting Bookings</div>
                   <div className="text-lg text-white font-bold">15% conversion</div>
                 </div>
-                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-emerald-500/10">
-                  <div className="text-sm text-emerald-400 mb-1">Complete Sequence</div>
+                <div className="bg-[rgba(27,34,42,0.75)] backdrop-blur-md rounded-lg p-3 border border-blue-500/10">
+                  <div className="text-sm text-blue-400 mb-1">Complete Sequence</div>
                   <div className="text-lg text-white font-bold">40% of contacts</div>
                 </div>
               </div>
@@ -1019,19 +1028,19 @@ Best regards,
           </div>
 
           {/* Contact Database Section - Added for Email tab */}
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-emerald-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-br from-blue-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                 <FaDatabase className="text-lg text-white" />
               </div>
               <div>
                 <h2 className="text-lg font-semibold text-white">Contact Database</h2>
-                <p className="text-white/60 text-sm">Select your SAP migration audience from 2,347 verified contacts</p>
+                <p className="text-white/60 text-sm">Select your energy efficiency audience from 1,847 verified facility managers</p>
               </div>
               <div className="ml-auto flex items-center gap-2">
-                <div className="bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                  <span className="text-xs text-emerald-500 font-medium">AI Optimized</span>
+                <div className="bg-blue-500/20 px-3 py-1 rounded-full border border-blue-500/30 flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                  <span className="text-xs text-blue-500 font-medium">AI Optimized</span>
                 </div>
                 <div className="bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30">
                   <span className="text-xs text-orange-400 font-medium">42% avg. open rate</span>
@@ -1042,7 +1051,7 @@ Best regards,
             <div className="overflow-x-auto">
               <table className="table table-sm w-full">
                 <thead>
-                  <tr className="border-b border-emerald-500/20">
+                  <tr className="border-b border-blue-500/20">
                     <th className="w-10 bg-[#28292b]/80 text-white/80">
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </th>
@@ -1054,7 +1063,7 @@ Best regards,
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                  <tr className="hover:bg-[#28292b]/40 border-b border-blue-500/10">
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
                     </td>
@@ -1063,10 +1072,10 @@ Best regards,
                     <td>{contacts[0].company}</td>
                     <td className="text-white/80">{contacts[0].position}</td>
                     <td className="text-right">
-                      <span className="text-emerald-400 text-sm">Opened previous email</span>
+                      <span className="text-blue-400 text-sm">Opened previous email</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                  <tr className="hover:bg-[#28292b]/40 border-b border-blue-500/10">
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </td>
@@ -1078,7 +1087,7 @@ Best regards,
                       <span className="text-blue-400 text-sm">New contact</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                  <tr className="hover:bg-[#28292b]/40 border-b border-blue-500/10">
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" checked />
                     </td>
@@ -1087,10 +1096,10 @@ Best regards,
                     <td>{contacts[2].company}</td>
                     <td className="text-white/80">{contacts[2].position}</td>
                     <td className="text-right">
-                      <span className="text-emerald-400 text-sm">Opened previous email</span>
+                      <span className="text-blue-400 text-sm">Opened previous email</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                  <tr className="hover:bg-[#28292b]/40 border-b border-blue-500/10">
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </td>
@@ -1102,7 +1111,7 @@ Best regards,
                       <span className="text-yellow-400 text-sm">Clicked link</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#28292b]/40 border-b border-emerald-500/10">
+                  <tr className="hover:bg-[#28292b]/40 border-b border-blue-500/10">
                     <td>
                       <input type="checkbox" className="checkbox checkbox-xs checkbox-success" />
                     </td>
@@ -1120,28 +1129,28 @@ Best regards,
               <div className="text-white/60 text-sm">2 contacts selected from {contacts.length} total</div>
               <div className="flex gap-2">
                 <div className="join">
-                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">«</button>
-                  <button className="join-item btn btn-sm bg-emerald-500 text-white border-emerald-500">1</button>
-                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">2</button>
-                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">3</button>
-                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">4</button>
-                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">5</button>
-                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-emerald-500/20">»</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-blue-500/20">«</button>
+                  <button className="join-item btn btn-sm bg-blue-500 text-white border-blue-500">1</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-blue-500/20">2</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-blue-500/20">3</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-blue-500/20">4</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-blue-500/20">5</button>
+                  <button className="join-item btn btn-sm bg-[#28292b]/80 hover:bg-[#28292b] text-white border-blue-500/20">»</button>
                 </div>
-                <button className="btn btn-sm bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white border-0 gap-2 shadow-lg hover:shadow-emerald-500/20 transition-all">
+                <button className="btn btn-sm bg-gradient-to-br from-blue-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white border-0 gap-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                   Import Contacts
                 </button>
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <div className="flex items-center gap-2">
-                <div className="text-emerald-500">
+                <div className="text-blue-500">
                   <MdOutlineSettings className="text-xl animate-spin-slow" />
                 </div>
                 <div>
                   <p className="text-sm text-white/90">
-                    <span className="font-medium text-emerald-400">AI-powered SAP insights:</span> Our intelligent system has analyzed your contacts and identified <span className="text-emerald-400 font-medium">78 SAP ECC 6.0 enterprises</span> with a high likelihood of migration needs before 2027. These contacts have been prioritized based on their current system complexity and maintenance costs.
+                    <span className="font-medium text-blue-400">AI-powered facility insights:</span> Our intelligent system has analyzed your contacts and identified <span className="text-blue-400 font-medium">127 casino and hospitality properties</span> with high energy efficiency potential based on building age and current energy costs. These contacts have been prioritized based on their facility size and operational requirements.
                   </p>
                 </div>
               </div>

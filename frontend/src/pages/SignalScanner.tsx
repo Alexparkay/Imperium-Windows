@@ -8,444 +8,236 @@ import { AiOutlineApi, AiOutlineNodeIndex, AiOutlineFileSearch, AiOutlineRobot }
 import { HiOutlineDatabase, HiOutlineDocumentSearch } from 'react-icons/hi';
 import { TbWorldSearch } from 'react-icons/tb';
 
-// Add a Company interface at the top of the file, after the imports
-interface Company {
+// Building interface based on CSV structure
+interface Building {
   id: number;
   name: string;
-  jobTitle: string;
-  company: string;
-  emails: boolean;
-  phoneNumbers: boolean;
-  location: string;
-  enriched: boolean;
-  verified: boolean;
-  employeeCount: number;
-  industry: string;
-  [key: string]: any; // Allow for additional properties
+  buildingIdAddress: string;
+  address: string;
+  coordinates: string;
+  buildingType: string;
+  propertyOwner: string;
+  totalSquareFootage: string;
+  squareFootage: string;
+  estimatedAnnualKwh: string;
+  annualEnergyUse: string;
+  commercialElectricityRate: string;
+  annualEnergyCost: string;
+  totalWindows: string;
+  averageWindowSize: string;
+  windowToWallRatio: string;
+  facadeOrientation: string;
+  setPointTemperature: string;
+  historicalTemperatures: string;
+  temperatureDeltaSeries: string;
+  annualTemperatureSwing: string;
+  monthlySolarIrradiance: string;
+  currentWindowRValue: string;
+  energyStarScore: string;
+  windowHeatLossCost: string;
+  windowCoolingCost: string;
+  totalWindowEnergyCost: string;
+  luxwallProductRecommendation: string;
+  rValue: string;
+  efficiencyImprovement: string;
+  replaceableWindows: string;
+  postRetrofitEnergyCost: string;
+  annualEnergySavings: string;
+  energyCostReduction: string;
+  installationCost: string;
+  paybackRoiWithoutIncentives: string;
+  roiInYearsWithoutIncentives: string;
+  year: string;
+  floors: string;
+  status: string;
+  drawings: string;
 }
 
-// Add more companies from the MarketDatabase to enrichedEnterprises
-const enrichedEnterprises = [
-  {
-    id: 2,
-    name: "Kyle Flynn-Kasaba",
-    jobTitle: "Head of IT Infrastructure and Operations",
-    company: "Wood",
-    emails: true,
-    phoneNumbers: true,
-    location: "Houston, Texas",
-    enriched: true,
-    verified: true,
-    email: "k.flynn-kasaba@example.com",
-    phone: "(713) 555-6789",
-    systemType: "ERP System",
-    userCount: 36000,
-    implementationYear: 2019,
-    serverCount: 2300,
-    annualTransactions: 34250000,
-    licenseRate: 0.095, // $ per transaction
-    peakLoad: 8450, // transactions per second
-    industryAvg: {
-      transactionVolume: 28, // per user
-      sapAdoption: 8, // percentage
-      costPerUser: 215, // $
-      implementationTime: 9.8, // months
-    },
-    sapMetrics: {
-      maxThroughput: 9850, // transactions per second
-      annualProcessing: 39750000, // transactions
-      systemCoverage: 44.1, // percentage
-      implementationCost: 7740000, // $
-      totalCost: 5418000, // $ after optimizations
-      savings: 2322000, // $
-      costWithoutOptimization: 3253750, // $ per year
-      costWithOptimization: 1771790, // $ per year
-      annualSavings: 1481960, // $ per year
-      monthlySavings: 123497, // $ per month
-      optimizationTime: 11.8, // months
-      roi: 8.5, // percentage
-      performanceImprovement: 261, // percentage
-    },
-    industry: "Professional Training & Coaching"
-  },
-  {
-    id: 3,
-    name: "Wells Shammout",
-    jobTitle: "Vice President, Head of Information Technology",
-    company: "IPS",
-    emails: true,
-    phoneNumbers: true,
-    location: "Rutherford, New Jersey",
-    enriched: true,
-    verified: true,
-    email: "w.shammout@example.com",
-    phone: "(201) 555-9012",
-    systemType: "ERP System",
-    userCount: 3400,
-    implementationYear: 2016,
-    serverCount: 320,
-    annualTransactions: 9250000,
-    licenseRate: 0.112, // $ per transaction
-    peakLoad: 980, // transactions per second
-    industryAvg: {
-      transactionVolume: 32, // per user
-      sapAdoption: 21, // percentage
-      costPerUser: 228, // $
-      implementationTime: 10.1, // months
-    },
-    sapMetrics: {
-      maxThroughput: 1250, // transactions per second
-      annualProcessing: 4750000, // transactions
-      systemCoverage: 51.3, // percentage
-      implementationCost: 3887500, // $
-      totalCost: 2721250, // $ after optimizations
-      savings: 1166250, // $
-      costWithoutOptimization: 1036000, // $ per year
-      costWithOptimization: 503960, // $ per year
-      annualSavings: 532040, // $ per year
-      monthlySavings: 44337, // $ per month
-      optimizationTime: 6.1, // months
-      roi: 19.6, // percentage
-      performanceImprovement: 75.8, // percentage
-    },
-    industry: "Information Services"
-  },
-  {
-    id: 4,
-    name: "Sanjeev Sharma",
-    jobTitle: "Head of Information Technology - Info",
-    company: "IPG Photonics",
-    emails: true,
-    phoneNumbers: true,
-    location: "Framingham, Massachusetts",
-    enriched: true,
-    verified: true,
-    email: "s.sharma@example.com",
-    phone: "(508) 555-3456",
-    systemType: "Manufacturing System",
-    userCount: 1600,
-    implementationYear: 2014,
-    serverCount: 95,
-    annualTransactions: 3250000,
-    licenseRate: 0.145, // $ per transaction
-    peakLoad: 680, // transactions per second
-    industryAvg: {
-      transactionVolume: 18, // per user
-      sapAdoption: 12, // percentage
-      costPerUser: 225, // $
-      implementationTime: 8.5, // months
-    },
-    sapMetrics: {
-      maxThroughput: 850, // transactions per second
-      annualProcessing: 2750000, // transactions
-      systemCoverage: 84.6, // percentage
-      implementationCost: 2937500, // $
-      totalCost: 2056250, // $ after optimizations
-      savings: 881250, // $
-      costWithoutOptimization: 471250, // $ per year
-      costWithOptimization: 242088, // $ per year
-      annualSavings: 229162, // $ per year
-      monthlySavings: 19097, // $ per month
-      optimizationTime: 8.8, // months
-      roi: 11.1, // percentage
-      performanceImprovement: 48.6, // percentage
-    },
-    industry: "Electrical/Electronic Manufacturing"
-  },
-  {
-    id: 5,
-    name: "Leah Sullivan",
-    jobTitle: "Head of IT application Engineering",
-    company: "Henkel",
-    emails: true,
-    phoneNumbers: true,
-    location: "Watchung, New Jersey",
-    enriched: true,
-    verified: true,
-    email: "l.sullivan@example.com",
-    phone: "(908) 555-7890",
-    systemType: "ERP System",
-    userCount: 48000,
-    implementationYear: 2020,
-    serverCount: 1820,
-    annualTransactions: 25650000,
-    licenseRate: 0.102, // $ per transaction
-    peakLoad: 4250, // transactions per second
-    industryAvg: {
-      transactionVolume: 32, // per user
-      sapAdoption: 9, // percentage
-      costPerUser: 318, // $
-      implementationTime: 6.3, // months
-    },
-    sapMetrics: {
-      maxThroughput: 5620, // transactions per second
-      annualProcessing: 29750000, // transactions
-      systemCoverage: 67.5, // percentage
-      implementationCost: 15275000, // $
-      totalCost: 10692500, // $ after optimizations
-      savings: 4582500, // $
-      costWithoutOptimization: 2616300, // $ per year
-      costWithOptimization: 1308150, // $ per year
-      annualSavings: 1308150, // $ per year
-      monthlySavings: 109013, // $ per month
-      optimizationTime: 9.4, // months
-      roi: 10.7, // percentage
-      performanceImprovement: 63.2, // percentage
-    },
-    industry: "Mechanical Or Industrial Engineering"
-  },
-  {
-    id: 6,
-    name: "Benjamin Partout",
-    jobTitle: "Head of Information Technology",
-    company: "Strive",
-    emails: true,
-    phoneNumbers: true,
-    location: "Denver, Colorado",
-    enriched: true,
-    verified: true,
-    email: "b.partout@example.com",
-    phone: "(720) 555-0123",
-    systemType: "ERP System",
-    userCount: 160,
-    implementationYear: 2019,
-    serverCount: 22,
-    annualTransactions: 950000,
-    licenseRate: 0.108, // $ per transaction
-    peakLoad: 280, // transactions per second
-    industryAvg: {
-      transactionVolume: 12, // per user
-      sapAdoption: 10, // percentage
-      costPerUser: 322, // $
-      implementationTime: 5.8, // months
-    },
-    sapMetrics: {
-      maxThroughput: 430, // transactions per second
-      annualProcessing: 1372000, // transactions
-      systemCoverage: 144.4, // percentage
-      implementationCost: 875600, // $
-      totalCost: 612920, // $ after optimizations
-      savings: 262680, // $
-      costWithoutOptimization: 102600, // $ per year
-      costWithOptimization: 33816, // $ per year
-      annualSavings: 68784, // $ per year
-      monthlySavings: 5732, // $ per month
-      optimizationTime: 8.9, // months
-      roi: 11.2, // percentage
-      performanceImprovement: 67.0, // percentage
-    },
-    industry: "Chemicals - Research"
-  },
-  {
-    id: 7,
-    name: "Henry Ifiuscati",
-    jobTitle: "Head of Information Technology",
-    company: "Liberty Mutual Insurance",
-    emails: true,
-    phoneNumbers: true,
-    location: "Boston, Massachusetts",
-    enriched: true,
-    verified: true,
-    email: "h.ifiuscati@example.com",
-    phone: "(617) 555-4567",
-    systemType: "Finance System",
-    userCount: 45000,
-    implementationYear: 2015,
-    serverCount: 3580,
-    annualTransactions: 41250000,
-    licenseRate: 0.115, // $ per transaction
-    peakLoad: 9800, // transactions per second
-    industryAvg: {
-      transactionVolume: 21, // per user
-      sapAdoption: 14, // percentage
-      costPerUser: 229, // $
-      implementationTime: 12.7, // months
-    },
-    sapMetrics: {
-      maxThroughput: 11300, // transactions per second
-      annualProcessing: 57250000, // transactions
-      systemCoverage: 122.7, // percentage
-      implementationCost: 10325000, // $
-      totalCost: 7227500, // $ after optimizations
-      savings: 3097500, // $
-      costWithoutOptimization: 4743750, // $ per year
-      costWithOptimization: 1895500, // $ per year
-      annualSavings: 2848250, // $ per year
-      monthlySavings: 237354, // $ per month
-      optimizationTime: 3.8, // months
-      roi: 26.1, // percentage
-      performanceImprovement: 67.5, // percentage
-    },
-    industry: "Insurance - Financial Services"
-  },
-  {
-    id: 8,
-    name: "Brandon Thielen",
-    jobTitle: "Head of Information Technology",
-    company: "Fives Cinetic Corp.",
-    emails: true,
-    phoneNumbers: true,
-    location: "Farmington, Michigan",
-    enriched: true,
-    verified: true,
-    email: "b.thielen@example.com",
-    phone: "(248) 555-8901",
-    systemType: "Manufacturing System",
-    userCount: 2600,
-    implementationYear: 2017,
-    serverCount: 270,
-    annualTransactions: 6500000,
-    licenseRate: 0.121, // $ per transaction
-    peakLoad: 1120, // transactions per second
-    industryAvg: {
-      transactionVolume: 18, // per user
-      sapAdoption: 13, // percentage
-      costPerUser: 245, // $
-      implementationTime: 10.1, // months
-    },
-    sapMetrics: {
-      maxThroughput: 1850, // transactions per second
-      annualProcessing: 8740000, // transactions
-      systemCoverage: 134.5, // percentage
-      implementationCost: 3900000, // $
-      totalCost: 2730000, // $ after optimizations
-      savings: 1170000, // $
-      costWithoutOptimization: 786500, // $ per year
-      costWithOptimization: 327590, // $ per year
-      annualSavings: 458910, // $ per year
-      monthlySavings: 38243, // $ per month
-      optimizationTime: 7.1, // months
-      roi: 14.2, // percentage
-      performanceImprovement: 65.1, // percentage
-    },
-    industry: "Machinery"
-  },
-  {
-    id: 9,
-    name: "Tayo Oshoei",
-    jobTitle: "Head of Information Technology",
-    company: "Holcim",
-    emails: true,
-    phoneNumbers: true,
-    location: "Washington, District of Columbia",
-    enriched: true,
-    verified: true,
-    email: "t.oshoei@example.com",
-    phone: "(202) 555-2345",
-    systemType: "ERP System",
-    userCount: 10100,
-    implementationYear: 2016,
-    serverCount: 825,
-    annualTransactions: 19750000,
-    licenseRate: 0.118, // $ per transaction
-    peakLoad: 3750, // transactions per second
-    industryAvg: {
-      transactionVolume: 24, // per user
-      sapAdoption: 16, // percentage
-      costPerUser: 212, // $
-      implementationTime: 13.5, // months
-    },
-    sapMetrics: {
-      maxThroughput: 4950, // transactions per second
-      annualProcessing: 26780000, // transactions
-      systemCoverage: 126.1, // percentage
-      implementationCost: 6060000, // $
-      totalCost: 4242000, // $ after optimizations
-      savings: 1818000, // $
-      costWithoutOptimization: 2330500, // $ per year
-      costWithOptimization: 889130, // $ per year
-      annualSavings: 1441370, // $ per year
-      monthlySavings: 120114, // $ per month
-      optimizationTime: 5.2, // months
-      roi: 19.3, // percentage
-      performanceImprovement: 32.0, // percentage
-    },
-    industry: "Building Materials"
-  },
-  {
-    id: 10,
-    name: "Rahul Chaudhary",
-    jobTitle: "Head of Information Technology",
-    company: "TEK Inspirations LLC",
-    emails: true,
-    phoneNumbers: true,
-    location: "Frisco, Texas",
-    enriched: true,
-    verified: true,
-    email: "r.chaudhary@example.com",
-    phone: "(469) 555-6789",
-    systemType: "ERP System",
-    userCount: 440,
-    implementationYear: 2020,
-    serverCount: 45,
-    annualTransactions: 1850000,
-    licenseRate: 0.135, // $ per transaction
-    peakLoad: 380, // transactions per second
-    industryAvg: {
-      transactionVolume: 17, // per user
-      sapAdoption: 12, // percentage
-      costPerUser: 198, // $
-      implementationTime: 5.8, // months
-    },
-    sapMetrics: {
-      maxThroughput: 540, // transactions per second
-      annualProcessing: 2240000, // transactions
-      systemCoverage: 121.1, // percentage
-      implementationCost: 1320000, // $
-      totalCost: 924000, // $ after optimizations
-      savings: 396000, // $
-      costWithoutOptimization: 249750, // $ per year
-      costWithOptimization: 104895, // $ per year
-      annualSavings: 144855, // $ per year
-      monthlySavings: 12071, // $ per month
-      optimizationTime: 6.8, // months
-      roi: 14.7, // percentage
-      performanceImprovement: 42.1, // percentage
-    },
-    industry: "Information Technology & Services"
+// Function to parse CSV data with proper handling of quoted fields and multi-line content
+const parseCSV = (csvText: string): Building[] => {
+  const buildings: Building[] = [];
+  let currentRow = '';
+  let inQuotes = false;
+  let rowCount = 0;
+  
+  // Split by lines but handle multi-line quoted fields
+  const lines = csvText.split('\n');
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    currentRow += (currentRow ? '\n' : '') + line;
+    
+    // Count quotes to determine if we're inside a quoted field
+    let quoteCount = 0;
+    for (let j = 0; j < currentRow.length; j++) {
+      if (currentRow[j] === '"') {
+        quoteCount++;
+      }
+    }
+    
+    // If quote count is even, we're not inside a quoted field
+    inQuotes = quoteCount % 2 !== 0;
+    
+    if (!inQuotes) {
+      // Process the complete row
+      if (rowCount === 0) {
+        // Skip header row
+        rowCount++;
+        currentRow = '';
+        continue;
+      }
+      
+      if (currentRow.trim()) {
+        const values = parseCSVRow(currentRow);
+        
+        if (values.length >= 39) {
+          const building: Building = {
+            id: rowCount,
+            name: values[0] || '',
+            buildingIdAddress: values[1] || '',
+            address: values[2] || '',
+            coordinates: values[3] || '',
+            buildingType: values[4] || '',
+            propertyOwner: values[5] || '',
+            totalSquareFootage: values[6] || '',
+            squareFootage: values[7] || '',
+            estimatedAnnualKwh: values[8] || '',
+            annualEnergyUse: values[9] || '',
+            commercialElectricityRate: values[10] || '',
+            annualEnergyCost: values[11] || '',
+            totalWindows: values[12] || '',
+            averageWindowSize: values[13] || '',
+            windowToWallRatio: values[14] || '',
+            facadeOrientation: values[15] || '',
+            setPointTemperature: values[16] || '',
+            historicalTemperatures: values[17] || '',
+            temperatureDeltaSeries: values[18] || '',
+            annualTemperatureSwing: values[19] || '',
+            monthlySolarIrradiance: values[20] || '',
+            currentWindowRValue: values[21] || '',
+            energyStarScore: values[22] || '',
+            windowHeatLossCost: values[23] || '',
+            windowCoolingCost: values[24] || '',
+            totalWindowEnergyCost: values[25] || '',
+            luxwallProductRecommendation: values[26] || '',
+            rValue: values[27] || '',
+            efficiencyImprovement: values[28] || '',
+            replaceableWindows: values[29] || '',
+            postRetrofitEnergyCost: values[30] || '',
+            annualEnergySavings: values[31] || '',
+            energyCostReduction: values[32] || '',
+            installationCost: values[33] || '',
+            paybackRoiWithoutIncentives: values[34] || '',
+            roiInYearsWithoutIncentives: values[35] || '',
+            year: values[36] || '',
+            floors: values[37] || '',
+            status: values[38] || '',
+            drawings: values[39] || ''
+          };
+          buildings.push(building);
+        }
+        rowCount++;
+      }
+      currentRow = '';
+    }
   }
-];
+
+  console.log(`Parsed ${buildings.length} buildings from CSV`);
+  return buildings;
+};
+
+// Helper function to parse a single CSV row
+const parseCSVRow = (row: string): string[] => {
+  const values: string[] = [];
+  let currentValue = '';
+  let inQuotes = false;
+  let i = 0;
+  
+  while (i < row.length) {
+    const char = row[i];
+    
+    if (char === '"') {
+      if (inQuotes && i + 1 < row.length && row[i + 1] === '"') {
+        // Handle escaped quotes ("")
+        currentValue += '"';
+        i += 2;
+      } else {
+        // Toggle quote state
+        inQuotes = !inQuotes;
+        i++;
+      }
+    } else if (char === ',' && !inQuotes) {
+      // End of field
+      values.push(currentValue.trim());
+      currentValue = '';
+      i++;
+    } else {
+      currentValue += char;
+      i++;
+    }
+  }
+  
+  // Add the last value
+  values.push(currentValue.trim());
+  
+  // Clean up quoted values
+  return values.map(value => value.replace(/^"|"$/g, ''));
+};
+
+// Helper function to extract numeric value from string
+const extractNumericValue = (value: string): number => {
+  if (!value) return 0;
+  const match = value.match(/[\d,]+\.?\d*/);
+  if (match) {
+    return parseFloat(match[0].replace(/,/g, ''));
+  }
+  return 0;
+};
+
+// Helper function to format currency
+const formatCurrency = (value: string): string => {
+  const num = extractNumericValue(value);
+  if (num >= 1000000) {
+    return `$${(num / 1000000).toFixed(1)}M`;
+  } else if (num >= 1000) {
+    return `$${(num / 1000).toFixed(0)}K`;
+  }
+  return `$${num.toFixed(0)}`;
+};
+
+// Helper function to format square footage (no dollar sign)
+const formatSquareFootage = (value: string): string => {
+  const num = extractNumericValue(value);
+  if (num >= 1000000) {
+    return `${(num / 1000000).toFixed(1)}M sq ft`;
+  } else if (num >= 1000) {
+    return `${(num / 1000).toFixed(0)}K sq ft`;
+  }
+  return `${num.toFixed(0)} sq ft`;
+};
 
 const SignalScanner = () => {
   const { facilityId } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [isEnriching, setIsEnriching] = useState(true);
-  const [enterprise, setEnterprise] = useState<any>(null);
-  const [selectedEnterprises, setSelectedEnterprises] = useState<any[]>([]);
+  const [buildings, setBuildings] = useState<Building[]>([]);
+  const [selectedBuildings, setSelectedBuildings] = useState<Building[]>([]);
   const [showEnriched, setShowEnriched] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showVisualizationToast, setShowVisualizationToast] = useState(false);
-  const [selectedEnterpriseForModal, setSelectedEnterpriseForModal] = useState<any>(null);
+  const [selectedBuildingForModal, setSelectedBuildingForModal] = useState<Building | null>(null);
   const [showLoadingAnimation, setShowLoadingAnimation] = useState(false);
   const [enrichedData, setEnrichedData] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [expandedCell, setExpandedCell] = useState<string | null>(null);
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const [showRightScroll, setShowRightScroll] = useState(false);
+  const buildingsPerPage = 12;
   
-  // Total enterprises in the database (showing 2,300 to match MarketDatabase)
-  const totalEnterprisesInDatabase = 2300;
-  
-  // SAP system data
-  const sapData = {
-    yearlyTransactions: '24,908,730',
-    yearlyCost: '$772,170.80',
-    systemSize: '155.7 TB',
-    processesCovered: '82%',
-    monthlyAverage: '$39,910.10',
-    firstYear: '$478,920.00',
-    tenYearTotal: '$4,286,000.00',
-    costWithoutOptimization: '$613,052.90',
-    costWithOptimization: '$215,718.36',
-    totalLifetimeSavings: '$5,544,130.70',
-    breakEven: '26 months',
-    location: '303 S Technology Ct, Broomfield, CO',
-    region: 'AMERICAS',
-    systemId: 'PRD-SAP-001',
-    licenseRate: '$0.31/transaction',
-    monthlyMaintenance: '$30,000.00',
-    moduleCount: '12 modules',
-    sapSupport: '$70,000.00/yr',
-    implementationCost: '$4.00M',
-    systemCapacity: '250 TB'
-  };
+  // Total buildings in the database
+  const totalBuildingsInDatabase = 851;
 
   // Update the CSS animations in the useEffect to include the new animations
   useEffect(() => {
@@ -486,6 +278,33 @@ const SignalScanner = () => {
         0% { stroke-dashoffset: 0; }
         100% { stroke-dashoffset: 400; }
       }
+      
+      @keyframes scrollHint {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(3px); }
+      }
+      
+      @keyframes scrollHintLeft {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(-3px); }
+      }
+      
+      .scroll-hint-right {
+        animation: scrollHint 2s ease-in-out infinite;
+      }
+      
+      .scroll-hint-left {
+        animation: scrollHintLeft 2s ease-in-out infinite;
+      }
+      
+      @keyframes fadeInOut {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+      
+      .scroll-indicator-fade {
+        animation: fadeInOut 3s ease-in-out infinite;
+      }
     `;
     document.head.appendChild(style);
     
@@ -496,109 +315,220 @@ const SignalScanner = () => {
   }, []);
 
   useEffect(() => {
-    // Simulate API call to get enterprise data
+    // Load CSV data
     setIsLoading(true);
-    setTimeout(() => {
-      // Try to get filtered companies from localStorage (set by MarketDatabase page)
+    
+    const loadCSVData = async () => {
       try {
-        const filteredCompaniesString = localStorage.getItem('filteredCompanies');
-        if (filteredCompaniesString) {
-          const marketDatabaseCompanies = JSON.parse(filteredCompaniesString);
-          
-          // Enrich the companies with SAP metrics for visualization
-          const enrichedMarketCompanies = marketDatabaseCompanies.map((company: Company) => {
-            // Find if we have any existing enriched data for this company
-            const existingEnriched = enrichedEnterprises.find(e => 
-              e.company.toLowerCase() === company.company.toLowerCase() || 
-              e.name.toLowerCase() === company.name.toLowerCase()
-            );
-            
-            // Use existing enriched data or generate some default values
-            return {
-              ...company,
-              systemType: existingEnriched?.systemType || "ERP System",
-              userCount: company.employeeCount || 100,
-              implementationYear: existingEnriched?.implementationYear || 2019,
-              serverCount: existingEnriched?.serverCount || Math.round((company.employeeCount || 100) * 0.15),
-              annualTransactions: existingEnriched?.annualTransactions || Math.round((company.employeeCount || 100) * 2500),
-              licenseRate: existingEnriched?.licenseRate || 0.115,
-              peakLoad: existingEnriched?.peakLoad || Math.round((company.employeeCount || 100) * 0.5),
-              industryAvg: existingEnriched?.industryAvg || {
-                transactionVolume: 22,
-                sapAdoption: 15,
-                costPerUser: 235,
-                implementationTime: 8.2,
-              },
-              sapMetrics: existingEnriched?.sapMetrics || {
-                maxThroughput: Math.round((company.employeeCount || 100) * 0.7),
-                annualProcessing: Math.round((company.employeeCount || 100) * 2000),
-                systemCoverage: Math.round(65 + Math.random() * 30),
-                implementationCost: Math.round((company.employeeCount || 100) * 1500),
-                totalCost: Math.round((company.employeeCount || 100) * 1050),
-                savings: Math.round((company.employeeCount || 100) * 450),
-                costWithoutOptimization: Math.round((company.employeeCount || 100) * 280),
-                costWithOptimization: Math.round((company.employeeCount || 100) * 150),
-                annualSavings: Math.round((company.employeeCount || 100) * 130),
-                monthlySavings: Math.round((company.employeeCount || 100) * 10.8),
-                optimizationTime: Math.round(6 + Math.random() * 6),
-                roi: Math.round(10 + Math.random() * 15),
-                performanceImprovement: Math.round(45 + Math.random() * 50),
-              }
-            };
-          });
-          
-          // If we have companies from MarketDatabase, use those
-          if (enrichedMarketCompanies.length > 0) {
-            setSelectedEnterprises(enrichedMarketCompanies);
-            setEnterprise(enrichedMarketCompanies[0]);
-          } else {
-            // Fallback to default enriched enterprises
-            setSelectedEnterprises(enrichedEnterprises);
-            setEnterprise(enrichedEnterprises[0]);
-          }
-        } else {
-          // If no specific facilityId and no localStorage data, default to enrichedEnterprises
-          if (facilityId) {
-            const foundEnterprise = enrichedEnterprises.find(f => f.id === parseInt(facilityId));
-            if (foundEnterprise) {
-              setEnterprise(foundEnterprise);
-              setSelectedEnterprises([foundEnterprise]);
-            } else {
-              setSelectedEnterprises(enrichedEnterprises);
-            }
-          } else {
-            setSelectedEnterprises(enrichedEnterprises);
-            setEnterprise(enrichedEnterprises[0]);
-          }
+        console.log('Starting CSV data load...');
+        const response = await fetch('/Spreadsheet/LuxWall - High rise Buildings - Detroit Michigan - Complete_Detroit_Highrise_Database-Default-view-export-1747802457903 (1).csv');
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        const csvText = await response.text();
+        console.log('CSV text length:', csvText.length);
+        console.log('First 200 characters:', csvText.substring(0, 200));
+        
+        const parsedBuildings = parseCSV(csvText);
+        console.log('Parsed buildings:', parsedBuildings.length);
+        console.log('First building:', parsedBuildings[0]);
+        
+        setBuildings(parsedBuildings);
+        setSelectedBuildings(parsedBuildings); // Show all buildings
+        setIsLoading(false);
+        
+        // Simulate data enrichment processing
+        setTimeout(() => {
+          setIsEnriching(false);
+        }, 3000);
       } catch (error) {
-        console.error('Error loading filtered companies from localStorage', error);
-        // Fallback to default enriched enterprises
-        if (facilityId) {
-          const foundEnterprise = enrichedEnterprises.find(f => f.id === parseInt(facilityId));
-          if (foundEnterprise) {
-            setEnterprise(foundEnterprise);
-            setSelectedEnterprises([foundEnterprise]);
-          } else {
-            setSelectedEnterprises(enrichedEnterprises);
+        console.error('Error loading CSV data:', error);
+        
+        // Fallback sample data for testing
+        const sampleBuildings: Building[] = [
+          {
+            id: 1,
+            name: "MGM Grand Detroit Hotel & Casino",
+            buildingIdAddress: "1777 3rd Ave, Detroit, MI 48226",
+            address: "1777 3rd Ave, Detroit, MI 48226",
+            coordinates: "42.33361, -83.06028",
+            buildingType: "mixed-use",
+            propertyOwner: "Vici Properties and MGM Resorts International",
+            totalSquareFootage: "1650000 sq ft",
+            squareFootage: "1650000 sq ft",
+            estimatedAnnualKwh: "16080000",
+            annualEnergyUse: "16080000",
+            commercialElectricityRate: "0.1528 $/kWh",
+            annualEnergyCost: "2450000 USD",
+            totalWindows: "600",
+            averageWindowSize: "Average window size: 1.5 m × 1.2 m",
+            windowToWallRatio: "0.34",
+            facadeOrientation: "north/south",
+            setPointTemperature: "70 °F / 21 °C",
+            historicalTemperatures: "January: 0°C / -6°C",
+            temperatureDeltaSeries: "January: 11°C",
+            annualTemperatureSwing: "34",
+            monthlySolarIrradiance: "January: 2.98",
+            currentWindowRValue: "2",
+            energyStarScore: "65",
+            windowHeatLossCost: "142151 USD",
+            windowCoolingCost: "1154168 USD",
+            totalWindowEnergyCost: "1296319 USD",
+            luxwallProductRecommendation: "LuxWall Enthermal Plus™",
+            rValue: "20",
+            efficiencyImprovement: "90%",
+            replaceableWindows: "100%",
+            postRetrofitEnergyCost: "129631 USD",
+            annualEnergySavings: "1166688 USD",
+            energyCostReduction: "47%",
+            installationCost: "972000 USD",
+            paybackRoiWithoutIncentives: "0.83333",
+            roiInYearsWithoutIncentives: "0.83333",
+            year: "2008",
+            floors: "17",
+            status: "built",
+            drawings: "0"
+          },
+          {
+            id: 2,
+            name: "Jeffersonian Apartments",
+            buildingIdAddress: "9000 East Jefferson Avenue, Detroit, Michigan 48214",
+            address: "9000 East Jefferson Avenue, Detroit, Michigan 48214",
+            coordinates: "42.3558, -82.9867",
+            buildingType: "residential high-rise",
+            propertyOwner: "DC CAP Hotelier",
+            totalSquareFootage: "870813 sq ft",
+            squareFootage: "870813 sq ft",
+            estimatedAnnualKwh: "63975571",
+            annualEnergyUse: "63975571",
+            commercialElectricityRate: "0.1592 $/kWh",
+            annualEnergyCost: "10105290 USD",
+            totalWindows: "1236",
+            averageWindowSize: "Average window size: 1.5 m × 1.5 m",
+            windowToWallRatio: "0.55",
+            facadeOrientation: "north/south",
+            setPointTemperature: "72 °F / 22 °C",
+            historicalTemperatures: "January: 0°C / -6°C",
+            temperatureDeltaSeries: "January: 11°C",
+            annualTemperatureSwing: "34",
+            monthlySolarIrradiance: "January: 2.98",
+            currentWindowRValue: "1",
+            energyStarScore: "59",
+            windowHeatLossCost: "570540 USD",
+            windowCoolingCost: "1720004 USD",
+            totalWindowEnergyCost: "2290544 USD",
+            luxwallProductRecommendation: "LuxWall Enthermal™",
+            rValue: "19",
+            efficiencyImprovement: "91%",
+            replaceableWindows: "100%",
+            postRetrofitEnergyCost: "204368 USD",
+            annualEnergySavings: "2086176 USD",
+            energyCostReduction: "20%",
+            installationCost: "2224800 USD",
+            paybackRoiWithoutIncentives: "1",
+            roiInYearsWithoutIncentives: "1",
+            year: "1965",
+            floors: "30",
+            status: "built",
+            drawings: "2"
           }
-        } else {
-          setSelectedEnterprises(enrichedEnterprises);
-          setEnterprise(enrichedEnterprises[0]);
-        }
-      }
-      
-      setIsLoading(false);
-      
-      // Simulate data enrichment processing
-      setTimeout(() => {
+        ];
+        
+        setBuildings(sampleBuildings);
+        setSelectedBuildings(sampleBuildings);
+        setIsLoading(false);
         setIsEnriching(false);
-      }, 3000);
-    }, 1500);
+        toast.error('Failed to load CSV data - showing sample data');
+      }
+    };
+
+    loadCSVData();
   }, [facilityId]);
 
-  const handleDownloadReport = () => {
-    toast.success('Enriched enterprise data exported successfully');
+  // Handle scroll detection for table
+  useEffect(() => {
+    const handleScroll = () => {
+      const tableContainer = document.getElementById('table-container');
+      if (tableContainer && showEnriched) {
+        const { scrollLeft, scrollWidth, clientWidth } = tableContainer;
+        
+        // Show left scroll indicator if scrolled right
+        setShowLeftScroll(scrollLeft > 10);
+        
+        // Show right scroll indicator if not at the far right
+        setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
+      }
+    };
+
+    const tableContainer = document.getElementById('table-container');
+    if (tableContainer) {
+      tableContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      handleScroll();
+      
+      return () => {
+        tableContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [showEnriched, selectedBuildings]);
+
+  // Reset scroll indicators when enriched data changes
+  useEffect(() => {
+    if (showEnriched) {
+      setTimeout(() => {
+        const tableContainer = document.getElementById('table-container');
+        if (tableContainer) {
+          const { scrollWidth, clientWidth } = tableContainer;
+          setShowRightScroll(scrollWidth > clientWidth);
+          setShowLeftScroll(false);
+        }
+      }, 100);
+    } else {
+      setShowLeftScroll(false);
+      setShowRightScroll(false);
+    }
+  }, [showEnriched]);
+
+  const handleDownloadReport = async () => {
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading('Preparing building energy data for download...');
+      
+      // Fetch the CSV file
+      const response = await fetch('/Spreadsheet/LuxWall - High rise Buildings - Detroit Michigan - Complete_Detroit_Highrise_Database-Default-view-export-1747802457903 (1).csv');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Get the blob data
+      const blob = await response.blob();
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Detroit_Building_Energy_Data_${new Date().toISOString().split('T')[0]}.csv`;
+      
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      // Success toast
+      toast.dismiss(loadingToast);
+      toast.success('Building energy data downloaded successfully!');
+      
+    } catch (error) {
+      console.error('Error downloading CSV:', error);
+      toast.error('Failed to download building data. Please try again.');
+    }
   };
   
   const handleContinueToSystemAnalysis = () => {
@@ -607,8 +537,8 @@ const SignalScanner = () => {
       return;
     }
     
-    navigate('/data-enrichment');
-    toast.success("Proceeding to detailed system analysis");
+    navigate('/data-analytics');
+    toast.success("Proceeding to detailed energy analysis");
   };
 
   // Handle toggle enriched data with popup
@@ -617,14 +547,28 @@ const SignalScanner = () => {
       // First time showing enriched data - simulate loading/processing
       setIsEnriching(true);
       setShowLoadingAnimation(true);
+      setLoadingProgress(0);
+      
+      // Animate progress over 5 seconds
+      const progressInterval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(progressInterval);
+            return 100;
+          }
+          return prev + 2; // Increment by 2% every 100ms (5 seconds total)
+        });
+      }, 100);
       
       // Simulate API call delay - 5 seconds as requested
       setTimeout(() => {
+        clearInterval(progressInterval);
+        setLoadingProgress(100);
         setIsEnriching(false);
         setShowLoadingAnimation(false);
         setShowEnriched(true);
         setEnrichedData(true);
-        toast.success("SAP system data enrichment complete!");
+        toast.success("Building energy data enrichment complete!");
       }, 5000);
     } else {
       // Toggle visibility of already-enriched data
@@ -642,9 +586,9 @@ const SignalScanner = () => {
   };
   
   // Handle view button click to show modal first, then navigate
-  const handleViewEnterprise = (enterpriseId: number) => {
-    const enterpriseToView = selectedEnterprises.find(f => f.id === enterpriseId);
-    setSelectedEnterpriseForModal(enterpriseToView);
+  const handleViewBuilding = (buildingId: number) => {
+    const buildingToView = selectedBuildings.find(b => b.id === buildingId);
+    setSelectedBuildingForModal(buildingToView || null);
     const modalElement = document.getElementById('visualization-modal');
     if (modalElement && 'showModal' in modalElement) {
       // @ts-ignore - Adding this to bypass TypeScript error with showModal
@@ -662,7 +606,46 @@ const SignalScanner = () => {
   
   const goToSystemAnalysis = () => {
     closeModal();
-    navigate('/data-enrichment');
+    navigate('/data-analytics');
+  };
+
+  // Helper function to create expandable text cells
+  const ExpandableCell = ({ content, cellId, maxLength = 50 }: { content: string; cellId: string; maxLength?: number }) => {
+    const isExpanded = expandedCell === cellId;
+    const shouldTruncate = content.length > maxLength;
+    
+    return (
+      <div 
+        className={`cursor-pointer transition-all duration-200 ${shouldTruncate ? 'hover:bg-white/10 rounded p-1' : ''}`}
+        onClick={() => shouldTruncate ? setExpandedCell(isExpanded ? null : cellId) : null}
+      >
+        {isExpanded || !shouldTruncate ? (
+          <span className="whitespace-pre-wrap">{content}</span>
+        ) : (
+          <span>{content.substring(0, maxLength)}...</span>
+        )}
+        {shouldTruncate && (
+          <span className="text-[#2a64f5] ml-1 text-xs">
+            {isExpanded ? '▼' : '▶'}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  // Pagination functions
+  const totalPages = Math.ceil(selectedBuildings.filter(building => 
+    searchTerm ? 
+      building.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      building.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      building.buildingType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      building.propertyOwner.toLowerCase().includes(searchTerm.toLowerCase())
+      : true
+  ).length / buildingsPerPage);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+    setExpandedCell(null); // Close any expanded cells when changing pages
   };
 
   if (isLoading) {
@@ -679,17 +662,17 @@ const SignalScanner = () => {
         </div>
         
         {/* Animated gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-green-500/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
         
         <div className="relative z-10 flex flex-col items-center gap-8">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-            <div className="loading loading-spinner loading-lg text-green-500 relative"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+            <div className="loading loading-spinner loading-lg text-blue-500 relative"></div>
           </div>
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-2">Loading SAP System Data</h2>
-            <p className="text-gray-400">Preparing comprehensive system analysis and performance metrics...</p>
+            <h2 className="text-2xl font-bold text-white mb-2">Loading Building Energy Data</h2>
+            <p className="text-gray-400">Preparing comprehensive energy analysis and performance metrics...</p>
           </div>
         </div>
       </div>
@@ -697,13 +680,13 @@ const SignalScanner = () => {
   }
 
   // Function to update the existing card class names to match Home page styling
-  const cardBaseClass = "backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-green-500/15 group relative overflow-hidden";
+  const cardBaseClass = "backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-blue-500/15 group relative overflow-hidden";
 
   return (
     <div className="w-full px-32 py-2 bg-[#020305] min-h-screen min-w-full relative">
       {/* Background gradient orbs */}
-      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-[#10ba82]/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-[#10ba82]/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-[#2a64f5]/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-[#2a64f5]/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
 
       {/* Loading Animation Modal */}
       {showLoadingAnimation && (
@@ -711,9 +694,9 @@ const SignalScanner = () => {
           <div className="relative bg-[#1e222b]/90 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 shadow-xl max-w-4xl w-full mx-4 animate-fadeIn">
             {/* Animated gradient background for the modal */}
             <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#10ba82]/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-[#10ba82]/30 to-transparent rounded-full blur-3xl animate-pulse delay-700"></div>
-              <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-gradient-to-br from-[#10ba82]/20 to-transparent rounded-full blur-2xl animate-pulse delay-300"></div>
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#2a64f5]/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-[#2a64f5]/30 to-transparent rounded-full blur-3xl animate-pulse delay-700"></div>
+              <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-gradient-to-br from-[#2a64f5]/20 to-transparent rounded-full blur-2xl animate-pulse delay-300"></div>
             </div>
             
             {/* Floating data points and connection lines - enhanced visual effect */}
@@ -721,7 +704,7 @@ const SignalScanner = () => {
               {Array.from({ length: 15 }).map((_, i) => (
                 <div 
                   key={i}
-                  className="absolute rounded-full bg-[#10ba82]/30 border border-[#10ba82]/50"
+                  className="absolute rounded-full bg-[#2a64f5]/30 border border-[#2a64f5]/50"
                   style={{
                     width: `${6 + Math.random() * 12}px`,
                     height: `${6 + Math.random() * 12}px`,
@@ -742,7 +725,7 @@ const SignalScanner = () => {
                     y1={`${Math.random() * 100}%`}
                     x2={`${Math.random() * 100}%`}
                     y2={`${Math.random() * 100}%`}
-                    stroke="#10ba82"
+                    stroke="#2a64f5"
                     strokeWidth="1"
                     style={{ 
                       animation: `pulse ${2 + Math.random() * 4}s ease-in-out infinite`,
@@ -762,56 +745,61 @@ const SignalScanner = () => {
               </button>
             </div>
             
-            <div className="p-8 relative z-10">
+                          <div className="p-8 relative z-10">
               <div className="flex items-center gap-3 mb-2">
-                <div className="bg-gradient-to-br from-[#10ba82] to-[#0c9a6c] p-2 rounded-lg shadow">
-                  <AiOutlineRobot className="text-xl text-white" />
+                <div className="bg-gradient-to-br from-[#2a64f5] to-[#7a94b8] p-2 rounded-lg shadow animate-pulse">
+                  <AiOutlineRobot className="text-xl text-white animate-bounce" />
                 </div>
-                <h3 className="text-2xl font-bold text-white">AI System Analysis</h3>
+                <h3 className="text-2xl font-bold text-white">AI Energy Analysis</h3>
+                <div className="flex gap-1 ml-2">
+                  <div className="w-2 h-2 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-2 h-2 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                  <div className="w-2 h-2 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                </div>
               </div>
-              <p className="text-white/70 mb-6">Processing enterprise data from multiple sources...</p>
+              <p className="text-white/70 mb-6">Processing building energy data from multiple sources...</p>
               
               {/* Real-time activity log */}
               <div className="mb-6 bg-black/20 rounded-xl p-4 border border-white/10 h-64 overflow-y-auto font-mono text-sm">
                 <div className="space-y-2">
-                  <div className="text-[#10ba82] animate-fadeIn">
-                    <span className="text-white/50">[00:00.12]</span> Initializing AI data extraction modules...
+                  <div className="text-[#2a64f5] animate-fadeIn">
+                    <span className="text-white/50">[00:00.12]</span> Initializing AI energy data extraction modules...
                   </div>
-                  <div className="text-[#10ba82] animate-fadeIn" style={{ animationDelay: '300ms' }}>
-                    <span className="text-white/50">[00:00.35]</span> Establishing secure connection to SAP databases <BsShieldLock className="inline" />
+                  <div className="text-[#2a64f5] animate-fadeIn" style={{ animationDelay: '300ms' }}>
+                    <span className="text-white/50">[00:00.35]</span> Establishing secure connection to building databases <BsShieldLock className="inline" />
                   </div>
-                  <div className="text-[#10ba82] animate-fadeIn" style={{ animationDelay: '800ms' }}>
-                    <span className="text-white/50">[00:01.08]</span> Scraping enterprise profile data from <TbWorldSearch className="inline" /> market intelligence APIs
+                  <div className="text-[#2a64f5] animate-fadeIn" style={{ animationDelay: '800ms' }}>
+                    <span className="text-white/50">[00:01.08]</span> Scraping building energy profile data from <TbWorldSearch className="inline" /> market intelligence APIs
                   </div>
                   <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '1200ms' }}>
-                    <span className="text-white/50">[00:01.45]</span> <BsGlobe className="inline" /> Accessing transaction history records (473,829 entries)
+                    <span className="text-white/50">[00:01.45]</span> <BsGlobe className="inline" /> Accessing energy consumption history records (851 buildings)
                   </div>
                   <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '1600ms' }}>
-                    <span className="text-white/50">[00:01.89]</span> <HiOutlineDatabase className="inline" /> Analyzing system infrastructure metrics...
+                    <span className="text-white/50">[00:01.89]</span> <HiOutlineDatabase className="inline" /> Analyzing window efficiency metrics...
                   </div>
                   <div className="text-yellow-400 animate-fadeIn" style={{ animationDelay: '2000ms' }}>
-                    <span className="text-white/50">[00:02.13]</span> <AiOutlineApi className="inline" /> Accessing third-party financial analysis systems
+                    <span className="text-white/50">[00:02.13]</span> <AiOutlineApi className="inline" /> Accessing third-party energy analysis systems
                   </div>
                   <div className="text-purple-400 animate-fadeIn" style={{ animationDelay: '2400ms' }}>
-                    <span className="text-white/50">[00:02.55]</span> <BsCodeSlash className="inline" /> Extracting system architecture and module dependencies
+                    <span className="text-white/50">[00:02.55]</span> <BsCodeSlash className="inline" /> Extracting building architecture and energy dependencies
                   </div>
                   <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '2800ms' }}>
-                    <span className="text-white/50">[00:03.02]</span> <AiOutlineFileSearch className="inline" /> Cross-referencing with industry performance benchmarks
+                    <span className="text-white/50">[00:03.02]</span> <AiOutlineFileSearch className="inline" /> Cross-referencing with industry energy benchmarks
                   </div>
                   <div className="text-purple-400 animate-fadeIn" style={{ animationDelay: '3200ms' }}>
-                    <span className="text-white/50">[00:03.45]</span> <AiOutlineNodeIndex className="inline" /> Building dependency graph for optimization calculations
+                    <span className="text-white/50">[00:03.45]</span> <AiOutlineNodeIndex className="inline" /> Building energy dependency graph for optimization calculations
                   </div>
                   <div className="text-green-400 animate-fadeIn" style={{ animationDelay: '3600ms' }}>
-                    <span className="text-white/50">[00:03.98]</span> <BsGraphUp className="inline" /> Generating performance improvement projection models
+                    <span className="text-white/50">[00:03.98]</span> <BsGraphUp className="inline" /> Generating energy efficiency improvement projection models
                   </div>
                   <div className="text-yellow-400 animate-fadeIn" style={{ animationDelay: '4000ms' }}>
-                    <span className="text-white/50">[00:04.32]</span> <BsDiagram3 className="inline" /> Creating optimization opportunity map by module
+                    <span className="text-white/50">[00:04.32]</span> <BsDiagram3 className="inline" /> Creating optimization opportunity map by building type
                   </div>
                   <div className="text-blue-400 animate-fadeIn" style={{ animationDelay: '4400ms' }}>
                     <span className="text-white/50">[00:04.75]</span> <BsCloudDownload className="inline" /> Finalizing data compilation and enrichment
                   </div>
-                  <div className="text-[#10ba82] animate-fadeIn" style={{ animationDelay: '4800ms' }}>
-                    <span className="text-white/50">[00:04.98]</span> Analysis complete! Found <span className="text-white font-bold">{selectedEnterprises ? selectedEnterprises.length : 0}</span> optimization opportunities
+                  <div className="text-[#2a64f5] animate-fadeIn" style={{ animationDelay: '4800ms' }}>
+                    <span className="text-white/50">[00:04.98]</span> Analysis complete! Found <span className="text-white font-bold">{selectedBuildings ? selectedBuildings.length : 0}</span> optimization opportunities
                   </div>
                 </div>
               </div>
@@ -821,20 +809,20 @@ const SignalScanner = () => {
                 <div className="bg-black/30 rounded-xl p-3 border border-white/5">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs text-white/70">API Connections</span>
-                    <span className="text-xs text-[#10ba82]">Active</span>
+                    <span className="text-xs text-[#2a64f5]">Active</span>
                   </div>
                   <div className="space-y-2">
                     {Array.from({ length: 4 }).map((_, i) => (
                       <div key={i} className="relative">
                         <div className="flex justify-between text-xs text-white/50 mb-1">
-                          <span>{['SAP API', 'Financial Data', 'Market Intel', 'System Metrics'][i]}</span>
-                          <span className="text-[#10ba82]">
+                          <span>{['Building API', 'Energy Data', 'Market Intel', 'Window Metrics'][i]}</span>
+                          <span className="text-[#2a64f5]">
                             {Math.floor(Math.random() * 1000)} req/s
                           </span>
                         </div>
                         <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] rounded-full relative"
+                            className="h-full bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] rounded-full relative"
                             style={{ width: `${60 + Math.random() * 40}%` }}
                           >
                             <div 
@@ -856,7 +844,7 @@ const SignalScanner = () => {
                 <div className="bg-black/30 rounded-xl p-3 border border-white/5">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs text-white/70">Data Processing</span>
-                    <span className="text-xs text-[#10ba82]">2.3TB</span>
+                    <span className="text-xs text-[#2a64f5]">2.3TB</span>
                   </div>
                   
                   {/* Animated graph */}
@@ -882,8 +870,8 @@ const SignalScanner = () => {
                       />
                       <defs>
                         <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#10ba82" />
-                          <stop offset="100%" stopColor="#0c9a6c" />
+                          <stop offset="0%" stopColor="#2a64f5" />
+                          <stop offset="100%" stopColor="#7a94b8" />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -896,36 +884,45 @@ const SignalScanner = () => {
                 <div>
                   <div className="flex justify-between text-white/70 text-sm mb-1">
                     <span>Data Extraction</span>
-                    <span>100%</span>
+                    <span>{Math.min(100, Math.max(0, loadingProgress)).toFixed(0)}%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] h-2 rounded-full w-full"></div>
+                    <div 
+                      className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min(100, Math.max(0, loadingProgress))}%` }}
+                    ></div>
                   </div>
                 </div>
                 
                 <div>
                   <div className="flex justify-between text-white/70 text-sm mb-1">
-                    <span>System Analysis</span>
-                    <span>100%</span>
+                    <span>Energy Analysis</span>
+                    <span>{Math.min(100, Math.max(0, loadingProgress - 10)).toFixed(0)}%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] h-2 rounded-full w-full"></div>
+                    <div 
+                      className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min(100, Math.max(0, loadingProgress - 10))}%` }}
+                    ></div>
                   </div>
                 </div>
                 
                 <div>
                   <div className="flex justify-between text-white/70 text-sm mb-1">
                     <span>Optimization Mapping</span>
-                    <span>80%</span>
+                    <span>{Math.min(100, Math.max(0, loadingProgress - 20)).toFixed(0)}%</span>
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] h-2 rounded-full w-4/5 animate-pulse"></div>
+                    <div 
+                      className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min(100, Math.max(0, loadingProgress - 20))}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
               
               <div className="flex justify-center items-center gap-3 text-white/70">
-                <div className="w-3 h-3 rounded-full bg-[#10ba82] animate-ping"></div>
+                <div className="w-3 h-3 rounded-full bg-[#2a64f5] animate-ping"></div>
                 <p className="text-sm">Preparing visualization components...</p>
               </div>
             </div>
@@ -938,7 +935,7 @@ const SignalScanner = () => {
           {/* Simple header without box */}
           <div className="py-4">
             <div className="flex items-center gap-3">
-              <MdTableChart className="text-2xl text-[#10ba82]" />
+              <MdTableChart className="text-2xl text-[#2a64f5]" />
               <h1 className="text-xl font-bold bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">Signal Scanner</h1>
             </div>
           </div>
@@ -961,16 +958,16 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#2a64f5]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm font-medium text-white/90 mb-1">Total Systems</p>
-                        <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">2.3K</h3>
+                        <p className="text-sm font-medium text-white/90 mb-1">Total Buildings</p>
+                        <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">{totalBuildingsInDatabase}</h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
-                        <FaDatabase className="text-white text-xl" />
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#2a64f5] to-[#2a64f5] shadow-lg shadow-[#2a64f5]/20 backdrop-blur-md border border-white/20">
+                        <FaBuilding className="text-white text-xl" />
                       </div>
                     </div>
                   </div>
@@ -985,17 +982,17 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#2a64f5]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm font-medium text-white/90 mb-1">Avg. User Count</p>
+                        <p className="text-sm font-medium text-white/90 mb-1">Avg. Square Footage</p>
                         <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
-                          {Math.round(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.userCount, 0) / selectedEnterprises.length).toLocaleString()}
+                          {selectedBuildings.length > 0 ? Math.round(selectedBuildings.reduce((sum, building) => sum + extractNumericValue(building.squareFootage), 0) / selectedBuildings.length / 1000) : 0}K sq ft
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#2a64f5] to-[#2a64f5] shadow-lg shadow-[#2a64f5]/20 backdrop-blur-md border border-white/20">
                         <MdFactory className="text-white text-xl" />
                       </div>
                     </div>
@@ -1011,17 +1008,17 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#2a64f5]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm font-medium text-white/90 mb-1">Avg. SAP ROI</p>
+                        <p className="text-sm font-medium text-white/90 mb-1">Avg. Energy Cost</p>
                         <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
-                          {(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.sapMetrics.roi, 0) / selectedEnterprises.length).toFixed(1)}%
+                          {selectedBuildings.length > 0 ? formatCurrency((selectedBuildings.reduce((sum, building) => sum + extractNumericValue(building.annualEnergyCost), 0) / selectedBuildings.length).toString()) : '$0'}
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#2a64f5] to-[#2a64f5] shadow-lg shadow-[#2a64f5]/20 backdrop-blur-md border border-white/20">
                         <MdAttachMoney className="text-white text-xl" />
                       </div>
                     </div>
@@ -1037,17 +1034,17 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#2a64f5]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm font-medium text-white/90 mb-1">Total Transactions</p>
+                        <p className="text-sm font-medium text-white/90 mb-1">Total Windows</p>
                         <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
-                          {(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.annualTransactions, 0) / 1000000).toFixed(1)}M
+                          {selectedBuildings.length > 0 ? (selectedBuildings.reduce((sum, building) => sum + extractNumericValue(building.totalWindows), 0) / 1000).toFixed(1) : '0.0'}K
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#2a64f5] to-[#2a64f5] shadow-lg shadow-[#2a64f5]/20 backdrop-blur-md border border-white/20">
                         <MdSpeed className="text-white text-xl" />
                       </div>
                     </div>
@@ -1063,17 +1060,17 @@ const SignalScanner = () => {
                       }}
                     ></div>
                   </div>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#10ba82]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#2a64f5]/40 to-transparent rounded-full blur-2xl opacity-90"></div>
                   
                   <div className="relative z-10 p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm font-medium text-white/90 mb-1">Total Savings</p>
+                        <p className="text-sm font-medium text-white/90 mb-1">Potential Savings</p>
                         <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
-                          ${(selectedEnterprises.reduce((sum, enterprise) => sum + enterprise.sapMetrics.annualSavings, 0) / 1000).toFixed(0)}K/yr
+                          {selectedBuildings.length > 0 ? formatCurrency((selectedBuildings.reduce((sum, building) => sum + extractNumericValue(building.annualEnergySavings), 0)).toString()) : '$0'}
                         </h3>
                       </div>
-                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#10ba82] via-[#0c9a6c] to-[#0a8a5c] shadow-lg shadow-[#10ba82]/20 backdrop-blur-md border border-white/20">
+                      <div className="rounded-2xl p-3 bg-gradient-to-br from-[#2a64f5] to-[#2a64f5] shadow-lg shadow-[#2a64f5]/20 backdrop-blur-md border border-white/20">
                         <MdAnalytics className="text-white text-xl" />
                       </div>
                     </div>
@@ -1088,7 +1085,7 @@ const SignalScanner = () => {
                     <div className="relative w-full md:w-96">
                       <input
                         type="text"
-                        placeholder="Search systems..."
+                        placeholder="Search buildings..."
                         className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -1102,7 +1099,7 @@ const SignalScanner = () => {
                       <button 
                         className={`${
                           showEnriched 
-                            ? 'bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white shadow-lg shadow-green-500/20' 
+                            ? 'bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] text-white shadow-lg shadow-blue-500/20' 
                             : 'bg-white/10 text-white/80 hover:bg-white/20'
                         } backdrop-blur-md rounded-full px-4 py-2 transition-all duration-500 text-sm font-medium border border-white/10 flex items-center gap-2`}
                         onClick={handleToggleEnriched}
@@ -1115,118 +1112,327 @@ const SignalScanner = () => {
                 </div>
               </div>
               
-              {/* Enriched Enterprises Table - Fit on one page without horizontal scroll */}
+              {/* Buildings Table */}
               <div className={`${cardBaseClass}`}>
-                <div className="p-4 overflow-x-auto">
+                {/* Scroll Indicator */}
+                <div className="px-6 pt-4 pb-2 border-b border-white/10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-white/70 text-sm">Building Data Table</span>
+                      {showEnriched && (
+                        <div className="flex items-center gap-3 text-white/50 text-xs">
+                          <span>Scroll horizontally to see all data</span>
+                          <div className="flex items-center gap-2">
+                            {/* Left scroll indicator */}
+                            <div className="flex items-center gap-1">
+                              <svg className="w-4 h-4 text-[#2a64f5] animate-pulse scroll-hint-left" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                              </svg>
+                              <div className="flex gap-0.5">
+                                <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '100ms' }}></div>
+                                <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                              </div>
+                            </div>
+                            
+                            {/* Mouse scroll icon */}
+                            <div className="w-5 h-8 border-2 border-white/30 rounded-full flex items-start justify-center pt-1.5 relative">
+                              <div className="w-1 h-2 bg-[#2a64f5] rounded-full animate-bounce"></div>
+                              <div className="absolute -bottom-1 text-[8px] text-white/30">scroll</div>
+                            </div>
+                            
+                            {/* Right scroll indicator */}
+                            <div className="flex items-center gap-1">
+                              <div className="flex gap-0.5">
+                                <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                                <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '100ms' }}></div>
+                                <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                              </div>
+                              <svg className="w-4 h-4 text-[#2a64f5] animate-pulse scroll-hint-right" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-white/50 text-xs">
+                      {selectedBuildings.length} buildings loaded
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 overflow-x-auto relative" id="table-container">
+                  {/* Left side scroll indicator */}
+                  {showLeftScroll && (
+                    <div className="absolute left-0 top-0 bottom-0 w-16 pointer-events-none z-10 scroll-indicator-fade">
+                      <div className="h-full bg-gradient-to-r from-[#2a64f5]/30 via-[#2a64f5]/15 to-transparent flex items-center justify-start pl-2">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="flex items-center gap-1">
+                            <svg className="w-5 h-5 text-[#2a64f5] scroll-hint-left" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                            <div className="flex gap-0.5">
+                              <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                              <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '100ms' }}></div>
+                              <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                            </div>
+                          </div>
+                          <div className="text-[#2a64f5] text-[10px] font-medium transform rotate-90 whitespace-nowrap">
+                            ← scroll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Right side scroll indicator */}
+                  {showRightScroll && (
+                    <div className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none z-10 scroll-indicator-fade">
+                      <div className="h-full bg-gradient-to-l from-[#2a64f5]/30 via-[#2a64f5]/15 to-transparent flex items-center justify-end pr-2">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="flex items-center gap-1">
+                            <div className="flex gap-0.5">
+                              <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                              <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '100ms' }}></div>
+                              <div className="w-1 h-1 bg-[#2a64f5] rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                            </div>
+                            <svg className="w-5 h-5 text-[#2a64f5] scroll-hint-right" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                          <div className="text-[#2a64f5] text-[10px] font-medium transform rotate-90 whitespace-nowrap">
+                            scroll →
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <table className="w-full table-auto text-sm">
                     <thead>
-                      <tr className="text-left border-b border-white/10">
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">System Admin</th>
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">Company</th>
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">Location</th>
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">Type</th>
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">Users</th>
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">Transactions</th>
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">License Rate</th>
+                      <tr className="text-left border-b-2 border-white/20">
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Building Name</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Address</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Type</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Owner</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Square Footage</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Annual Energy Cost</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Total Windows</th>
                         {showEnriched && (
                           <>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Throughput</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Efficiency</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Current Cost</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Optimized Cost</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Savings/yr</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">ROI</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Payback</th>
-                            <th className="px-2 py-3 text-xs font-semibold text-white/70">Performance</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Annual kWh</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Electricity Rate</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Window Size</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Wall Ratio</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Orientation</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Temperature</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">R-Value</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">ENERGY STAR</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Heat Loss Cost</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Cooling Cost</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Window Energy Cost</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">LuxWall Product</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">New R-value</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Efficiency %</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Replaceable %</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Retrofit Cost</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Annual Savings</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Reduction %</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Install Cost</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Payback</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">ROI Years</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Year</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Floors</th>
+                            <th className="px-3 py-4 text-xs font-semibold text-white/80 bg-white/5">Status</th>
                           </>
                         )}
-                        <th className="px-2 py-3 text-xs font-semibold text-white/70">Details</th>
+                        <th className="px-4 py-4 text-sm font-semibold text-white/90 bg-white/5">Details</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {selectedEnterprises
-                        .filter(f => 
-                          searchTerm ? 
-                            f.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            f.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            f.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            f.systemType.toLowerCase().includes(searchTerm.toLowerCase())
-                            : true
-                        )
-                        .map((enterprise, index) => (
+                      {selectedBuildings.length === 0 ? (
+                        <tr>
+                          <td colSpan={showEnriched ? 32 : 8} className="px-4 py-8 text-center text-white/50">
+                            <div className="flex flex-col items-center gap-2">
+                              <MdOutlineWarning size={24} />
+                              <span>No building data available. Loading CSV...</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        selectedBuildings
+                          .filter(building => 
+                            searchTerm ? 
+                              building.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                              building.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              building.buildingType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              building.propertyOwner.toLowerCase().includes(searchTerm.toLowerCase())
+                              : true
+                          )
+                          .slice((currentPage - 1) * buildingsPerPage, currentPage * buildingsPerPage)
+                          .map((building, index) => (
                           <tr 
-                            key={enterprise.id} 
-                            className={`border-b border-white/5 hover:bg-white/5 transition-colors ${index % 2 === 0 ? 'bg-white/[0.02]' : ''}`}
+                            key={building.id} 
+                            className={`border-b border-white/10 hover:bg-white/5 transition-all duration-200 ${index % 2 === 0 ? 'bg-white/[0.02]' : ''}`}
                           >
-                            <td className="px-2 py-2 text-white text-xs">
-                              <div className="flex items-center">
-                                <div>
-                                  <div className="font-medium">{enterprise.name}</div>
-                                  <div className="text-xs text-white/50">{enterprise.jobTitle}</div>
-                                </div>
+                            <td className="px-4 py-4 text-white text-sm">
+                              <div className="font-medium">
+                                <ExpandableCell 
+                                  content={building.name} 
+                                  cellId={`name-${building.id}`} 
+                                  maxLength={30}
+                                />
                               </div>
                             </td>
-                            <td className="px-2 py-2 text-white text-xs">{enterprise.company}</td>
-                            <td className="px-2 py-2 text-white text-xs">{enterprise.location}</td>
-                            <td className="px-2 py-2 text-white text-xs">{enterprise.systemType}</td>
-                            <td className="px-2 py-2 text-white text-xs">{enterprise.userCount.toLocaleString()}</td>
-                            <td className="px-2 py-2 text-white text-xs">{(enterprise.annualTransactions/1000000).toFixed(2)}M</td>
-                            <td className="px-2 py-2 text-white text-xs">${enterprise.licenseRate.toFixed(3)}</td>
+                            <td className="px-4 py-4 text-white text-sm">
+                              <ExpandableCell 
+                                content={building.address} 
+                                cellId={`address-${building.id}`} 
+                                maxLength={40}
+                              />
+                            </td>
+                            <td className="px-4 py-4 text-white text-sm">{building.buildingType}</td>
+                            <td className="px-4 py-4 text-white text-sm">
+                              <ExpandableCell 
+                                content={building.propertyOwner} 
+                                cellId={`owner-${building.id}`} 
+                                maxLength={25}
+                              />
+                            </td>
+                            <td className="px-4 py-4 text-white text-sm font-medium">{formatSquareFootage(building.squareFootage)}</td>
+                            <td className="px-4 py-4 text-[#2a64f5] text-sm font-medium">{formatCurrency(building.annualEnergyCost)}</td>
+                            <td className="px-4 py-4 text-white text-sm">{extractNumericValue(building.totalWindows).toLocaleString()}</td>
                             
                             {showEnriched ? (
                               <>
-                                <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.maxThroughput} tps</td>
-                                <td className="px-2 py-2 text-xs">
-                                  <div className="flex items-center">
-                                    <div className="w-8 bg-gray-200 rounded-full h-1.5 mr-1">
-                                      <div className="bg-[#10ba82] h-1.5 rounded-full" style={{ width: `${Math.min(100, enterprise.sapMetrics.systemCoverage)}%` }}></div>
-                                    </div>
-                                    <span className="text-white">{enterprise.sapMetrics.systemCoverage.toFixed(0)}%</span>
-                                  </div>
+                                <td className="px-3 py-4 text-white text-xs">{extractNumericValue(building.estimatedAnnualKwh).toLocaleString()}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.commercialElectricityRate}</td>
+                                <td className="px-3 py-4 text-white text-xs">
+                                  <ExpandableCell 
+                                    content={building.averageWindowSize} 
+                                    cellId={`windowSize-${building.id}`} 
+                                    maxLength={20}
+                                  />
                                 </td>
-                                <td className="px-2 py-2 text-white text-xs">${(enterprise.sapMetrics.costWithoutOptimization/1000).toFixed(0)}K</td>
-                                <td className="px-2 py-2 text-white text-xs">${(enterprise.sapMetrics.costWithOptimization/1000).toFixed(0)}K</td>
-                                <td className="px-2 py-2 text-[#10ba82] text-xs">${(enterprise.sapMetrics.annualSavings/1000).toFixed(0)}K</td>
-                                <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.roi.toFixed(1)}%</td>
-                                <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.optimizationTime.toFixed(1)} mo</td>
-                                <td className="px-2 py-2 text-white text-xs">{enterprise.sapMetrics.performanceImprovement}%</td>
-                                <td className="px-2 py-2 text-xs">
+                                <td className="px-3 py-4 text-white text-xs">{building.windowToWallRatio}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.facadeOrientation}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.setPointTemperature}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.currentWindowRValue}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.energyStarScore}</td>
+                                <td className="px-3 py-4 text-orange-400 text-xs font-medium">{formatCurrency(building.windowHeatLossCost)}</td>
+                                <td className="px-3 py-4 text-orange-400 text-xs font-medium">{formatCurrency(building.windowCoolingCost)}</td>
+                                <td className="px-3 py-4 text-red-400 text-xs font-medium">{formatCurrency(building.totalWindowEnergyCost)}</td>
+                                <td className="px-3 py-4 text-white text-xs">
+                                  <ExpandableCell 
+                                    content={building.luxwallProductRecommendation} 
+                                    cellId={`product-${building.id}`} 
+                                    maxLength={15}
+                                  />
+                                </td>
+                                <td className="px-3 py-4 text-green-400 text-xs font-medium">{building.rValue}</td>
+                                <td className="px-3 py-4 text-green-400 text-xs font-bold">{building.efficiencyImprovement}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.replaceableWindows}</td>
+                                <td className="px-3 py-4 text-green-400 text-xs font-medium">{formatCurrency(building.postRetrofitEnergyCost)}</td>
+                                <td className="px-3 py-4 text-green-400 text-xs font-bold">{formatCurrency(building.annualEnergySavings)}</td>
+                                <td className="px-3 py-4 text-green-400 text-xs font-medium">{building.energyCostReduction}</td>
+                                <td className="px-3 py-4 text-blue-400 text-xs font-medium">{formatCurrency(building.installationCost)}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.paybackRoiWithoutIncentives}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.roiInYearsWithoutIncentives}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.year}</td>
+                                <td className="px-3 py-4 text-white text-xs">{building.floors}</td>
+                                <td className="px-3 py-4 text-white text-xs">
+                                  <span className={`px-2 py-1 rounded-full text-xs ${
+                                    building.status === 'built' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                                  }`}>
+                                    {building.status}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-4 text-sm">
                                   <button 
-                                    className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white rounded-lg px-2 py-1 text-xs font-medium hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all"
-                                    onClick={() => handleViewEnterprise(enterprise.id)}
+                                    className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] text-white rounded-lg px-3 py-2 text-xs font-medium hover:from-[#7a94b8] hover:to-[#0a8a5c] transition-all shadow-lg"
+                                    onClick={() => handleViewBuilding(building.id)}
                                   >
                                     View
                                   </button>
                                 </td>
                               </>
                             ) : (
-                              <td colSpan={9} className="px-2 py-2 text-white/50 text-xs">
+                              <td colSpan={25} className="px-4 py-4 text-white/50 text-xs">
                                 <div className="flex items-center gap-1">
                                   <MdOutlineWarning size={12} />
-                                  <span>SAP system analysis data not yet displayed</span>
+                                  <span>Building energy analysis data not yet displayed - click "Show Enriched Data" to process</span>
                                 </div>
                               </td>
                             )}
                           </tr>
-                        ))}
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              {/* Add pagination */}
+              {/* Pagination */}
               <div className="flex justify-between items-center mt-6 mb-8">
                 <div className="text-white/70">
-                  Showing <span className="text-white">1-{selectedEnterprises.length}</span> of <span className="text-white">{totalEnterprisesInDatabase.toLocaleString()}</span> systems
+                  Showing <span className="text-white">{((currentPage - 1) * buildingsPerPage) + 1}-{Math.min(currentPage * buildingsPerPage, selectedBuildings.length)}</span> of <span className="text-white">{selectedBuildings.length.toLocaleString()}</span> buildings
                 </div>
-                <div className="flex gap-1">
-                  <button className="bg-white/10 text-white/70 px-3 py-1 rounded-md hover:bg-white/20 transition-all">Previous</button>
-                  <button className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white px-3 py-1 rounded-md hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all">1</button>
-                  <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">2</button>
-                  <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">3</button>
-                  <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">...</button>
-                  <button className="bg-white/10 text-white px-3 py-1 rounded-md hover:bg-white/20 transition-all">385</button>
-                  <button className="bg-white/10 text-white/70 px-3 py-1 rounded-md hover:bg-white/20 transition-all">Next</button>
+                <div className="flex gap-2">
+                  <button 
+                    className="bg-white/10 text-white/70 px-4 py-2 rounded-lg hover:bg-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  
+                  {/* Page numbers */}
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum: number;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <button 
+                        key={pageNum}
+                        className={`px-3 py-2 rounded-lg transition-all ${
+                          currentPage === pageNum 
+                            ? 'bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] text-white shadow-lg' 
+                            : 'bg-white/10 text-white hover:bg-white/20'
+                        }`}
+                        onClick={() => goToPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                  
+                  {totalPages > 5 && currentPage < totalPages - 2 && (
+                    <>
+                      <span className="text-white/50 px-2 py-2">...</span>
+                      <button 
+                        className="bg-white/10 text-white px-3 py-2 rounded-lg hover:bg-white/20 transition-all"
+                        onClick={() => goToPage(totalPages)}
+                      >
+                        {totalPages}
+                      </button>
+                    </>
+                  )}
+                  
+                  <button 
+                    className="bg-white/10 text-white/70 px-4 py-2 rounded-lg hover:bg-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
 
@@ -1242,9 +1448,9 @@ const SignalScanner = () => {
 
                 <button
                   onClick={handleContinueToSystemAnalysis}
-                  className="bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] hover:from-[#0c9a6c] hover:to-[#0a8a5c] text-white transition-colors px-6 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-2"
+                  className="bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] hover:from-[#7a94b8] hover:to-[#0a8a5c] text-white transition-colors px-6 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-2"
                 >
-                  Continue to System Analysis
+                  Continue to Energy Analysis
                   <MdArrowForward size={20} />
                 </button>
               </div>
@@ -1255,9 +1461,9 @@ const SignalScanner = () => {
 
       {/* Visualization Modal */}
       <dialog id="visualization-modal" className="modal modal-bottom sm:modal-middle bg-transparent">
-        <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/80 to-[rgba(40,41,43,0.7)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#10ba82]/15 p-6 max-w-2xl mx-auto">
+        <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/90 via-[#28292b]/80 to-[rgba(40,41,43,0.7)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-[#2a64f5]/15 p-6 max-w-2xl mx-auto">
           <div className="flex justify-between items-start mb-4">
-            <h3 className="text-xl font-bold text-white">SAP System Analysis</h3>
+            <h3 className="text-xl font-bold text-white">Building Energy Analysis</h3>
             <button 
               onClick={closeModal}
               className="text-white/70 hover:text-white"
@@ -1266,36 +1472,36 @@ const SignalScanner = () => {
             </button>
           </div>
           
-          {selectedEnterpriseForModal && (
+          {selectedBuildingForModal && (
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex-1">
                   <div className="bg-white/5 p-4 rounded-xl">
-                    <h4 className="text-lg font-medium text-white mb-2">{selectedEnterpriseForModal.name}</h4>
-                    <p className="text-white/70 text-sm mb-1">{selectedEnterpriseForModal.company}</p>
+                    <h4 className="text-lg font-medium text-white mb-2">{selectedBuildingForModal.name}</h4>
+                    <p className="text-white/70 text-sm mb-1">{selectedBuildingForModal.propertyOwner}</p>
                     <p className="text-white/70 text-sm mb-3">
                       <span className="inline-flex items-center gap-1">
-                        <MdLocationOn className="text-[#10ba82]" size={14} />
-                        {selectedEnterpriseForModal.location}
+                        <MdLocationOn className="text-[#2a64f5]" size={14} />
+                        {selectedBuildingForModal.address}
                       </span>
                     </p>
                     
                     <div className="grid grid-cols-2 gap-3 mt-4">
                       <div>
-                        <p className="text-xs text-white/50">System Type</p>
-                        <p className="text-sm text-white">{selectedEnterpriseForModal.systemType}</p>
+                        <p className="text-xs text-white/50">Building Type</p>
+                        <p className="text-sm text-white">{selectedBuildingForModal.buildingType}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-white/50">User Count</p>
-                        <p className="text-sm text-white">{selectedEnterpriseForModal.userCount.toLocaleString()}</p>
+                        <p className="text-xs text-white/50">Square Footage</p>
+                        <p className="text-sm text-white">{formatSquareFootage(selectedBuildingForModal.squareFootage)}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-white/50">Transactions</p>
-                        <p className="text-sm text-white">{(selectedEnterpriseForModal.annualTransactions/1000000).toFixed(2)}M</p>
+                        <p className="text-xs text-white/50">Annual Energy Cost</p>
+                        <p className="text-sm text-white">{formatCurrency(selectedBuildingForModal.annualEnergyCost)}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-white/50">Throughput</p>
-                        <p className="text-sm text-white">{selectedEnterpriseForModal.sapMetrics.maxThroughput} tps</p>
+                        <p className="text-xs text-white/50">Total Windows</p>
+                        <p className="text-sm text-white">{extractNumericValue(selectedBuildingForModal.totalWindows).toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
@@ -1303,38 +1509,38 @@ const SignalScanner = () => {
                 
                 <div className="flex-1">
                   <div className="bg-white/5 p-4 rounded-xl h-full flex flex-col">
-                    <h4 className="text-lg font-medium text-white mb-2">Available Data Visualizations</h4>
+                    <h4 className="text-lg font-medium text-white mb-2">Available Energy Visualizations</h4>
                     <ul className="space-y-2 text-white/70 text-sm flex-1">
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
-                        <span>Transaction Performance Analysis: See how SAP processes your workload across different modules and components</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#2a64f5]">•</div>
+                        <span>Energy Performance Analysis: See how your building's energy consumption compares to similar buildings</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
-                        <span>ROI Calculation Graph: Interactive visualization showing potential cost savings over time</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#2a64f5]">•</div>
+                        <span>Window Efficiency Dashboard: Interactive visualization showing potential energy savings with LuxWall products</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
-                        <span>System Efficiency Dashboard: Compare current vs. optimized performance metrics</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#2a64f5]">•</div>
+                        <span>ROI Calculation Graph: Compare current vs. optimized energy costs over time</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <div className="min-w-[20px] mt-0.5 text-[#10ba82]">•</div>
-                        <span>Cost Breakdown Charts: See where your SAP budget is going and how to optimize it</span>
+                        <div className="min-w-[20px] mt-0.5 text-[#2a64f5]">•</div>
+                        <span>Cost Breakdown Charts: See where your energy budget is going and how to optimize it</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-6 bg-gradient-to-r from-[#10ba82]/20 to-[#0c9a6c]/20 p-4 rounded-xl">
+              <div className="mt-6 bg-gradient-to-r from-[#2a64f5]/20 to-[#7a94b8]/20 p-4 rounded-xl">
                 <div className="flex items-start gap-3">
-                  <div className="text-[#10ba82] mt-1">
+                  <div className="text-[#2a64f5] mt-1">
                     <MdInfoOutline size={24} />
                   </div>
                   <div>
-                    <p className="text-white font-medium">See Behind the Scenes Data for {selectedEnterpriseForModal.name}</p>
+                    <p className="text-white font-medium">See Behind the Scenes Data for {selectedBuildingForModal.name}</p>
                     <p className="text-white/70 text-sm mt-1">
-                      Go deeper into how we collected and analyzed performance metrics specifically for {selectedEnterpriseForModal.company}. Our visualizations reveal the exact data sources, analysis methods, and optimization potential we've identified for this system.
+                      Go deeper into how we collected and analyzed energy performance metrics specifically for {selectedBuildingForModal.name}. Our visualizations reveal the exact data sources, analysis methods, and optimization potential we've identified for this building.
                     </p>
                   </div>
                 </div>
@@ -1349,7 +1555,7 @@ const SignalScanner = () => {
                 </button>
                 <button 
                   onClick={goToSystemAnalysis}
-                  className="px-6 py-2 bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white rounded-lg hover:from-[#0c9a6c] hover:to-[#0a8a5c] transition-all flex items-center gap-2"
+                  className="px-6 py-2 bg-gradient-to-r from-[#2a64f5] to-[#7a94b8] text-white rounded-lg hover:from-[#7a94b8] hover:to-[#0a8a5c] transition-all flex items-center gap-2"
                 >
                   <span>View Behind the Scenes Data</span>
                   <MdArrowForward />

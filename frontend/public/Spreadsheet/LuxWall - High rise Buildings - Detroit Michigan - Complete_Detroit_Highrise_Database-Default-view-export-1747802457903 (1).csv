@@ -1,0 +1,851 @@
+Name,Building ID & Address,Address,Coordinates,Building Type,Property Owner,Total Square Footage,Square Footage,Estimated Annual kWh,Annual Energy Use,Commercial Electricity Rate,Annual Energy Cost,Total Windows,Average Window Size,Window-to-Wall Ratio,Façade Orientation,Set-Point Temperature,Historical Temperatures,Temperature Delta Series,Annual Temperature Swing,Monthly Solar Irradiance,Current Window R-Value,ENERGY STAR Score,Window Heat Loss Cost,Window Cooling Cost,Total Window Energy Cost,LuxWall Product Recommendation,R-value,Efficiency Improvement (%),Replaceable Windows %,Post-Retrofit Energy Cost,Annual Energy Savings,Energy Cost Reduction %,Installation Cost (USD),Payback & ROI - Without Incentives,ROI in years - Without Incentives,Year,Floors,Status,Drawings
+MGM Grand Detroit Hotel & Casino,"1777 3rd Ave, Detroit, MI 48226","1777 3rd Ave, Detroit, MI 48226","42.33361, -83.06028",mixed-use,Vici Properties and MGM Resorts International,1650000 sq ft,1650000 sq ft,16080000,16080000,0.1528 $/kWh,2450000 USD,600,Average window size: 1.5 m × 1.2 m,0.34,north/south,70 °F / 21 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 11°C  
+February: 10°C  
+March: 6°C  
+April: 7°C  
+May: 0°C  
+June: 5°C  
+July: 7°C  
+August: 9°C  
+September: 4°C  
+October: 5°C  
+November: 12°C  
+December: 16°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,65,142151 USD,1154168 USD,1296319 USD,LuxWall Enthermal Plus™,20,90%,100%,129631 USD,1166688 USD,47%,972000 USD,0.83333,0.83333,2008,17,built,0
+Jeffersonian Apartments,"9000 East Jefferson Avenue, Detroit, Michigan 48214","9000 East Jefferson Avenue, Detroit, Michigan 48214","42.3558, -82.9867",residential high-rise,DC CAP Hotelier,870813 sq ft,870813 sq ft,63975571,63975571,0.1592 $/kWh,10105290 USD,1236,Average window size: 1.5 m × 1.5 m,0.55,north/south,72 °F / 22 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 27°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 11°C  
+February: 9°C  
+March: 7°C  
+April: 8°C  
+May: 1°C  
+June: 5°C  
+July: 4°C  
+August: 5°C  
+September: 1°C  
+October: 6°C  
+November: 13°C  
+December: 19°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,59,570540 USD,1720004 USD,2290544 USD,LuxWall Enthermal™,19,91%,100%,204368 USD,2086176 USD,20%,2224800 USD,1,1,1965,30,built,2
+Coleman A. Young Municipal Building,"2 Woodward Ave, Detroit, MI 48226","2 Woodward Ave, Detroit, MI 48226","42.3295, -83.0442",government,Detroit-Wayne Joint Building Authority,779999 sq ft,779999 sq ft,16815500,16815500,0.1528 $/kWh,2562244 USD,600,Average window size: 1 m × 1.5 m,0.49,north/south,72 °F / 22 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 6°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 22°C  
+February: 22°C  
+March: 22°C  
+April: 8°C  
+May: 1°C  
+June: 4°C  
+July: 4°C  
+August: 5°C  
+September: 9°C  
+October: 6°C  
+November: 13°C  
+December: 25°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,82,57470 USD,455063 USD,512533 USD,LuxWall Enthermal R-18,18,94%,100%,30728 USD,481805 USD,18%,900000 USD,1.2,1.2,1954,20,built,1
+Gabriel Richard Building,"305 Michigan Avenue, Detroit, MI 48226","305 Michigan Avenue, Detroit, MI 48226","42.33139, -83.05167",mixed-use,Barbat Holdings,105400 sq ft,105400 sq ft,2371500,2371500,0.1742 $/kWh,413139 USD,72,Average window size: 1.5 m × 2 m,0.45,east/west,72 °F / 22 °C,"January: 0°C / -7°C
+February: 2°C / -9°C
+March: 2°C / -7°C
+April: 7°C / -2°C
+May: 14°C / 4°C
+June: 21°C / 10°C
+July: 27°C / 15°C
+August: 28°C / 18°C
+September: 24°C / 13°C
+October: 16°C / 7°C
+November: 10°C / 1°C
+December: 3°C / -2°C","January: 22°C  
+February: 21°C  
+March: 21°C  
+April: 19°C  
+May: 8°C  
+June: 1°C  
+July: 5°C  
+August: 4°C  
+September: 8°C  
+October: 6°C  
+November: 12°C  
+December: 15°C",35,"January: 3.0
+February: 3.2
+March: 4.0
+April: 4.5
+May: 5.5
+June: 6.0
+July: 6.4
+August: 5.8
+September: 4.7
+October: 3.5
+November: 2.6
+December: 2.5",1,75,86716 USD,20351 USD,107067 USD,LuxWall Enthermal Plus R-21,20,95%,100%,5353 USD,101714 USD,24%,194400 USD,1.33333333,1.33333333,1915,10,built,0
+Kresge Building,"1201 Woodward Ave, Detroit, MI 48226","1201 Woodward Ave, Detroit, MI 48226","44.31583, -69.77444",commercial,Bedrock,89619 sq ft,89619 sq ft,1347787.5,1347787.5,0.1581 $/kWh,213344 USD,54,Average window size: 1.2 m × 1.8 m (estimated based on typical dimensions for office buildings).,0.4,all four,75 °F / 24 °C,"January: 0.2°C / -6.1°C
+February: -6.1°C / -8.9°C
+March: 1.8°C / -1.8°C
+April: 7.7°C / 3.9°C
+May: 14.8°C / 10.1°C
+June: 21.3°C / 18.0°C
+July: 26.5°C / 17.4°C
+August: 28.7°C / 13.1°C
+September: 23.6°C / 6.8°C
+October: 16.7°C / 1.1°C
+November: 9.2°C / -3.9°C
+December: 2.9°C / 0.2°C","January: 23.8°C  
+February: 32.9°C  
+March: 22.6°C  
+April: 16.3°C  
+May: 9.2°C  
+June: 2.7°C  
+July: -2.5°C  
+August: -4.7°C  
+September: 5.6°C  
+October: 12.9°C  
+November: 33.9°C  
+December: 21.1°C",35,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,78,67354 USD,13259 USD,80613 USD,LuxWall Enthermal Plus,20,90%,100%,8061 USD,72552 USD,34%,116640 USD,1.607062783,1.607062783,1917,9,built,0
+Greater Penobscot Building,"645 Griswold Street, Detroit, MI 48226","645 Griswold Street, Detroit, MI 48226","42.33041, -83.0475",commercial office tower,Triple Properties,1258900 sq ft,1258900 sq ft,24160496,24160496,0.1528 $/kWh,3681373 USD,1000,Average window size: 1.5 m × 2 m,0.37,north/south,72 °F / 22 °C,"January: 0°C / -7°C
+February: 2°C / -7°C
+March: 8°C / -2°C
+April: 14°C / 4°C
+May: 21°C / 10°C
+June: 27°C / 16°C
+July: 28°C / 18°C
+August: 27°C / 17°C
+September: 24°C / 13°C
+October: 17°C / 7°C
+November: 9°C / 1°C
+December: 3°C / -4°C","January: 11°C  
+February: 9°C  
+March: 7°C  
+April: 8°C  
+May: 1°C  
+June: 5°C  
+July: 6°C  
+August: 5°C  
+September: 0°C  
+October: 5°C  
+November: 13°C  
+December: 19°C",35,"January: 2.73
+February: 3.96
+March: 5.01
+April: 5.21
+May: 5.54
+June: 5.89
+July: 5.98
+August: 5.79
+September: 5.47
+October: 4.29
+November: 3.22
+December: 2.43",1,100,74200 USD,1533705 USD,1607905 USD,LuxWall Enthermal Plus,20,91%,100%,143500 USD,1710405 USD,46%,3000000 USD,1.76,1.76,1928,47,built,4
+Ally Detroit Center,"500 Woodward Avenue, Detroit, MI 48226","500 Woodward Avenue, Detroit, MI 48226","42.3300, -83.0450",commercial office tower,Bedrock,1674708 sq ft,1674708 sq ft,21780000,21780000,0.1528 $/kWh,3328604 USD,860,Average window size: 1.2 m × 1.8 m (for high-rise office buildings).,0.4,north/south/east/west,72 °F / 22 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 22°C  
+February: 22°C  
+March: 15°C  
+April: 8°C  
+May: 1°C  
+June: 4°C  
+July: 6°C  
+August: 5°C  
+September: 1°C  
+October: 6°C  
+November: 13°C  
+December: 25°C",34,"January: 2.73
+February: 3.96
+March: 5.01
+April: 5.21
+May: 5.54
+June: 5.89
+July: 5.98
+August: 5.79
+September: 5.47
+October: 4.29
+November: 3.22
+December: 2.43",2,50,73848 USD,1478889 USD,1557737 USD,LuxWall Enthermal Plus,20,90%,100%,155773 USD,1401964 USD,42%,2222640 USD,1.8,1.8,1993,43,built,5
+First National Building,"660 Woodward Avenue, Detroit, MI","660 Woodward Avenue, Detroit, MI","42.331028, -83.045889",commercial office tower,Madison Equities,850420 sq ft,850420 sq ft,19597500,19597500,0.1534 $/kWh,3000008 USD,676,Average window size: 1.5 m × 2 m,0.55,north/south,75 °F / 24 °C,"January: 0°C / -6°C
+February: 1°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 24°C  
+February: 24°C  
+March: 17°C  
+April: 10°C  
+May: 3°C  
+June: 2°C  
+July: 4°C  
+August: 6°C  
+September: 11°C  
+October: 8°C  
+November: 15°C  
+December: 27°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,54,49063 USD,1002478 USD,1051531 USD,LuxWall Enthermal Plus™,23,95%,100%,52577 USD,999954 USD,33%,2030400 USD,2.0304,2.0304,1930,26,built,2
+Church of Scientology Detroit,"1 Griswold Street, Detroit, MI 48226","1 Griswold Street, Detroit, MI 48226","42.40564, -83.21413",mixed-use,Church of Scientology,50000 sq ft,50000 sq ft,1031952,1031952,0.1625,167035 USD,72,Average window size for the Church of Scientology Detroit is estimated at 1.0 m × 1.5 m due to its neoclassical design and typical window dimensions for similar buildings.,0.36,north/south,75 °F / 24 °C,"January: -4.2°C / -7.3°C
+February: -3.3°C / -6.8°C
+March: 1.6°C / -2.2°C
+April: 8.7°C / 4.4°C
+May: 15.5°C / 11.2°C
+June: 20.9°C / 16.7°C
+July: 23.4°C / 19.1°C
+August: 22.4°C / 18.5°C
+September: 18.8°C / 15.2°C
+October: 11.8°C / 8.6°C
+November: 5.2°C / 2.4°C
+December: -0.9°C / -3.4°C","January: 15°C  
+February: 14°C  
+March: 22°C  
+April: 15°C  
+May: 9°C  
+June: 4°C  
+July: 1°C  
+August: 2°C  
+September: 5°C  
+October: 13°C  
+November: 18°C  
+December: 24°C",28,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,63,64000 USD,1331 USD,65331 USD,LuxWall Envision R-12,12,83%,100%,10948 USD,54383 USD,32%,129600 USD,2.38,2.38,1927,9,built,0
+Detroit City Club Apartments,"1431 Washington Blvd, Detroit, MI 48226","1431 Washington Blvd, Detroit, MI 48226","42.3342,-83.0515",residential,Jonathan Holtzman,275000 sq ft,275000 sq ft,4808000,4808000,0.1648 $/kWh,792000 USD,336,Average window size: 1.2 m × 1.5 m,0.37,north/south,75 °F / 24 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 24°C  
+February: 24°C  
+March: 17°C  
+April: 10°C  
+May: 3°C  
+June: 2°C  
+July: 4°C  
+August: 6°C  
+September: 11°C  
+October: 8°C  
+November: 15°C  
+December: 27°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,59,50760 USD,158039 USD,208799 USD,LuxWall Enthermal Plus,20,90%,100%,20880 USD,187919 USD,23%,483840 USD,2.57,2.57,1981,28,built,1
+Book Tower,"1265 Washington Blvd, Detroit, MI 48226","1265 Washington Blvd, Detroit, MI 48226","42.3334, -83.0517",mixed-use,Bedrock,485000 sq ft,485000 sq ft,20736700,20736700,0.1528 $/kWh,3163334 USD,2483,Average window size: 1.2 m × 1.5 m,0.42,north/south,72 °F / 22 °C,"January: 0°C / -6°C
+February: 1°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -2°C","January: 11°C  
+February: 9°C  
+March: 7°C  
+April: 8°C  
+May: 1°C  
+June: 4°C  
+July: 6°C  
+August: 5°C  
+September: 1°C  
+October: 6°C  
+November: 13°C  
+December: 14°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,61,54871 USD,1130505 USD,1185376 USD,LuxWall Envision R-12,12,83%,85%,178120 USD,1007256 USD,31%,2602440 USD,2.6,2.6,1926,38,built,3
+One Campus Martius,"1050 Woodward Ave, Detroit, Michigan, U.S.","1050 Woodward Ave, Detroit, Michigan, U.S.","42.3327, -83.0464",mixed-use,Bedrock Detroit,1295098 sq ft,1295098 sq ft,65064000,65064000,0.1528 $/kWh,9953760 USD,432,Average window size: 1.8 m × 4.8 m,0.49,north/south,72 °F / 22 °C,"January: 0°C / -2°C
+February: 1°C / -6°C
+March: 4°C / -2°C
+April: 10°C / 0°C
+May: 17°C / 7°C
+June: 23°C / 14°C
+July: 27°C / 17°C
+August: 26°C / 17°C
+September: 22°C / 12°C
+October: 14°C / 6°C
+November: 7°C / 1°C
+December: 2°C / -4°C","January: 22°C  
+February: 28°C  
+March: 24°C  
+April: 12°C  
+May: 5°C  
+June: 1°C  
+July: 5°C  
+August: 6°C  
+September: 10°C  
+October: 8°C  
+November: 15°C  
+December: 26°C",29,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",3.41,75,149214 USD,1417000 USD,1566214 USD,LuxWall Envision R-12,12,91%,100%,139999 USD,1426215 USD,14%,3749760 USD,2.63,2.63,2003,16,built,1
+Valpey Building,"1413 Woodward Avenue, Detroit, MI 48226","1413 Woodward Avenue, Detroit, MI 48226","42.3342,-83.0492",mixed-use,Rock Ventures,54360 sq ft,54360 sq ft,836144,836144,0.1752 $/kWh,146041 USD,72,Average window size: 1.2 m × 1.5 m,0.45,all four,72 °F / 22 °C,"January: 0°C / -6°C
+February: 2°C / -6°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 22°C  
+February: 22°C  
+March: 15°C  
+April: 8°C  
+May: 1°C  
+June: 4°C  
+July: 3°C  
+August: 4°C  
+September: 1°C  
+October: 6°C  
+November: 13°C  
+December: 25°C",34,"January: 2.88
+February: 3.94
+March: 4.88
+April: 5.25
+May: 5.5
+June: 5.95
+July: 6.0
+August: 5.79
+September: 5.58
+October: 4.11
+November: 3.23
+December: 2.46",2,65,14953 USD,23469 USD,38422 USD,LuxWall Enthermal Plus™,23,91%,100%,3350 USD,35072 USD,24%,103680 USD,2.95,2.95,1896,8,built,0
+Westin Book-Cadillac Detroit,"1114 Washington Blvd, Detroit, MI 48226","1114 Washington Blvd, Detroit, MI 48226","42.3319500, -83.0505250",hotel,"Oxford Capital Group, LLC and Taconic Capital",736000 sq ft,736000 sq ft,6399588.403,6399588.403,0.1584 $/kWh,1016437 USD,300,Average window size: 1.2 m × 1.8 m,0.38,north/south,72 °F / 22 °C,"January: 0°C / -6°C
+February: 1°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 22°C  
+February: 22°C  
+March: 15°C  
+April: 8°C  
+May: 1°C  
+June: 4°C  
+July: 6°C  
+August: 4°C  
+September: 9°C  
+October: 6°C  
+November: 13°C  
+December: 25°C",34,"January: 2.3
+February: 3.0
+March: 4.0
+April: 5.0
+May: 5.5
+June: 6.0
+July: 6.3
+August: 5.7
+September: 4.5
+October: 3.5
+November: 2.8
+December: 2.0",2,50,73941 USD,160184 USD,234125 USD,LuxWall Enthermal Plus,19,89%,100%,24623 USD,209502 USD,20%,648000 USD,3.09,3.09,1924,29,built,1
+Sheridan Place I,"7501 East Jefferson Avenue, Detroit, MI 48214","7501 East Jefferson Avenue, Detroit, MI 48214","42.349458, -82.999284",residential,Detroit Housing Commission,210274 sq ft,210274 sq ft,1125000,1125000,0.1664 $/kWh,187200 USD,210,Average window size: 1.2 m × 1.5 m,0.41,east/west,72 °F / 22 °C,"January: 0°C / -7°C
+February: 2°C / -7°C
+March: 7°C / -2°C
+April: 14°C / 4°C
+May: 21°C / 10°C
+June: 27°C / 16°C
+July: 29°C / 18°C
+August: 27°C / 17°C
+September: 23°C / 13°C
+October: 17°C / 6°C
+November: 9°C / 1°C
+December: 3°C / -4°C","January: 11°C  
+February: 9°C  
+March: 5°C  
+April: 8°C  
+May: 1°C  
+June: 5°C  
+July: 7°C  
+August: 5°C  
+September: 2°C  
+October: 5°C  
+November: 13°C  
+December: 19°C",36,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,75,21761 USD,83992 USD,105753 USD,LuxWall Enthermal R-18,18,89%,100%,11575 USD,94178 USD,50%,302400 USD,3.2,3.2,0,0,built,0
+Renaissance Center Tower 600,"600 Renaissance Center, Detroit, MI 48243-1815, USA","600 Renaissance Center, Detroit, MI 48243-1815, USA","42.3289, -83.0397",mixed-use,Dr. Mahmoud Al-Hadidi,336000 sq ft,336000 sq ft,7540200,7540200,0.1604 $/kWh,1202005 USD,252,Average window size: 1.5 m × 1.2 m,0.5,north/south,75 °F / 24 °C,"January: 0°C / -6°C
+February: 1°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 3°C / -3°C","January: 24°C  
+February: 24°C  
+March: 22°C  
+April: 10°C  
+May: 3°C  
+June: 2°C  
+July: 4°C  
+August: 6°C  
+September: 11°C  
+October: 8°C  
+November: 15°C  
+December: 27°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1.9,65,94467 USD,60249 USD,154716 USD,LuxWall Enthermal™ R-18,18,91%,100%,13693 USD,141023 USD,11%,453600 USD,3.21,3.21,1981,21,built,4
+Detroit Building,"1301 3rd Avenue, 3rd Floor, Detroit, MI 48226","1301 3rd Avenue, 3rd Floor, Detroit, MI 48226","42.3346,-83.0426",Unknown,Detroit Building Authority,410000 sq ft,410000 sq ft,4939540,4939540,0.1578,778557 USD,400,Average window size: 1 m × 2 m,0.4,all four,72 °F / 22 °C,"January: 0°C / -2°C
+February: 1°C / -6°C
+March: 2°C / -3°C
+April: 9°C / 3°C
+May: 17°C / 10°C
+June: 22°C / 14°C
+July: 26°C / 20°C
+August: 25°C / 19°C
+September: 21°C / 13°C
+October: 14°C / 7°C
+November: 7°C / 1°C
+December: 2°C / -5°C","January: 22°C  
+February: 28°C  
+March: 25°C  
+April: 19°C  
+May: 5°C  
+June: 8°C  
+July: 4°C  
+August: 3°C  
+September: 8°C  
+October: 8°C  
+November: 15°C  
+December: 27°C",28,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,64,33912 USD,276870 USD,310782 USD,LuxWall Envision R-12,12,91%,100%,27601 USD,283181 USD,36%,960000 USD,3.38,3.38,1923,10,built,2
+IRS Detroit Computing Center,"P.O. Box 33968, Detroit, MI 48232-5968","P.O. Box 33968, Detroit, MI 48232-5968","42.3308, -83.0589",commercial office tower and data center,"Walsh, Higgins & Company",900000 sq ft,900000 sq ft,6899353,6899353,0.1621,1112445 USD,800,Average window size: 1.5 m × 1.2 m,0.6,all four,72 °F / 22 °C,"January: 0°C / -8°C
+February: 2°C / -7°C
+March: 8°C / -2°C
+April: 15°C / 4°C
+May: 21°C / 10°C
+June: 27°C / 16°C
+July: 29°C / 18°C
+August: 27°C / 17°C
+September: 24°C / 13°C
+October: 17°C / 7°C
+November: 9°C / -1°C
+December: 3°C / -4°C","January: 11°C  
+February: 9°C  
+March: 7°C  
+April: 7°C  
+May: 1°C  
+June: 5°C  
+July: 7°C  
+August: 5°C  
+September: 2°C  
+October: 5°C  
+November: 13°C  
+December: 15°C",37,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,61,116950 USD,307266 USD,424216 USD,LuxWall Envision R-12,12,83%,100%,70974 USD,353242 USD,31%,1344000 USD,3.81,3.81,1996,10,built,0
+Fisher Building,"3011 West Grand Boulevard, Detroit, MI 48202","3011 West Grand Boulevard, Detroit, MI 48202","42.3698, -83.0771",mixed-use,Michigan State University,634819 sq ft,634819 sq ft,14287500,14287500,0.1579,2252903 USD,1800,Average window size: 1.2 m × 1.5 m,0.37,north/south,75 °F / 24 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 6°C / -1°C","January: 24°C  
+February: 24°C  
+March: 22°C  
+April: 10°C  
+May: 3°C  
+June: 2°C  
+July: 4°C  
+August: 6°C  
+September: 11°C  
+October: 8°C  
+November: 15°C  
+December: 25°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,58,125000 USD,499596 USD,624596 USD,LuxWall Enthermal Plus™,21,95%,100%,31230 USD,593366 USD,26%,2916000 USD,4.9,4.9,1928,30,built,2
+Van Dyke Center,"8100 Gratiot Ave, Detroit, MI 48213","8100 Gratiot Ave, Detroit, MI 48213","42.3789, -83.0133",residential tower,Continental Management,146196 sq ft,146196 sq ft,1800000,1800000,0.1625,292500 USD,300,"Unable to find specific window sizes for Van Dyke Center as the number of floors is zero, which suggests it might not have a traditional window sizing pattern. Without details from architectural drawings or façade design documents, an estimated average window size for apartment buildings in Detroit is approximately 1.2 m × 1.5 m based on typical designs in similar structures.",0.2,all four,72 °F / 22 °C,"January: 0°C / -2°C
+February: 1°C / -7°C
+March: 2°C / -5°C
+April: 3°C / 1°C
+May: 6°C / 3°C
+June: 16°C / 14°C
+July: 21°C / 17°C
+August: 25°C / 22°C
+September: 22°C / 16°C
+October: 14°C / 8°C
+November: 7°C / 1°C
+December: 3°C / -2°C","January: 22°C  
+February: 29°C  
+March: 27°C  
+April: 21°C  
+May: 16°C  
+June: 6°C  
+July: 1°C  
+August: 3°C  
+September: 6°C  
+October: 8°C  
+November: 15°C  
+December: 24°C",27,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,54,74200 USD,2721 USD,76921 USD,LuxWall Envision R-10,18,89%,85%,10309 USD,66612 USD,22%,327600 USD,4.92,4.92,0,0,built,0
+Fowler Building,"1225 Woodward Avenue, Detroit, MI 48226","1225 Woodward Avenue, Detroit, MI 48226","42.498833,-92.33500",commercial office tower,Christy Fowler,53000 sq ft,53000 sq ft,1237500,1237500,0.1651,204085 USD,72,"Average window size for the Fowler Building is estimated to be approximately 1 m × 1.5 m based on the design conventions of the building and the known façade details. The building features ribbon windows and large plate glass windows, which typically have these dimensions for similar structures.",0.42,north/south,76 °F / 24 °C,"January: 0°C / -6°C
+February: 2°C / -5°C
+March: 7°C / -1°C
+April: 14°C / 5°C
+May: 21°C / 11°C
+June: 26°C / 17°C
+July: 28°C / 19°C
+August: 27°C / 18°C
+September: 23°C / 14°C
+October: 16°C / 8°C
+November: 9°C / 2°C
+December: 6°C / -3°C","January: 24°C  
+February: 24°C  
+March: 24°C  
+April: 10°C  
+May: 3°C  
+June: 2°C  
+July: 4°C  
+August: 6°C  
+September: 11°C  
+October: 8°C  
+November: 15°C  
+December: 18°C",34,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,61,12646 USD,15879 USD,28525 USD,LuxWall Envision R-12,12,91%,100%,2449 USD,26076 USD,12%,129600 USD,4.96,4.96,1911,8,built,0
+Lafer Building Lofts,"1323-1325 Broadway Street, Detroit, MI 48226, United States","1323-1325 Broadway Street, Detroit, MI 48226, United States","42.3408, -83.0583",mixed-use,Mercier Development,32472 sq ft,32472 sq ft,561600,561600,0.1625,91560 USD,162,Average window size: 1 m × 1.5 m,0.51,northwest/southeast,72 °F / 22 °C,"January: 0°C / -6.1°C
+February: 1.7°C / -5.0°C
+March: 7.2°C / -1.1°C
+April: 14.4°C / 4.0°C
+May: 21.1°C / 11.1°C
+June: 25.0°C / 16.7°C
+July: 27.2°C / 18.9°C
+August: 26.7°C / 18.3°C
+September: 22.8°C / 14.4°C
+October: 16.1°C / 7.2°C
+November: 3.9°C / 1.1°C
+December: -2.2°C / -2.8°C","January: 22°C  
+February: 22°C  
+March: 20°C  
+April: 18°C  
+May: 10°C  
+June: 3°C  
+July: 5°C  
+August: 5°C  
+September: 7°C  
+October: 6°C  
+November: 18°C  
+December: 24°C",29,"January: 2.73
+February: 3.96
+March: 5.01
+April: 5.21
+May: 5.54
+June: 5.89
+July: 5.98
+August: 5.79
+September: 5.47
+October: 4.29
+November: 3.22
+December: 2.43",1,58,37180 USD,4186 USD,40866 USD,LuxWall Enthermal R-18,18,94%,100%,2459 USD,38307 USD,41%,194400 USD,5.08,5.08,1916,9,built,0
+Shoreline East Condominiums,"8200 E Jefferson Ave, Detroit, MI 48214","8200 E Jefferson Ave, Detroit, MI 48214","42.3724,-82.9710",residential,"O'Connor Realty Detroit, LLC",228482 sq ft,228482 sq ft,1500000,1500000,0.1625 $/kWh,243750 USD,380,"The average window size for Shoreline East Condominiums, a high-rise building in Detroit with 19 floors, is estimated to be around 1.2 m × 1.5 m. This estimate is based on typical dimensions found in similar mid-century modern architectural designs, which commonly use larger window sizes for maximizing views while maintaining energy efficiency standards.",0.39,east/west,75 °F / 24 °C,"January: 0°C / -7°C
+February: 1°C / -6°C
+March: 8°C / -2°C
+April: 14°C / 4°C
+May: 21°C / 10°C
+June: 27°C / 16°C
+July: 29°C / 18°C
+August: 27°C / 17°C
+September: 24°C / 13°C
+October: 17°C / 6°C
+November: 9°C / 1°C
+December: 3°C / -4°C","January: 11°C  
+February: 9°C  
+March: 16°C  
+April: 10°C  
+May: 3°C  
+June: 7°C  
+July: 5°C  
+August: 7°C  
+September: 0°C  
+October: 7°C  
+November: 15°C  
+December: 13°C",36,"January: 2.73
+February: 3.96
+March: 5.01
+April: 5.21
+May: 5.54
+June: 5.89
+July: 5.98
+August: 5.79
+September: 5.47
+October: 4.29
+November: 3.22
+December: 2.43",1,43,27312 USD,62361 USD,89673 USD,LuxWall Enthermal Plus,23,96%,100%,3587 USD,86086 USD,35%,456000 USD,5.304347826,5.304347826,1966,19,built,2
+UAW-Ford National Programs Center,"151 West Jefferson Avenue, Detroit, Michigan 48226","151 West Jefferson Avenue, Detroit, Michigan 48226","42.3272, -83.0454",office,United Auto Workers (UAW),96000 sq ft,96000 sq ft,3172500,3172500,0.1625,515906 USD,500,Average window size: 1.22 m × 1.83 m,0.4,east/west,72 °F / 22 °C,"January: 0°C / -7°C
+February: 1°C / -7°C
+March: 6°C / -3°C
+April: 13°C / 3°C
+May: 19°C / 9°C
+June: 26°C / 14°C
+July: 28°C / 17°C
+August: 27°C / 16°C
+September: 23°C / 12°C
+October: 18°C / 7°C
+November: 7°C / 1°C
+December: 4°C / -2°C","January: 22°C  
+February: 21°C  
+March: 16°C  
+April: 9°C  
+May: 3°C  
+June: 4°C  
+July: 6°C  
+August: 6°C  
+September: 10°C  
+October: 4°C  
+November: 15°C  
+December: 14°C",35,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",1,62,70016 USD,80471 USD,150487 USD,LuxWall Enthermal Plus,20,95%,100%,7524 USD,143963 USD,28%,891000 USD,6.2,6.2,1948,10,built,0
+Harbortown Great Lakes Tower,"250 E Harbortown Dr, Detroit, MI 48207","250 E Harbortown Dr, Detroit, MI 48207","42.3418, -83.0103",residential tower,Great Lakes Tower,326580 sq ft,326580 sq ft,7348050,7348050,0.1625,1199998 USD,750,Average window size: 1 m × 2 m,0.23,north/south,70 °F / 21 °C,"January: 0°C / -7°C
+February: 0°C / -8°C
+March: 6°C / -3°C
+April: 13°C / 3°C
+May: 19°C / 9°C
+June: 25°C / 14°C
+July: 28°C / 17°C
+August: 27°C / 17°C
+September: 23°C / 12°C
+October: 18°C / 6°C
+November: 7°C / 1°C
+December: 2°C / -2°C","January: 21°C  
+February: 21°C  
+March: 15°C  
+April: 8°C  
+May: 2°C  
+June: 4°C  
+July: 7°C  
+August: 7°C  
+September: 2°C  
+October: 3°C  
+November: 14°C  
+December: 23°C",35,"January: 2.98
+February: 4.12
+March: 5.00
+April: 5.51
+May: 5.43
+June: 5.87
+July: 6.04
+August: 5.82
+September: 5.67
+October: 4.32
+November: 3.14
+December: 2.66",2,56,176628 USD,70474 USD,253102 USD,LuxWall Enthermal™,17.5,91%,100%,22643 USD,230459 USD,19%,1500000 USD,6.5,6.5,1988,15,built,0

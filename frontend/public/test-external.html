@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External Software Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            border: 1px solid #3a3a3a;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #1a5a1a; border: 1px solid #2a7a2a; }
+        .error { background: #5a1a1a; border: 1px solid #7a2a2a; }
+        .warning { background: #5a5a1a; border: 1px solid #7a7a2a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 External Software Integration Test</h1>
+        
+        <div class="test-section">
+            <h2>📊 Status Check</h2>
+            <div id="status-container">
+                <div class="status warning">⏳ Testing external software loading...</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🗺️ 3D Maps Viewer</h2>
+            <p>This should load the external 3D Maps software with Google Maps integration:</p>
+            <iframe 
+                src="/external-maps/" 
+                title="3D Maps Viewer Test"
+                onload="handleIframeLoad()"
+                onerror="handleIframeError()">
+            </iframe>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔗 Direct Links</h2>
+            <p>
+                <a href="/external-maps/" target="_blank" style="color: #4a9eff;">
+                    🚀 Open in New Tab
+                </a>
+            </p>
+            <p>
+                <a href="/maps-test" target="_blank" style="color: #4a9eff;">
+                    🧪 Test Route in Main App
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function handleIframeLoad() {
+            const statusContainer = document.getElementById('status-container');
+            statusContainer.innerHTML = '<div class="status success">✅ External software loaded successfully!</div>';
+            console.log('✅ External software iframe loaded');
+        }
+        
+        function handleIframeError() {
+            const statusContainer = document.getElementById('status-container');
+            statusContainer.innerHTML = '<div class="status error">❌ Failed to load external software</div>';
+            console.error('❌ External software iframe failed to load');
+        }
+        
+        // Test if the external software is accessible through proxy
+        fetch('/external-maps/')
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ External software is accessible through proxy');
+                } else {
+                    console.error('❌ External software not accessible through proxy:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Error accessing external software through proxy:', error);
+                console.log('💡 Make sure your external software is running on http://localhost:8080/');
+            });
+    </script>
+</body>
+</html> 

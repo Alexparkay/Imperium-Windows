@@ -23,11 +23,11 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
     switch (item.colorScheme) {
       case 'accent-primary':
         return {
-          active: 'from-[#10ba82]/40 to-[#0c9a6c]/30',
-          hover: 'from-[#10ba82]/5 via-[#0c9a6c]/3 to-[#0c9a6c]/5',
-          border: 'border-[#10ba82]/10',
-          text: 'text-[#10ba82]',
-          shadow: 'shadow-[#10ba82]/10'
+          active: 'from-[#89a3c2]/40 to-[#7a94b8]/30',
+          hover: 'from-[#89a3c2]/5 via-[#7a94b8]/3 to-[#7a94b8]/5',
+          border: 'border-[#89a3c2]/10',
+          text: 'text-[#89a3c2]',
+          shadow: 'shadow-[#89a3c2]/10'
         };
       case 'purple':
         return {
@@ -39,11 +39,11 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
         };
       default:
         return {
-          active: 'from-[#10ba82]/40 to-[#0c9a6c]/30',
-          hover: 'from-[#10ba82]/5 via-[#0c9a6c]/3 to-[#0c9a6c]/5',
-          border: 'border-[#10ba82]/10',
-          text: 'text-[#10ba82]',
-          shadow: 'shadow-[#10ba82]/10'
+          active: 'from-[#89a3c2]/40 to-[#7a94b8]/30',
+          hover: 'from-[#89a3c2]/5 via-[#7a94b8]/3 to-[#7a94b8]/5',
+          border: 'border-[#89a3c2]/10',
+          text: 'text-[#89a3c2]',
+          shadow: 'shadow-[#89a3c2]/10'
         };
     }
   };
@@ -67,7 +67,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isActive, tooltip }) => {
         >
           {/* Active state indicator */}
           {isActive && (
-            <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-gradient-to-r ${colors.active} rounded-r-full shadow-md`} />
+                            <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-gradient-to-r ${colors.active} rounded-r-full shadow-md`} />
           )}
           
           {/* Icon container */}

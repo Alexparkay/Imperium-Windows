@@ -3,7 +3,8 @@ import { menu } from './data';
 import MenuItem from './MenuItem';
 import { Link, useLocation } from 'react-router-dom';
 import { RxEnterFullScreen, RxExitFullScreen } from 'react-icons/rx';
-import { FaDatabase } from 'react-icons/fa';
+import { FaWindowMaximize } from 'react-icons/fa';
+import { MdWindow } from 'react-icons/md';
 import ChangeThemes from '../ChangesThemes';
 
 // Group the menu items as specified
@@ -87,8 +88,8 @@ const Menu: React.FC = () => {
       {/* Logo */}
       <div className="flex items-center justify-center mb-10 relative">
         <Link to={'/'} className="flex flex-col items-center justify-center">
-          <div className="relative bg-gradient-to-br from-[#10ba82] via-[#10ba82] to-[#0c9a6c] w-12 h-12 rounded-xl flex items-center justify-center shadow-lg shadow-[#10ba82]/20">
-            <FaDatabase className="text-white text-2xl" />
+          <div className="relative bg-gradient-to-br from-[#2a64f5] via-[#2a64f5] to-[#7a94b8] w-12 h-12 rounded-xl flex items-center justify-center shadow-lg shadow-[#2a64f5]/20">
+            <MdWindow className="text-white text-2xl" />
           </div>
         </Link>
       </div>
@@ -98,7 +99,7 @@ const Menu: React.FC = () => {
         {menuGroups.map((group, groupIndex) => (
           <div key={groupIndex} className="mb-8 last:mb-0 relative">
             {groupIndex > 0 && (
-              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent via-[#10ba82]/20 to-transparent absolute -top-4 left-1/2 transform -translate-x-1/2"></div>
+              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent via-[#2a64f5]/20 to-transparent absolute -top-4 left-1/2 transform -translate-x-1/2"></div>
             )}
             <div className="space-y-1.5">
               {group.items.map((item, itemIndex) => (
@@ -120,14 +121,14 @@ const Menu: React.FC = () => {
           <div
             tabIndex={0}
             role="button"
-            className="relative cursor-pointer group w-14 h-14 rounded-full bg-background-secondary flex items-center justify-center text-white font-semibold shadow-md shadow-black/20 hover:shadow-lg hover:shadow-[#10ba82]/20 transition-all duration-300 overflow-hidden border border-white/10"
+            className="relative cursor-pointer group w-14 h-14 rounded-full bg-gradient-to-br from-[#2a64f5] via-[#2a64f5] to-[#7a94b8] flex items-center justify-center text-white font-semibold shadow-md shadow-[#2a64f5]/20 hover:shadow-lg hover:shadow-[#2a64f5]/30 transition-all duration-300 overflow-hidden border border-[#2a64f5]/30 p-2"
           >
             <img 
-              src="/images/SAP/Imperium_logo.png" 
-              alt="Imperium Logo" 
-              className="w-10 h-10 object-contain"
+              src="/images/Luxwall/Luxwall_Black_Horizontal_Tag-300x69 - Copy.png" 
+              alt="Luxwall Logo" 
+              className="w-full h-auto object-contain"
             />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-[#10ba82]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
           
           <ul
@@ -145,19 +146,19 @@ const Menu: React.FC = () => {
             }}
           >
             <li>
-              <a href="/profile" className="text-white hover:bg-[#10ba82]/10 text-sm py-2 rounded-md">My Profile</a>
+              <a href="/profile" className="text-white hover:bg-[#2a64f5]/10 text-sm py-2 rounded-md">My Profile</a>
             </li>
             <li>
-              <a href="/pricing" className="text-white hover:bg-[#10ba82]/10 text-sm py-2 rounded-md">Pricing</a>
+              <a href="/pricing" className="text-white hover:bg-[#2a64f5]/10 text-sm py-2 rounded-md">Pricing</a>
             </li>
             <li>
-              <div className="flex items-center justify-between hover:bg-[#10ba82]/10 p-2 text-white rounded-md">
+              <div className="flex items-center justify-between hover:bg-[#2a64f5]/10 p-2 text-white rounded-md">
                 <span className="text-sm">Theme</span>
                 <ChangeThemes />
               </div>
             </li>
             <li>
-              <button onClick={toggleFullScreen} className="justify-between text-white hover:bg-[#10ba82]/10 text-sm py-2 w-full text-left flex items-center rounded-md">
+              <button onClick={toggleFullScreen} className="justify-between text-white hover:bg-[#2a64f5]/10 text-sm py-2 w-full text-left flex items-center rounded-md">
                 <span>Fullscreen</span>
                 {isFullScreen ? (
                   <RxExitFullScreen className="text-lg" />
@@ -167,7 +168,7 @@ const Menu: React.FC = () => {
               </button>
             </li>
             <li>
-              <a href="/login" className="text-white hover:bg-[#10ba82]/10 text-sm py-2 rounded-md">Log Out</a>
+              <a href="/login" className="text-white hover:bg-[#2a64f5]/10 text-sm py-2 rounded-md">Log Out</a>
             </li>
           </ul>
         </div>

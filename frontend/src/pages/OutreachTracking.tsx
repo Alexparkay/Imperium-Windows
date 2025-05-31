@@ -101,10 +101,10 @@ interface Facility {
 type ChannelType = 'email' | 'linkedin' | 'whatsapp';
 
 // Define a class for glassmorphic panels using CSS classes
-const glassPanelClass = "backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/10 p-6 mb-8 hover:border-green-500/20 transition-all duration-300";
+const glassPanelClass = "backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/10 p-6 mb-8 hover:border-blue-500/20 transition-all duration-300";
 
 // For the metric cards we need additional styling
-const metricCardClass = "backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/10 p-6 flex flex-col items-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-green-500/10";
+const metricCardClass = "backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/10 p-6 flex flex-col items-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/10";
 
 const OutreachTracking = () => {
   const navigate = useNavigate();
@@ -195,7 +195,7 @@ const OutreachTracking = () => {
       case 'sent':
         return 'bg-blue-500/20 text-blue-400 border border-blue-500/20';
       case 'completed':
-        return 'bg-green-500/20 text-green-400 border border-green-500/20';
+        return 'bg-blue-500/20 text-[#2a64f5] border border-blue-500/20';
       case 'scheduled':
         return 'bg-orange-500/20 text-orange-400 border border-orange-500/20';
       default:
@@ -207,7 +207,7 @@ const OutreachTracking = () => {
     switch (response) {
       case 'interested':
       case 'positive':
-        return 'text-green-500';
+        return 'text-blue-500';
       case 'not_interested':
         return 'text-red-500';
       case 'neutral':
@@ -482,7 +482,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'response_rate',
         change: '+591%',
-        icon: <MdOutlineSpeed className="text-green-500" />,
+        icon: <MdOutlineSpeed className="text-blue-500" />,
         learnings: 'AI has learned that immediate contextual responses generate significantly higher engagement than delayed responses.'
       },
       {
@@ -492,7 +492,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'open_rate',
         change: '+67%',
-        icon: <MdOutlineTrendingUp className="text-green-500" />,
+        icon: <MdOutlineTrendingUp className="text-blue-500" />,
         learnings: 'AI has learned to distinguish between generic subject lines and those with specific terminology relevant to the recipient\'s industry.'
       },
       {
@@ -502,7 +502,7 @@ const OutreachTracking = () => {
         impact: 'medium',
         metric: 'engagement',
         change: '+43%',
-        icon: <MdOutlineAccessTime className="text-green-500" />,
+        icon: <MdOutlineAccessTime className="text-blue-500" />,
         learnings: 'The neural system has detected cyclical patterns in recipient availability and attention span.'
       }
     ],
@@ -514,7 +514,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'connection_quality',
         change: '+97%',
-        icon: <MdOutlineGroups className="text-green-500" />,
+        icon: <MdOutlineGroups className="text-blue-500" />,
         learnings: 'The system learned to recognize potential decision makers through language patterns and behavioral indicators in profiles.'
       },
       {
@@ -524,7 +524,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'engagement',
         change: '+470%',
-        icon: <MdOutlineTrendingUp className="text-green-500" />,
+        icon: <MdOutlineTrendingUp className="text-blue-500" />,
         learnings: 'AI has discovered that quantifiable success metrics in case studies create significantly more credibility and engagement.'
       },
       {
@@ -534,7 +534,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'response_rate',
         change: '+85%',
-        icon: <MdOutlineAccessTime className="text-green-500" />,
+        icon: <MdOutlineAccessTime className="text-blue-500" />,
         learnings: 'Neural analysis revealed optimal timing between connection, engagement, and direct outreach for maximum effectiveness.'
       }
     ],
@@ -546,7 +546,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'engagement',
         change: '+623%',
-        icon: <MdOutlineSpeed className="text-green-500" />,
+        icon: <MdOutlineSpeed className="text-blue-500" />,
         learnings: 'AI has continuously improved its response time and contextual understanding through reinforcement learning.'
       },
       {
@@ -556,7 +556,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'response_rate',
         change: '+128%',
-        icon: <MdOutlineTrendingUp className="text-green-500" />,
+        icon: <MdOutlineTrendingUp className="text-blue-500" />,
         learnings: 'The system has learned to extract and incorporate recipient-specific information in ways that feel authentic and relevant.'
       },
       {
@@ -566,7 +566,7 @@ const OutreachTracking = () => {
         impact: 'high',
         metric: 'read_rate',
         change: '+92%',
-        icon: <MdOutlineAccessTime className="text-green-500" />,
+        icon: <MdOutlineAccessTime className="text-blue-500" />,
         learnings: 'Neural network has identified individual behavioral patterns and schedule variations across different prospect types.'
       }
     ]
@@ -674,7 +674,7 @@ const OutreachTracking = () => {
   const getStatusBadge = (status: string): string => {
     switch(status) {
       case 'positive':
-        return 'bg-green-500/20 text-green-400 border border-green-500/20';
+        return 'bg-[#2a64f5]/20 text-[#2a64f5] border border-[#2a64f5]/20';
       case 'negative':
         return 'bg-red-500/20 text-red-400 border border-red-500/20';
       case 'replied':
@@ -706,13 +706,13 @@ const OutreachTracking = () => {
     return (
       <div className="min-h-screen bg-[#020305] flex items-center justify-center relative overflow-hidden">
         {/* Background gradient orbs */}
-        <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-green-500/10 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-        <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-green-500/10 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+        <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+        <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
         
         <div className="relative z-10 flex flex-col items-center gap-8">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-            <div className="loading loading-spinner loading-lg text-green-500 relative"></div>
+                            <div className="absolute inset-0 bg-[#2a64f5] rounded-full blur-xl opacity-50 animate-pulse"></div>
+            <div className="loading loading-spinner loading-lg text-blue-500 relative"></div>
           </div>
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-2">AI Analytics System</h2>
@@ -726,15 +726,15 @@ const OutreachTracking = () => {
   return (
     <div className="w-full px-1 py-8 bg-[#020305] min-h-screen min-w-full relative">
       {/* Background gradient orbs */}
-      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-green-500/10 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-green-500/10 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-6">
           {/* Header with Time Range Selector */}
           <div className="pt-4 pb-8 flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold text-[#2a64f5]">
                 {getChannelName(activeTab)} Neural Analytics
               </h1>
               <p className="text-white/60 mt-2">
@@ -747,7 +747,7 @@ const OutreachTracking = () => {
               <select 
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="select select-bordered bg-[#1e222b]/50 border-green-500/20 text-white focus:border-green-500/50"
+                className="select select-bordered bg-[#1e222b]/50 border-blue-500/20 text-white focus:border-blue-500/50"
               >
                 <option value="7d">Last 7 days</option>
                 <option value="30d">Last 30 days</option>
@@ -758,22 +758,22 @@ const OutreachTracking = () => {
           </div>
 
           {/* AI System Status Banner */}
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/20 p-6 mb-6">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/20 p-6 mb-6">
             <div className="flex items-center gap-4">
-              <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-xl text-white shadow-lg flex items-center justify-center">
+                              <div className="bg-[#2a64f5] p-4 rounded-xl text-white shadow-lg flex items-center justify-center">
                 <MdOutlineDataUsage size={28} />
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-semibold text-white">Neural System Active</h3>
                   <span className="flex h-3 w-3 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2a64f5] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
                   </span>
                 </div>
                 <p className="text-white/80 mt-1">AI brain has processed 127,893 interactions and implemented 437 autonomous optimizations</p>
                 <div className="flex items-center gap-4 mt-2">
-                  <div className="flex items-center gap-1 text-green-500">
+                  <div className="flex items-center gap-1 text-blue-500">
                     <MdOutlineTrendingUp />
                     <span>Learning rate: 97.3%</span>
                   </div>
@@ -795,12 +795,12 @@ const OutreachTracking = () => {
             {/* Email Tab */}
             <button
               onClick={() => setActiveTab('email')}
-              className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
-                activeTab === 'email' ? 'ring-2 ring-green-500' : ''
+              className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/15 p-6 relative overflow-hidden group hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+                activeTab === 'email' ? 'ring-2 ring-blue-500' : ''
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-[#2a64f5] p-4 rounded-xl text-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                   <MdOutlineEmail size={24} />
                 </div>
                 <div>
@@ -849,25 +849,25 @@ const OutreachTracking = () => {
 
           {/* AI Insights Banner */}
           {showAiInsight && (
-            <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-green-500/20 p-6 mb-6 hover:border-green-500/30 transition-all duration-300">
+            <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-blue-500/20 p-6 mb-6 hover:border-blue-500/30 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-xl border border-green-500/30">
+                                  <div className="p-3 bg-[#2a64f5]/20 rounded-xl border border-[#2a64f5]/30">
                   {aiInsights[activeTab][0].icon}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold text-white mb-2">{aiInsights[activeTab][0].title}</h3>
-                    <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full border border-green-500/30">
+                    <span className="px-2 py-0.5 bg-[#2a64f5]/20 text-[#2a64f5] text-xs rounded-full border border-[#2a64f5]/30">
                       AI Discovery
                     </span>
                   </div>
                   <p className="text-white/80">{aiInsights[activeTab][0].description}</p>
                   <div className="mt-2 text-white/70 text-sm">
-                    <span className="font-medium text-green-400">Neural learning: </span>
+                    <span className="font-medium text-[#2a64f5]">Neural learning: </span>
                     {aiInsights[activeTab][0].learnings}
                   </div>
                   <div className="mt-2 flex items-center gap-2">
-                    <span className="text-green-500 font-medium">{aiInsights[activeTab][0].change}</span>
+                    <span className="text-blue-500 font-medium">{aiInsights[activeTab][0].change}</span>
                     <span className="text-white/60">improvement in {aiInsights[activeTab][0].metric}</span>
                   </div>
                 </div>
@@ -890,7 +890,7 @@ const OutreachTracking = () => {
                   <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 p-3 rounded-full mb-2 border border-blue-500/30"><MdOutlinePerson className="text-blue-400 text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">1,770</div>
                   <div className="text-white/60 mt-1">Contacted</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+28.5%</span>
                   </div>
@@ -899,16 +899,16 @@ const OutreachTracking = () => {
                   <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 p-3 rounded-full mb-2 border border-purple-500/30"><MdOutlineMailOutline className="text-purple-400 text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">978</div>
                   <div className="text-white/60 mt-1">Opened</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+52.3%</span>
                   </div>
                 </div>
                 <div className={metricCardClass}>
-                  <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 p-3 rounded-full mb-2 border border-green-500/30"><MdOutlineReply className="text-green-400 text-2xl" /></div>
+                  <div className="bg-[#2a64f5]/20 p-3 rounded-full mb-2 border border-blue-500/30"><MdOutlineReply className="text-[#2a64f5] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">487</div>
                   <div className="text-white/60 mt-1">Replied</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+89.6%</span>
                   </div>
@@ -917,7 +917,7 @@ const OutreachTracking = () => {
                   <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 p-3 rounded-full mb-2 border border-red-500/30"><MdOutlineTrendingUp className="text-red-400 text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">243</div>
                   <div className="text-white/60 mt-1">Positive</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+126.7%</span>
                   </div>
@@ -969,7 +969,7 @@ const OutreachTracking = () => {
                               </div>
                             ))}
                             {spikeMsg && (
-                              <div className="mt-2 text-emerald-400 text-sm font-medium flex items-center gap-2">
+                              <div className="mt-2 text-blue-400 text-sm font-medium flex items-center gap-2">
                                 <MdOutlineLightbulb className="text-yellow-400" />
                                 {spikeMsg}
                               </div>
@@ -1026,7 +1026,7 @@ const OutreachTracking = () => {
                   </button>
                   <button 
                     onClick={() => setSelectedFilter('positive')}
-                    className={`py-2 px-4 rounded-full text-sm ${selectedFilter === 'positive' ? 'bg-green-500/20 text-green-400 border border-green-500/50' : 'bg-[#1e222b]/50 text-white/60 border border-white/10'}`}
+                    className={`py-2 px-4 rounded-full text-sm ${selectedFilter === 'positive' ? 'bg-blue-500/20 text-[#2a64f5] border border-blue-500/50' : 'bg-[#1e222b]/50 text-white/60 border border-white/10'}`}
                   >
                     Positive
                   </button>
@@ -1141,7 +1141,7 @@ const OutreachTracking = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
                       <div className="text-white/60 mb-1">Auto Reply Rate</div>
-                      <div className="text-2xl font-bold text-green-500">+{emailMetrics.aiOptimization.autoReplyRate}%</div>
+                      <div className="text-2xl font-bold text-blue-500">+{emailMetrics.aiOptimization.autoReplyRate}%</div>
                       <div className="text-white/60 text-sm mt-1">vs manual responses</div>
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
@@ -1173,7 +1173,7 @@ const OutreachTracking = () => {
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
                       <div className="text-white/60 mb-1">Positive Responses</div>
-                      <div className="text-2xl font-bold text-green-500">{emailMetrics.responses.positive.toLocaleString()}</div>
+                      <div className="text-2xl font-bold text-blue-500">{emailMetrics.responses.positive.toLocaleString()}</div>
                       <div className="text-white/60 text-sm mt-1">{emailMetrics.responses.positiveRate}% positive rate</div>
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
@@ -1200,7 +1200,7 @@ const OutreachTracking = () => {
                   <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 p-3 rounded-full mb-2 border border-blue-500/30"><MdOutlineGroups className="text-blue-400 text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">1,770</div>
                   <div className="text-white/60 mt-1">Contacted</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+28.5%</span>
                   </div>
@@ -1209,16 +1209,16 @@ const OutreachTracking = () => {
                   <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 p-3 rounded-full mb-2 border border-purple-500/30"><MdOutlineChat className="text-[#0A66C2] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">867</div>
                   <div className="text-white/60 mt-1">Messages</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+52.3%</span>
                   </div>
                 </div>
                 <div className={metricCardClass}>
-                  <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 p-3 rounded-full mb-2 border border-green-500/30"><MdOutlineReply className="text-green-400 text-2xl" /></div>
+                  <div className="bg-[#2a64f5]/20 p-3 rounded-full mb-2 border border-blue-500/30"><MdOutlineReply className="text-[#2a64f5] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">392</div>
                   <div className="text-white/60 mt-1">Replies</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+89.6%</span>
                   </div>
@@ -1227,7 +1227,7 @@ const OutreachTracking = () => {
                   <div className="bg-[#0A66C2]/20 p-3 rounded-full mb-2"><MdOutlineTrendingUp className="text-[#0A66C2] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">87</div>
                   <div className="text-white/60 mt-1">Meetings</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+126.7%</span>
                   </div>
@@ -1280,7 +1280,7 @@ const OutreachTracking = () => {
                               </div>
                             ))}
                             {spikeMsg && (
-                              <div className="mt-2 text-emerald-400 text-sm font-medium flex items-center gap-2">
+                              <div className="mt-2 text-blue-400 text-sm font-medium flex items-center gap-2">
                                 <MdOutlineLightbulb className="text-yellow-400" />
                                 {spikeMsg}
                               </div>
@@ -1353,7 +1353,7 @@ const OutreachTracking = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
                       <div className="text-white/60 mb-1">Connection Quality</div>
-                      <div className="text-2xl font-bold text-green-500">{linkedinMetrics.aiOptimization.connectionQuality}%</div>
+                      <div className="text-2xl font-bold text-blue-500">{linkedinMetrics.aiOptimization.connectionQuality}%</div>
                       <div className="text-white/60 text-sm mt-1">AI-scored quality</div>
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
@@ -1408,7 +1408,7 @@ const OutreachTracking = () => {
                   <div className="bg-[#25D366]/20 p-3 rounded-full mb-2"><MdSend className="text-[#25D366] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">1893</div>
                   <div className="text-white/60 mt-1">Sent</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+52.3%</span>
                   </div>
@@ -1417,7 +1417,7 @@ const OutreachTracking = () => {
                   <div className="bg-[#25D366]/20 p-3 rounded-full mb-2"><MdOutlineOpenInNew className="text-[#25D366] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">1654</div>
                   <div className="text-white/60 mt-1">Read</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+65.4%</span>
                   </div>
@@ -1426,7 +1426,7 @@ const OutreachTracking = () => {
                   <div className="bg-[#25D366]/20 p-3 rounded-full mb-2"><MdOutlineReply className="text-[#25D366] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">845</div>
                   <div className="text-white/60 mt-1">Replied</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+78.9%</span>
                   </div>
@@ -1435,7 +1435,7 @@ const OutreachTracking = () => {
                   <div className="bg-[#25D366]/20 p-3 rounded-full mb-2"><MdOutlineTrendingUp className="text-[#25D366] text-2xl" /></div>
                   <div className="text-3xl font-bold text-white">67</div>
                   <div className="text-white/60 mt-1">Meetings</div>
-                  <div className="text-green-500 text-sm mt-1 flex items-center gap-1">
+                  <div className="text-blue-500 text-sm mt-1 flex items-center gap-1">
                     <MdOutlineTrendingUp />
                     <span>+92.1%</span>
                   </div>
@@ -1488,7 +1488,7 @@ const OutreachTracking = () => {
                               </div>
                             ))}
                             {spikeMsg && (
-                              <div className="mt-2 text-emerald-400 text-sm font-medium flex items-center gap-2">
+                              <div className="mt-2 text-blue-400 text-sm font-medium flex items-center gap-2">
                                 <MdOutlineLightbulb className="text-yellow-400" />
                                 {spikeMsg}
                               </div>
@@ -1563,7 +1563,7 @@ const OutreachTracking = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
                       <div className="text-white/60 mb-1">Response Time</div>
-                      <div className="text-2xl font-bold text-green-500">{whatsappMetrics.aiOptimization.responseTime}s</div>
+                      <div className="text-2xl font-bold text-blue-500">{whatsappMetrics.aiOptimization.responseTime}s</div>
                       <div className="text-white/60 text-sm mt-1">average response time</div>
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
@@ -1595,7 +1595,7 @@ const OutreachTracking = () => {
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
                       <div className="text-white/60 mb-1">Positive Responses</div>
-                      <div className="text-2xl font-bold text-green-500">{whatsappMetrics.responses.positive.toLocaleString()}</div>
+                      <div className="text-2xl font-bold text-blue-500">{whatsappMetrics.responses.positive.toLocaleString()}</div>
                       <div className="text-white/60 text-sm mt-1">{whatsappMetrics.responses.positiveRate}% positive rate</div>
                     </div>
                     <div className="bg-[#1e222b]/50 rounded-xl p-4">
@@ -1641,7 +1641,7 @@ const OutreachTracking = () => {
           {/* AI Insights Section with enhanced design */}
           <div className={glassPanelClass}>
             <div className="flex items-center gap-4 mb-6">
-              <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-xl text-white shadow-lg">
+              <div className="bg-[#2a64f5] p-4 rounded-xl text-white shadow-lg">
                 <MdOutlineLightbulb size={24} />
               </div>
               <div>
@@ -1654,22 +1654,22 @@ const OutreachTracking = () => {
               {aiInsights[activeTab].map((insight, index) => (
                 <div 
                   key={index}
-                  className="backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-xl shadow-lg border border-green-500/15 p-5 hover:border-green-500/30 transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                  className="backdrop-blur-2xl bg-gradient-to-br from-[#1a1a1a]/80 via-[#1a1a1a]/50 to-[rgba(26,26,26,0.2)] rounded-xl shadow-lg border border-blue-500/15 p-5 hover:border-blue-500/30 transition-all duration-300 hover:scale-[1.02] cursor-pointer"
                   onClick={() => setShowAiInsight(insight.title)}
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 p-2 rounded-lg border border-green-500/30">
+                    <div className="bg-[#2a64f5]/20 p-2 rounded-lg border border-blue-500/30">
                       {insight.icon}
                     </div>
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium text-white">{insight.title}</h4>
-                      <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full border border-green-500/30">
+                      <span className="px-1.5 py-0.5 bg-blue-500/20 text-[#2a64f5] text-xs rounded-full border border-blue-500/30">
                         +{insight.change}
                       </span>
                     </div>
                   </div>
                   <p className="text-white/70 text-sm line-clamp-2">{insight.description}</p>
-                  <div className="mt-3 text-green-500 text-xs font-medium flex items-center gap-1">
+                  <div className="mt-3 text-blue-500 text-xs font-medium flex items-center gap-1">
                     <MdOutlineQueryStats />
                     <span>Pattern confidence: {Math.floor(85 + Math.random() * 13)}%</span>
                   </div>
@@ -1710,13 +1710,13 @@ const OutreachTracking = () => {
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         return (
-                          <div className="backdrop-blur-2xl bg-[#1a1a1a]/90 p-3 border border-green-500/20 rounded-lg text-white text-sm">
+                          <div className="backdrop-blur-2xl bg-[#1a1a1a]/90 p-3 border border-blue-500/20 rounded-lg text-white text-sm">
                             <p>Day {payload[0].payload.day}: {payload[0].value}% accuracy</p>
                             {payload[0].payload.day === 7 && 
-                              <p className="text-green-400 text-xs mt-1">First pattern established</p>
+                              <p className="text-[#2a64f5] text-xs mt-1">First pattern established</p>
                             }
                             {payload[0].payload.day === 14 && 
-                              <p className="text-green-400 text-xs mt-1">Neural refinement complete</p>
+                              <p className="text-[#2a64f5] text-xs mt-1">Neural refinement complete</p>
                             }
                           </div>
                         );
@@ -1742,7 +1742,7 @@ const OutreachTracking = () => {
               </h3>
               <div className="form-control">
                 <textarea 
-                  className="textarea backdrop-blur-md bg-[#28292b]/60 border border-emerald-500/20 text-white focus:border-emerald-500 h-32"
+                  className="textarea backdrop-blur-md bg-[#28292b]/60 border border-blue-500/20 text-white focus:border-blue-500 h-32"
                   placeholder="Enter your note here..."
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
@@ -1757,7 +1757,7 @@ const OutreachTracking = () => {
                 </button>
                 <button 
                   onClick={handleAddNote}
-                  className="btn bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 transition-all"
+                  className="btn bg-gradient-to-br from-blue-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 transition-all"
                   disabled={!newNote.trim()}
                 >
                   Save Note

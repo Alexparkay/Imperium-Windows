@@ -16,8 +16,8 @@ export default {
           muted: '#666666',
         },
         accent: {
-          primary: '#10ba82', // Updated to use the teal green
-          hover: '#0c9a6c',
+          primary: '#89a3c2', // Updated to use the blue color
+          hover: '#7a94b8',
           warning: '#F59E0B',
         },
         // Legacy colors kept for backward compatibility

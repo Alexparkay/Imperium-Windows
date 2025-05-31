@@ -37,7 +37,7 @@ export const menu = [
         isLink: true,
         url: '/profile',
         icon: MdOutlineBusiness,
-        label: 'Partner Profile',
+        label: 'Company Profile',
         colorScheme: 'accent-primary'
       },
     ],
@@ -49,28 +49,28 @@ export const menu = [
         isLink: true,
         url: '/market-database',
         icon: MdOutlineSearch,
-        label: 'Market Database',
+        label: 'Database',
         colorScheme: 'accent-primary'
       },
       {
         isLink: true,
         url: '/signal-scanner',
-        icon: MdOutlineScanner,
-        label: 'Signal Scanner',
-        colorScheme: 'accent-primary'
-      },
-      {
-        isLink: true,
-        url: '/data-enrichment',
         icon: MdOutlineDataObject,
         label: 'Data Enrichment',
         colorScheme: 'accent-primary'
       },
       {
         isLink: true,
+        url: '/data-analytics',
+        icon: MdOutlineAnalytics,
+        label: 'Data Analytics',
+        colorScheme: 'accent-primary'
+      },
+      {
+        isLink: true,
         url: '/migration-insights',
         icon: MdOutlineInsights,
-        label: 'Migration Insights',
+        label: 'Logistics Insights',
         colorScheme: 'accent-primary'
       },
       {

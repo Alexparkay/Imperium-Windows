@@ -13,15 +13,15 @@
     --text-primary: #FFFFFF;
     --text-secondary: #B3B3B3;
     --text-muted: #666666;
-    --accent-primary: #10ba82;
-    --accent-hover: #0c9a6c;
+    --accent-primary: #89a3c2;
+    --accent-hover: #7a94b8;
     --accent-warning: #F59E0B;
     
     /* Legacy variables kept for compatibility */
     --dark-bg: #0A0A0A;
     --menu-bg: #1A1A1A;
     --card-bg: rgba(26, 26, 26, 0.7);
-    --card-border: rgba(16, 185, 129, 0.1);
+    --card-border: rgba(137, 163, 194, 0.1);
     --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
   
@@ -78,12 +78,12 @@
   }
 
   .usa-map path {
-    stroke: rgba(16, 185, 129, 0.2);
+    stroke: rgba(137, 163, 194, 0.2);
     stroke-width: 1;
   }
 
   .usa-map path:hover {
-    stroke: rgba(16, 185, 129, 0.4);
+    stroke: rgba(137, 163, 194, 0.4);
     stroke-width: 2;
   }
 
@@ -105,7 +105,7 @@
 
 /* Premium UI Elements */
 .premium-gradient {
-  @apply bg-gradient-to-r from-emerald-500 to-emerald-600;
+  @apply bg-gradient-to-r from-blue-500 to-blue-600;
 }
 
 .premium-card {
@@ -113,7 +113,7 @@
 }
 
 .premium-button {
-  @apply bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 
+  @apply bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 
          text-white font-medium shadow-sm hover:shadow-md transition-all rounded-lg;
 }
 
@@ -122,13 +122,13 @@
 }
 
 .premium-stats-card {
-  @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-emerald-500 
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-blue-500 
          hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden;
 }
 
 .premium-input {
   @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 
-         text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all;
+         text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
 }
 
 .premium-table th {
@@ -149,24 +149,24 @@
 
 .premium-section-title:before {
   content: "";
-  @apply w-1.5 h-6 bg-emerald-500 rounded-full mr-3;
+  @apply w-1.5 h-6 bg-blue-500 rounded-full mr-3;
 }
 
 /* Decorative patterns */
 .corner-pattern-top-right {
-  @apply absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-emerald-500/5 to-transparent;
+  @apply absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-blue-500/5 to-transparent;
 }
 
 .corner-pattern-top-left {
-  @apply absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-emerald-500/5 to-transparent;
+  @apply absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-blue-500/5 to-transparent;
 }
 
 .corner-pattern-bottom-right {
-  @apply absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-emerald-500/5 to-transparent;
+  @apply absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-blue-500/5 to-transparent;
 }
 
 .corner-pattern-bottom-left {
-  @apply absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-emerald-500/5 to-transparent;
+  @apply absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-blue-500/5 to-transparent;
 }
 
 /* Original CSS */
@@ -288,12 +288,12 @@
 
   /* Styled components for multiple use cases */
   .dashboard-card {
-    @apply bg-white dark:bg-[var(--card-bg)] rounded-xl shadow-md dark:shadow-[var(--card-shadow)] p-6 border-l-4 border-emerald-500 dark:border-emerald-500/20
+    @apply bg-white dark:bg-[var(--card-bg)] rounded-xl shadow-md dark:shadow-[var(--card-shadow)] p-6 border-l-4 border-blue-500 dark:border-blue-500/20
   }
 
   .form-input {
     @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[var(--menu-bg)]
-    text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all;
+    text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
   }
 
   .th {
@@ -346,11 +346,11 @@
 
 .glass-input {
   @apply bg-[rgba(26,26,26,0.7)] backdrop-blur-sm border border-white/20 rounded-lg 
-         text-white focus:ring-2 focus:ring-[#10ba82] focus:border-transparent transition-all;
+         text-white focus:ring-2 focus:ring-[#89a3c2] focus:border-transparent transition-all;
 }
 
 .glass-button {
-  @apply bg-gradient-to-r from-[#10ba82] to-[#0c9a6c] text-white rounded-lg 
+  @apply bg-gradient-to-r from-[#89a3c2] to-[#7a94b8] text-white rounded-lg 
          px-4 py-2 font-medium transition-all duration-300 shadow-md hover:shadow-lg hover:brightness-110;
 }
 
@@ -360,8 +360,8 @@
 }
 
 .glass-button-outlined {
-  @apply bg-transparent border border-[#10ba82] text-[#10ba82] rounded-lg 
-         px-4 py-2 font-medium transition-all duration-300 shadow-md hover:shadow-lg hover:bg-[#10ba82]/10;
+  @apply bg-transparent border border-[#89a3c2] text-[#89a3c2] rounded-lg 
+         px-4 py-2 font-medium transition-all duration-300 shadow-md hover:shadow-lg hover:bg-[#89a3c2]/10;
 }
 
 .glass-card {
@@ -378,7 +378,7 @@
 }
 
 .glass-table tr {
-  @apply hover:bg-[#10ba82]/5 transition-colors;
+  @apply hover:bg-[#89a3c2]/5 transition-colors;
 }
 
 .glass-badge {
@@ -396,5 +396,5 @@
 
 .glass-section-title:before {
   content: "";
-  @apply w-1 h-6 bg-[#10ba82] rounded-full mr-3;
+  @apply w-1 h-6 bg-[#89a3c2] rounded-full mr-3;
 }

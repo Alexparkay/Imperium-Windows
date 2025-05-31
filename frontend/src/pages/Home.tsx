@@ -47,9 +47,9 @@ import {
 } from 'react-icons/md';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, PieChart, Pie, Cell, Legend, BarChart, Bar } from 'recharts';
 
-// Mock data for Imperum SAP dashboard
+// Mock data for Imperium Windows dashboard
 const dashboardData = {
-  companiesScraped: {
+  buildingsAnalyzed: {
     total: 124,
     enriched: 98,
     percentage: 79,
@@ -64,7 +64,7 @@ const dashboardData = {
       { name: "Aug", value: 124 }
     ]
   },
-  companiesAnalyzed: {
+  windowsAssessed: {
     total: 98,
     percentage: 79,
     chartData: [
@@ -78,10 +78,10 @@ const dashboardData = {
       { name: "Aug", value: 98 }
     ]
   },
-  sapEvaluations: {
+  energyEvaluations: {
     total: 98,
-    averageLicense: "3,250 Users",
-    averageCost: "$1.9M",
+    averageWindows: "3,250 Windows",
+    averageSavings: "$1.9M",
     chartData: [
       { name: "Jan", value: 2800 },
       { name: "Feb", value: 2900 },
@@ -93,10 +93,10 @@ const dashboardData = {
       { name: "Aug", value: 3400 }
     ]
   },
-  migrationPotential: {
-    companiesEvaluated: 92,
+  replacementPotential: {
+    buildingsEvaluated: 92,
     averageROI: "185%",
-    averageImplementation: "7.8 months",
+    averageInstallation: "7.8 months",
     totalSavings: "$18.5M",
     chartData: [
       { name: "Jan", value: 150 },
@@ -122,10 +122,10 @@ const dashboardData = {
       { name: "Interested", value: 24 }
     ]
   },
-  topCompanies: [
+  topBuildings: [
     {
       id: 1,
-      name: "Apple Inc.",
+      name: "Apple Park",
       location: "Cupertino, CA",
       savings: "$3.2M",
       roi: "205.3%",
@@ -133,7 +133,7 @@ const dashboardData = {
     },
     {
       id: 2,
-      name: "Tesla Motors",
+      name: "Tesla Gigafactory",
       location: "Austin, TX",
       savings: "$1.8M",
       roi: "245.8%",
@@ -141,7 +141,7 @@ const dashboardData = {
     },
     {
       id: 3,
-      name: "Amazon",
+      name: "Amazon HQ2",
       location: "Seattle, WA",
       savings: "$4.5M",
       roi: "198.2%",
@@ -149,7 +149,7 @@ const dashboardData = {
     },
     {
       id: 4,
-      name: "Honeywell",
+      name: "Honeywell Campus",
       location: "Charlotte, NC",
       savings: "$1.6M",
       roi: "156.2%",
@@ -157,7 +157,7 @@ const dashboardData = {
     },
     {
       id: 5,
-      name: "Walmart",
+      name: "Walmart HQ",
       location: "Bentonville, AR",
       savings: "$5.8M",
       roi: "212.5%",
@@ -227,37 +227,37 @@ const campaignBreakdownData: Record<string, { email: number; linkedin: number; v
   Sun: { email: 160, linkedin: 95, voice: 65 },
 };
 
-// Add migration timeline data
-const migrationTimelineData = [
-  { company: 'Enterprise A', size: 'Large', timelineMonths: 12, complexity: 'High', modules: 14, status: 'In Progress' },
-  { company: 'Enterprise B', size: 'Medium', timelineMonths: 8, complexity: 'Medium', modules: 9, status: 'Planning' },
-  { company: 'Enterprise C', size: 'Small', timelineMonths: 6, complexity: 'Low', modules: 6, status: 'Complete' },
-  { company: 'Enterprise D', size: 'Large', timelineMonths: 14, complexity: 'Very High', modules: 18, status: 'Planning' },
-  { company: 'Enterprise E', size: 'Medium', timelineMonths: 9, complexity: 'Medium', modules: 10, status: 'In Progress' },
+// Add installation timeline data
+const installationTimelineData = [
+  { building: 'Office Complex A', size: 'Large', timelineMonths: 12, complexity: 'High', windows: 1400, status: 'In Progress' },
+  { building: 'Office Complex B', size: 'Medium', timelineMonths: 8, complexity: 'Medium', windows: 900, status: 'Planning' },
+  { building: 'Office Complex C', size: 'Small', timelineMonths: 6, complexity: 'Low', windows: 600, status: 'Complete' },
+  { building: 'Office Complex D', size: 'Large', timelineMonths: 14, complexity: 'Very High', windows: 1800, status: 'Planning' },
+  { building: 'Office Complex E', size: 'Medium', timelineMonths: 9, complexity: 'Medium', windows: 1000, status: 'In Progress' },
 ];
 
-// Add ERP landscape data
-const erpLandscapeData = {
-  sapMigration: [
-    { name: 'Completed', value: 34, color: '#10B981' },
-    { name: 'Planning before 2027', value: 41, color: '#059669' },
-    { name: 'Will miss deadline', value: 18, color: '#047857' },
-    { name: 'No plans', value: 7, color: '#065F46' }
+// Add Building Energy landscape data
+const buildingEnergyData = {
+  windowReplacement: [
+    { name: 'Completed', value: 34, color: '#89a3c2' },
+    { name: 'Planning before 2027', value: 41, color: '#7a94b8' },
+    { name: 'Will miss deadline', value: 18, color: '#6b85ae' },
+    { name: 'No plans', value: 7, color: '#5c76a4' }
   ],
-  cloudERP: [
-    { name: 'Manufacturing', value: 47, color: '#10B981' },
-    { name: 'Finance/Insurance', value: 60.5, color: '#059669' },
-    { name: 'Wholesale/Retail', value: 49.7, color: '#047857' },
-    { name: 'Healthcare', value: 42.3, color: '#065F46' },
-    { name: 'Technology', value: 55.8, color: '#064E3B' }
+  energyEfficiency: [
+    { name: 'Commercial', value: 47, color: '#89a3c2' },
+    { name: 'Residential', value: 60.5, color: '#7a94b8' },
+    { name: 'Industrial', value: 49.7, color: '#6b85ae' },
+    { name: 'Healthcare', value: 42.3, color: '#5c76a4' },
+    { name: 'Educational', value: 55.8, color: '#4d679a' }
   ],
-  aiDeployment: { value: 72.6 },
-  hybridCloud: { value: 76.5 },
-  composableERP: { value: 46 },
+  smartWindows: { value: 72.6 },
+  tripleGlazing: { value: 76.5 },
+  energyGlass: { value: 46 },
   timelines: [
-    { year: 2025, event: 'Present', description: 'Only 34% migration complete' },
-    { year: 2027, event: 'Deadline', description: 'End of mainstream support' },
-    { year: 2030, event: 'End', description: 'End of extended paid support' }
+    { year: 2025, event: 'Present', description: 'Only 34% replacement complete' },
+    { year: 2027, event: 'Target', description: 'Energy efficiency mandate' },
+    { year: 2030, event: 'Goal', description: 'Net zero building standards' }
   ]
 };
 
@@ -265,23 +265,23 @@ const Home = () => {
   const navigate = useNavigate();
   const [campaignView, setCampaignView] = useState<'weekly' | 'monthly' | 'overall'>('weekly');
   const [hoverDay, setHoverDay] = useState<string | null>(null);
-  const [showERPInfo, setShowERPInfo] = useState(false);
-  const erpBoxRef = useRef<HTMLDivElement>(null);
-  const [erpInfoPosition, setErpInfoPosition] = useState({ top: 0, left: 0 });
+  const [showEnergyInfo, setShowEnergyInfo] = useState(false);
+  const energyBoxRef = useRef<HTMLDivElement>(null);
+  const [energyInfoPosition, setEnergyInfoPosition] = useState({ top: 0, left: 0 });
 
   // Helper function to determine if a specific view is active
   const isViewActive = (view: 'weekly' | 'monthly' | 'overall') => campaignView === view;
 
-  // Effect to calculate position when ERP box is shown
+  // Effect to calculate position when Energy box is shown
   useEffect(() => {
-    if (showERPInfo && erpBoxRef.current) {
-      const rect = erpBoxRef.current.getBoundingClientRect();
-      setErpInfoPosition({
+    if (showEnergyInfo && energyBoxRef.current) {
+      const rect = energyBoxRef.current.getBoundingClientRect();
+      setEnergyInfoPosition({
         top: rect.top + window.scrollY,
         left: rect.left + rect.width + window.scrollX
       });
     }
-  }, [showERPInfo]);
+  }, [showEnergyInfo]);
 
   const FeatureCard = ({ 
     icon, 
@@ -297,10 +297,10 @@ const Home = () => {
     return (
       <div className={`${bgColor} rounded-2xl p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative overflow-hidden group border border-slate-100 dark:border-slate-700`}>
         {/* Decorative corner shape */}
-        <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-emerald-500/10"></div>
+        <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-blue-500/10"></div>
         
         <div className="relative z-10">
-          <div className="rounded-2xl bg-gradient-to-tr from-emerald-500 to-emerald-400 p-4 mb-5 text-white shadow-sm inline-flex items-center justify-center">
+          <div className="rounded-2xl bg-gradient-to-tr from-blue-500 to-blue-400 p-4 mb-5 text-white shadow-sm inline-flex items-center justify-center">
             <span className="text-2xl">{icon}</span>
           </div>
           
@@ -308,10 +308,10 @@ const Home = () => {
           <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">{description}</p>
           
           <div className="flex items-center mt-2 group-hover:translate-x-1 transition-transform duration-300">
-            <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center mr-2">
+            <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center mr-2">
               <MdChevronRight className="text-white text-sm" />
             </div>
-            <span className="text-emerald-500 text-sm font-medium">Learn more</span>
+            <span className="text-blue-500 text-sm font-medium">Learn more</span>
           </div>
         </div>
       </div>
@@ -334,12 +334,12 @@ const Home = () => {
     borderColor?: string;
   }) => {
     return (
-      <div className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-emerald-500/20 hover:-translate-y-1 relative overflow-hidden group`}>
+      <div className={`backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/40 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 border border-blue-500/20 hover:-translate-y-1 relative overflow-hidden group`}>
         {/* Enhanced gradient effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/30 via-purple-500/20 to-blue-500/30 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-        <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-emerald-500/40 to-transparent rounded-full blur-2xl transform rotate-12 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-blue-500/20 to-blue-500/30 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+        <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-blue-500/40 to-transparent rounded-full blur-2xl transform rotate-12 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-blue-500/30 to-transparent rounded-full blur-xl transform -rotate-12 opacity-80 group-hover:opacity-90"></div>
-        <div className="absolute top-1/3 -right-8 w-20 h-20 bg-gradient-to-bl from-purple-500/30 to-transparent rounded-full blur-lg transform rotate-45 opacity-70"></div>
+        <div className="absolute top-1/3 -right-8 w-20 h-20 bg-gradient-to-bl from-blue-500/30 to-transparent rounded-full blur-lg transform rotate-45 opacity-70"></div>
         
         <div className="relative z-10 p-6 bg-gradient-to-br from-white/[0.07] to-white/[0.02] rounded-2xl">
           <div className="flex justify-between items-start">
@@ -347,12 +347,12 @@ const Home = () => {
               <p className="text-sm font-medium text-white/90 mb-1">{title}</p>
               <h3 className="text-2xl font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">{value}</h3>
               {change && (
-                <div className="flex items-center text-xs font-medium text-emerald-300 mt-2">
+                <div className="flex items-center text-xs font-medium text-blue-300 mt-2">
                   <MdTrendingUp className="mr-1" /> {change}
                 </div>
               )}
             </div>
-            <div className={`rounded-2xl p-3 ${colorClass} shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md border border-white/20`}>
+            <div className={`rounded-2xl p-3 ${colorClass} shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md border border-white/20`}>
               {icon}
             </div>
           </div>
@@ -396,7 +396,7 @@ const Home = () => {
                     </div>
                     <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-full transition-all duration-300"
+                        className="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-full transition-all duration-300"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -409,10 +409,10 @@ const Home = () => {
         case 'metric':
           return (
             <div className="h-full flex items-center justify-center">
-              <div className="bg-slate-800/50 backdrop-blur-md rounded-full h-28 w-28 flex items-center justify-center relative border border-emerald-500/20">
+              <div className="bg-slate-800/50 backdrop-blur-md rounded-full h-28 w-28 flex items-center justify-center relative border border-blue-500/20">
                 <div className="absolute inset-0 rounded-full overflow-hidden">
                   <div 
-                    className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-emerald-500 to-emerald-400 transition-all duration-300"
+                    className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-300"
                     style={{ height: `${(chartData[0].value / (chartData[0].value + chartData[1].value)) * 100}%` }}
                   />
                 </div>
@@ -433,7 +433,7 @@ const Home = () => {
               {values.map((value, index) => (
                 <div 
                   key={index} 
-                  className="w-2 bg-gradient-to-t from-emerald-600 to-emerald-500 rounded-t-sm transition-all duration-300 hover:bg-emerald-400"
+                  className="w-2 bg-gradient-to-t from-blue-600 to-blue-500 rounded-t-sm transition-all duration-300 hover:bg-blue-400"
                   style={{ height: `${value}px` }}
                 />
               ))}
@@ -446,7 +446,7 @@ const Home = () => {
               {chartData.map((item, index) => (
                 <div key={index} className="flex flex-col items-center">
                   <div 
-                    className="w-6 bg-gradient-to-t from-emerald-600 to-emerald-500 rounded-t-sm transition-all duration-300 hover:bg-emerald-400"
+                    className="w-6 bg-gradient-to-t from-blue-600 to-blue-500 rounded-t-sm transition-all duration-300 hover:bg-blue-400"
                     style={{ height: `${(item.value / Math.max(...chartData.map(d => d.value))) * 100}px` }}
                   />
                   <span className="text-xs text-slate-300 mt-1">{item.name}</span>
@@ -461,27 +461,27 @@ const Home = () => {
     const getRandomGradient = () => {
       const patterns = [
         {
-          base: "bg-gradient-to-tr from-emerald-500/30 via-emerald-500/20 to-emerald-600/15",
+          base: "bg-gradient-to-tr from-blue-500/30 via-blue-500/20 to-blue-600/15",
           blobs: [
-            "absolute -top-20 left-1/4 w-40 h-40 bg-gradient-to-br from-emerald-500/40",
-            "absolute bottom-1/3 -right-10 w-32 h-32 bg-gradient-to-tl from-emerald-500/30",
-            "absolute top-1/2 left-1/3 w-24 h-24 bg-gradient-to-br from-emerald-600/25"
+            "absolute -top-20 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-500/40",
+            "absolute bottom-1/3 -right-10 w-32 h-32 bg-gradient-to-tl from-blue-500/30",
+            "absolute top-1/2 left-1/3 w-24 h-24 bg-gradient-to-br from-blue-600/25"
           ]
         },
         {
-          base: "bg-gradient-to-bl from-emerald-600/30 via-emerald-600/20 to-emerald-500/15",
+          base: "bg-gradient-to-bl from-blue-600/30 via-blue-600/20 to-blue-500/15",
           blobs: [
-            "absolute top-1/3 -left-16 w-48 h-48 bg-gradient-to-tr from-emerald-500/40",
-            "absolute -bottom-10 right-1/4 w-36 h-36 bg-gradient-to-bl from-emerald-500/35",
-            "absolute top-1/4 right-1/3 w-28 h-28 bg-gradient-to-tr from-emerald-600/30"
+            "absolute top-1/3 -left-16 w-48 h-48 bg-gradient-to-tr from-blue-500/40",
+            "absolute -bottom-10 right-1/4 w-36 h-36 bg-gradient-to-bl from-blue-500/35",
+            "absolute top-1/4 right-1/3 w-28 h-28 bg-gradient-to-tr from-blue-600/30"
           ]
         },
         {
-          base: "bg-gradient-to-r from-emerald-500/30 via-emerald-500/20 to-emerald-600/25",
+          base: "bg-gradient-to-r from-blue-500/30 via-blue-500/20 to-blue-600/25",
           blobs: [
-            "absolute -top-10 right-1/3 w-44 h-44 bg-gradient-to-bl from-emerald-500/45",
-            "absolute bottom-1/4 -left-12 w-40 h-40 bg-gradient-to-tr from-emerald-600/40",
-            "absolute top-2/3 right-1/4 w-32 h-32 bg-gradient-to-bl from-emerald-500/35"
+            "absolute -top-10 right-1/3 w-44 h-44 bg-gradient-to-bl from-blue-500/45",
+            "absolute bottom-1/4 -left-12 w-40 h-40 bg-gradient-to-tr from-blue-600/40",
+            "absolute top-2/3 right-1/4 w-32 h-32 bg-gradient-to-bl from-blue-500/35"
           ]
         }
       ];
@@ -491,7 +491,7 @@ const Home = () => {
     const gradient = getRandomGradient();
 
     return (
-      <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:-translate-y-1 border border-emerald-500/15 group relative">
+      <div className="backdrop-blur-2xl bg-gradient-to-br from-[#28292b]/80 via-[#28292b]/50 to-[rgba(40,41,43,0.2)] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:-translate-y-1 border border-blue-500/15 group relative">
         {/* Random gradient pattern */}
         <div className={`absolute inset-0 ${gradient.base} opacity-25 group-hover:opacity-30`}></div>
         {gradient.blobs.map((blob, index) => (
@@ -500,14 +500,14 @@ const Home = () => {
         
         <div className="p-6 relative z-10 bg-gradient-to-br from-white/[0.06] to-transparent rounded-2xl">
           <div className="flex items-center gap-4 mb-5">
-            <div className="bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-600 text-white rounded-xl w-10 h-10 flex items-center justify-center text-lg font-bold shrink-0 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md border border-white/20">
+            <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center text-lg font-bold shrink-0 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md border border-white/20">
               {number}
             </div>
             <h2 className="text-lg font-bold text-white bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">{title}</h2>
           </div>
           
           <div className="flex items-center gap-3 mb-5">
-            <div className="text-emerald-300 text-xl">
+            <div className="text-blue-300 text-xl">
               {icon}
             </div>
             <p className="text-white/80 text-sm">{description}</p>
@@ -518,9 +518,9 @@ const Home = () => {
             {renderChart()}
           </div>
           
-          <div className="bg-gradient-to-br from-[#28292b]/60 to-[rgba(40,41,43,0.2)] backdrop-blur-md rounded-xl p-4 mb-5 shadow-sm border border-emerald-500/20 relative overflow-hidden">
+          <div className="bg-gradient-to-br from-[#28292b]/60 to-[rgba(40,41,43,0.2)] backdrop-blur-md rounded-xl p-4 mb-5 shadow-sm border border-blue-500/20 relative overflow-hidden">
             {/* Inner gradient effects */}
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-purple-500/5 to-blue-500/10 opacity-30"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-blue-500/10 opacity-30"></div>
             <div className="relative z-10">
               {stats}
             </div>
@@ -529,7 +529,7 @@ const Home = () => {
           <div className="flex justify-end">
             <button 
               onClick={() => navigate(route)}
-              className="text-sm text-emerald-300 hover:text-emerald-200 transition-colors flex items-center gap-1 group font-medium"
+              className="text-sm text-blue-300 hover:text-blue-200 transition-colors flex items-center gap-1 group font-medium"
             >
               View Details
               <MdArrowForward className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
@@ -540,40 +540,40 @@ const Home = () => {
     );
   };
 
-  // Updated ERP Landscape Info Modal Component
-  const ERPLandscapeInfoModal = () => {
-    if (!showERPInfo) return null;
+  // Updated Building Energy Info Modal Component
+  const BuildingEnergyInfoModal = () => {
+    if (!showEnergyInfo) return null;
     
     return (
       <div 
         className="fixed inset-0 z-[2000] flex items-center justify-center pointer-events-none"
         onClick={(e) => {
-          if (e.target === e.currentTarget) setShowERPInfo(false);
+          if (e.target === e.currentTarget) setShowEnergyInfo(false);
         }}
       >
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-auto" onClick={() => setShowERPInfo(false)}></div>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-auto" onClick={() => setShowEnergyInfo(false)}></div>
         <div 
-          className="absolute z-10 w-[65vw] h-[75vh] rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.30)] backdrop-blur-xl border border-emerald-500/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-white overflow-hidden pointer-events-auto animate-popup-scale"
+          className="absolute z-10 w-[65vw] h-[75vh] rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.30)] backdrop-blur-xl border border-blue-500/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-white overflow-hidden pointer-events-auto animate-popup-scale"
           style={{ transformOrigin: 'center left' }}
         >
           {/* Decorative background elements */}
-          <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-500/25 to-transparent rounded-full blur-3xl"></div>
-          <div className="absolute top-1/3 -right-20 w-64 h-64 bg-gradient-to-bl from-emerald-400/10 to-transparent rounded-full blur-2xl"></div>
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-blue-500/25 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute top-1/3 -right-20 w-64 h-64 bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-2xl"></div>
           
           <div className="relative z-10 p-5 h-full">
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
               <div>
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
-                  ERP Landscape Overview (2025–2027)
+                  Building Energy Landscape (2025–2030)
                 </h2>
-                <p className="text-emerald-400 text-sm">Key metrics and deadlines shaping the market</p>
+                <p className="text-blue-400 text-sm">Key metrics and targets shaping energy efficiency</p>
               </div>
               
               <button 
-                onClick={() => setShowERPInfo(false)}
-                className="rounded-full p-2 bg-emerald-900/40 hover:bg-emerald-800/50 text-white/70 hover:text-white transition-all duration-300 border border-emerald-500/20"
+                onClick={() => setShowEnergyInfo(false)}
+                className="rounded-full p-2 bg-blue-900/40 hover:bg-blue-800/50 text-white/70 hover:text-white transition-all duration-300 border border-blue-500/20"
               >
                 <MdClose />
               </button>
@@ -581,19 +581,19 @@ const Home = () => {
             
             {/* Main content in grid layout - tighter spacing */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-[calc(100%-3.5rem)]">
-              {/* SAP ECC Migration Section */}
-              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              {/* Window Replacement Section */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-4 border border-blue-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                       <MdDateRange className="text-white text-lg" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-white">SAP ECC to S/4HANA Migration</h3>
-                      <div className="flex items-center text-emerald-300 text-xs">
-                        <MdAccessTime className="mr-1" /> Deadline: December 31, 2027
+                      <h3 className="text-base font-bold text-white">Window Replacement Progress</h3>
+                      <div className="flex items-center text-blue-300 text-xs">
+                        <MdAccessTime className="mr-1" /> Target: December 31, 2027
                       </div>
                     </div>
                   </div>
@@ -602,7 +602,7 @@ const Home = () => {
                     <div className="w-1/2">
                       <PieChart width={130} height={130}>
                         <Pie
-                          data={erpLandscapeData.sapMigration}
+                          data={buildingEnergyData.windowReplacement}
                           cx="50%"
                           cy="50%"
                           innerRadius={32}
@@ -611,14 +611,14 @@ const Home = () => {
                           dataKey="value"
                           labelLine={false}
                         >
-                          {erpLandscapeData.sapMigration.map((entry, index) => (
+                          {buildingEnergyData.windowReplacement.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
                       </PieChart>
                     </div>
                     <div className="w-1/2 space-y-1.5 my-auto">
-                      {erpLandscapeData.sapMigration.map((item, index) => (
+                      {buildingEnergyData.windowReplacement.map((item, index) => (
                         <div key={index} className="flex items-center">
                           <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }}></div>
                           <div className="text-sm text-slate-300">{item.name}</div>
@@ -629,33 +629,33 @@ const Home = () => {
                   </div>
                   
                   <div className="space-y-1.5 text-sm text-slate-300">
-                    <p>• Over 50% of SAP customers risk missing the 2027 deadline</p>
-                    <p>• Extended support available until 2030 (premium pricing)</p>
-                    <p>• Resource crunch expected: Only 57% of enterprises on track</p>
+                    <p>• Over 50% of buildings need window upgrades by 2027</p>
+                    <p>• Energy efficiency mandates drive replacement demand</p>
+                    <p>• Resource availability: Only 57% of buildings on track</p>
                   </div>
                 </div>
               </div>
               
-              {/* Cloud ERP Adoption */}
-              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              {/* Energy Efficiency Adoption */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-blue-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                       <MdOutlineCloud className="text-white text-xl" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">Cloud ERP Adoption</h3>
-                      <div className="flex items-center text-emerald-300 text-xs">
-                        <MdTrendingUp className="mr-1" /> Growing at 10.5% CAGR
+                      <h3 className="text-lg font-bold text-white">Energy Efficiency Adoption</h3>
+                      <div className="flex items-center text-blue-300 text-xs">
+                        <MdTrendingUp className="mr-1" /> Growing at 12.5% CAGR
                       </div>
                     </div>
                   </div>
                   
                   <div className="h-[160px] mb-3">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={erpLandscapeData.cloudERP} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                      <BarChart data={buildingEnergyData.energyEfficiency} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.15)" horizontal={false} />
                         <XAxis 
                           type="number"
@@ -675,17 +675,17 @@ const Home = () => {
                         <Tooltip 
                           contentStyle={{ 
                             backgroundColor: 'rgba(6, 78, 59, 0.8)', 
-                            border: '1px solid rgba(16, 185, 129, 0.4)',
+                            border: '1px solid rgba(137, 163, 194, 0.4)',
                             borderRadius: '0.5rem',
                             boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
                             color: 'white',
                             fontSize: '12px',
                             backdropFilter: 'blur(8px)'
                           }}
-                          formatter={(value) => [`${value}%`, 'Adoption']}
+                          formatter={(value) => [`${value}%`, 'Efficiency']}
                         />
                         <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                          {erpLandscapeData.cloudERP.map((entry, index) => (
+                          {buildingEnergyData.energyEfficiency.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Bar>
@@ -694,89 +694,89 @@ const Home = () => {
                   </div>
                   
                   <div className="space-y-1.5 text-sm text-slate-300">
-                    <p>• Global adoption: <span className="text-white font-medium">53%</span> of organizations now use cloud ERP</p>
-                    <p>• Market growth: Spending reaching <span className="text-white font-medium">$70 billion</span> by 2032</p>
-                    <p>• Hybrid preference: <span className="text-white font-medium">76.5%</span> opt for hosted vs. SaaS for customization</p>
+                    <p>• Global adoption: <span className="text-white font-medium">53%</span> of buildings now use energy-efficient windows</p>
+                    <p>• Market growth: Spending reaching <span className="text-white font-medium">$85 billion</span> by 2032</p>
+                    <p>• Smart windows: <span className="text-white font-medium">76.5%</span> prefer triple-glazing for maximum efficiency</p>
                   </div>
                 </div>
               </div>
               
-              {/* Emerging ERP Tech */}
-              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              {/* Emerging Window Tech */}
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-blue-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                       <MdOutlineLightbulb className="text-white text-xl" />
                     </div>
-                    <h3 className="text-lg font-bold text-white">Emerging ERP Technologies</h3>
+                    <h3 className="text-lg font-bold text-white">Emerging Window Technologies</h3>
                   </div>
                   
                   <div className="grid grid-cols-1 gap-4 mb-4">
-                    {/* AI Integration */}
-                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-emerald-500/20">
-                      <div className="text-sm font-medium text-emerald-400 mb-1.5">AI Integration</div>
+                    {/* Smart Glass Integration */}
+                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-blue-500/20">
+                      <div className="text-sm font-medium text-blue-400 mb-1.5">Smart Glass Integration</div>
                       <div className="flex items-end gap-2 mb-1">
                         <div className="text-2xl font-bold text-white">72.6%</div>
-                        <div className="text-xs text-emerald-300">Adoption</div>
+                        <div className="text-xs text-blue-300">Adoption</div>
                       </div>
                       <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-2">
                         <div 
-                          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
+                          className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"
                           style={{ width: '72.6%' }}
                         ></div>
                       </div>
-                      <div className="text-xs text-slate-300">For predictive analytics & automation</div>
+                      <div className="text-xs text-slate-300">For dynamic light control & energy savings</div>
                     </div>
                     
-                    {/* Hyperautomation */}
-                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-emerald-500/20">
-                      <div className="text-sm font-medium text-emerald-400 mb-1.5">Hyperautomation</div>
+                    {/* Triple Glazing */}
+                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-blue-500/20">
+                      <div className="text-sm font-medium text-blue-400 mb-1.5">Triple Glazing</div>
                       <div className="flex items-end gap-2 mb-1">
                         <div className="text-2xl font-bold text-white">40-60%</div>
-                        <div className="text-xs text-emerald-300">Task Reduction</div>
+                        <div className="text-xs text-blue-300">Heat Reduction</div>
                       </div>
                       <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-2">
                         <div 
-                          className="h-full bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-full"
+                          className="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-full"
                           style={{ width: '50%' }}
                         ></div>
                       </div>
-                      <div className="text-xs text-slate-300">Invoice processing, demand planning</div>
+                      <div className="text-xs text-slate-300">Superior insulation, noise reduction</div>
                     </div>
                     
-                    {/* Composable ERP */}
-                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-emerald-500/20">
-                      <div className="text-sm font-medium text-emerald-400 mb-1.5">Composable ERP</div>
+                    {/* Energy Glass */}
+                    <div className="bg-[rgba(15,23,42,0.3)] rounded-lg p-3 border border-blue-500/20">
+                      <div className="text-sm font-medium text-blue-400 mb-1.5">Energy Glass</div>
                       <div className="flex items-end gap-2 mb-1">
                         <div className="text-2xl font-bold text-white">46%</div>
-                        <div className="text-xs text-emerald-300">Adoption</div>
+                        <div className="text-xs text-blue-300">Adoption</div>
                       </div>
                       <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-2">
                         <div 
-                          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
+                          className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"
                           style={{ width: '46%' }}
                         ></div>
                       </div>
-                      <div className="text-xs text-slate-300">APIs/microservices for vendor flexibility</div>
+                      <div className="text-xs text-slate-300">Low-E coatings for maximum efficiency</div>
                     </div>
                   </div>
                 </div>
               </div>
               
               {/* Regional & Industry Trends + Strategic Implications */}
-              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              <div className="bg-[rgba(27,34,42,0.3)] backdrop-blur-md rounded-xl p-5 border border-blue-500/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                       <MdInsights className="text-white text-xl" />
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">Regional & Strategic Insights</h3>
-                      <div className="flex items-center text-emerald-300 text-xs">
+                      <div className="flex items-center text-blue-300 text-xs">
                         <MdLocationOn className="mr-1" /> Global Market Overview
                       </div>
                     </div>
@@ -784,12 +784,12 @@ const Home = () => {
                   
                   {/* Timeline visualization */}
                   <div className="mb-4 relative">
-                    <div className="absolute left-0 top-5 bottom-5 w-[3px] bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 rounded-full"></div>
+                    <div className="absolute left-0 top-5 bottom-5 w-[3px] bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 rounded-full"></div>
                     
-                    {erpLandscapeData.timelines.map((item, index) => (
+                    {buildingEnergyData.timelines.map((item, index) => (
                       <div key={index} className="ml-6 mb-3 relative">
-                        <div className="absolute -left-8 top-0 w-4 h-4 rounded-full border-2 border-white bg-gradient-to-r from-emerald-500 to-emerald-400" style={{
-                          backgroundColor: index === 0 ? '#10B981' : index === 1 ? '#059669' : '#047857'
+                        <div className="absolute -left-8 top-0 w-4 h-4 rounded-full border-2 border-white bg-gradient-to-r from-blue-500 to-blue-400" style={{
+                          backgroundColor: index === 0 ? '#89a3c2' : index === 1 ? '#7a94b8' : '#6b85ae'
                         }}></div>
                         <div className="text-sm font-medium text-white">{item.year}: {item.event}</div>
                         <div className="text-xs text-slate-300">{item.description}</div>
@@ -801,17 +801,17 @@ const Home = () => {
                     <div className="text-sm font-medium text-white mb-1">Regional Distribution</div>
                     <div className="flex items-center gap-1">
                       <div className="flex-1 h-4 bg-slate-700/60 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '35%' }}></div>
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style={{ width: '35%' }}></div>
                       </div>
                       <div className="text-xs text-white w-8 text-right">35%</div>
                     </div>
-                    <div className="text-xs text-slate-400">North America: 35% of global ERP spending</div>
+                    <div className="text-xs text-slate-400">North America: 35% of global window replacement spending</div>
                   </div>
                   
                   <div className="space-y-1.5 text-sm text-slate-300">
-                    <p>• <span className="text-white font-medium">Strategic imperative:</span> Migrate by 2027 to avoid 20-30% higher costs</p>
-                    <p>• <span className="text-white font-medium">AI ROI:</span> 15-25% error reduction in finance/supply chain</p>
-                    <p>• <span className="text-white font-medium">Risk factors:</span> Compliance gaps, operational inefficiencies</p>
+                    <p>• <span className="text-white font-medium">Strategic imperative:</span> Upgrade by 2027 to avoid 20-30% higher energy costs</p>
+                    <p>• <span className="text-white font-medium">Energy ROI:</span> 15-25% reduction in heating/cooling costs</p>
+                    <p>• <span className="text-white font-medium">Risk factors:</span> Building code compliance, operational inefficiencies</p>
                   </div>
                 </div>
               </div>
@@ -825,8 +825,8 @@ const Home = () => {
   return (
     <div className="w-full h-screen bg-[#020305] relative overflow-hidden">
       {/* Background gradient orbs */}
-      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
-      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
+      <div className="fixed top-20 right-40 w-96 h-96 bg-gradient-to-br from-blue-500/5 to-transparent rounded-full blur-3xl transform rotate-12 opacity-70 pointer-events-none"></div>
+      <div className="fixed bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-blue-500/5 to-transparent rounded-full blur-3xl transform -rotate-12 opacity-60 pointer-events-none"></div>
 
       {/* 3D Spline Component */}
       <div className="fixed w-full h-full z-0 opacity-90 pointer-events-none">
@@ -837,53 +837,53 @@ const Home = () => {
       <div className="flex h-screen p-6 relative z-10">
         {/* Left Column - stacked widgets */}
         <div className="w-1/4 h-full flex flex-col space-y-6">
-          {/* SAP Enterprise Database box */}
-          <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group">
+          {/* Building Database box */}
+          <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-blue-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group">
             {/* Unique gradient pattern 1 */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 via-emerald-500/15 to-emerald-600/10 opacity-20"></div>
-            <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-emerald-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
-            <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-emerald-500/20 to-transparent rounded-full blur-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-blue-500/15 to-blue-600/10 opacity-20"></div>
+            <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
+            <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-2xl"></div>
             
             <div className="p-5 pt-6 relative z-10 bg-gradient-to-br from-white/[0.06] to-transparent rounded-2xl flex flex-col">
               {/* Main icon and metrics display */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center">
-                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                     <MdOutlineAnalytics className="text-white text-3xl" />
                   </div>
                   <div className="ml-3">
-                    <div className="text-4xl font-bold text-white tracking-tight">3.84<span className="text-lg font-normal text-white/80">M</span></div>
-                    <div className="text-xs text-emerald-400 font-medium mt-0.5">ERP Enterprises</div>
+                    <div className="text-4xl font-bold text-white tracking-tight">5.84<span className="text-lg font-normal text-white/80">M</span></div>
+                    <div className="text-xs text-blue-400 font-medium mt-0.5">Buildings</div>
                   </div>
                 </div>
                 <div 
-                  className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10 cursor-pointer transition-all duration-300 hover:bg-emerald-500/20 hover:border-emerald-500/30"
+                  className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-blue-500/10 cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500/30"
                   onClick={() => navigate('/market-database')}
-                  title="Go to Market Database"
+                  title="Go to Building Database"
                 >
                   <MdOutlineSearch className="text-xl text-white/70" />
                 </div>
               </div>
               
-              <h3 className="text-xl font-bold text-white mb-2">ERP Enterprise Database</h3>
-              <p className="text-sm text-slate-300 mb-4">Access to 3.84 million companies using ERP systems for migration</p>
+              <h3 className="text-xl font-bold text-white mb-2">Building Database</h3>
+              <p className="text-sm text-slate-300 mb-4">Access to 5.84 million buildings for window efficiency analysis</p>
               
               {/* Status indicators */}
               <div className="space-y-2 mb-4">
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 mr-3 text-emerald-400">
+                  <div className="flex items-center justify-center w-6 h-6 mr-3 text-blue-400">
                     <MdOutlineCalendarMonth />
                   </div>
                   <div className="text-sm text-slate-200">Updated Daily</div>
                 </div>
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 mr-3 text-emerald-400">
+                  <div className="flex items-center justify-center w-6 h-6 mr-3 text-blue-400">
                     <MdLocationOn />
                   </div>
-                  <div className="text-sm text-slate-200">Global Coverage: 87 Countries</div>
+                  <div className="text-sm text-slate-200">United States Coverage</div>
                 </div>
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-6 h-6 mr-3 text-emerald-400">
+                  <div className="flex items-center justify-center w-6 h-6 mr-3 text-blue-400">
                     <MdAccessTime />
                   </div>
                   <div className="text-sm text-slate-200">Last Sync: 2h ago</div>
@@ -892,73 +892,73 @@ const Home = () => {
             </div>
           </div>
 
-          {/* S/4HANA Analysis box */}
+          {/* Energy Analysis box */}
           <div 
-            ref={erpBoxRef}
-            className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group flex-1"
+            ref={energyBoxRef}
+            className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-blue-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group flex-1"
           >
             {/* Background patterns */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 via-emerald-500/15 to-emerald-600/10 opacity-20"></div>
-            <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-emerald-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
-            <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-emerald-500/20 to-transparent rounded-full blur-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-blue-500/15 to-blue-600/10 opacity-20"></div>
+            <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
+            <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-2xl"></div>
 
             <div className="p-5 pt-6 relative z-10 bg-gradient-to-br from-white/[0.06] to-transparent rounded-2xl h-full flex flex-col">
               {/* Header with info icon */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center">
-                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                     <MdOutlineLightbulb className="text-white text-2xl" />
                   </div>
                   <div className="ml-3">
                     <div className="text-3xl font-bold text-white tracking-tight">92<span className="text-sm font-normal text-white/80">%</span></div>
-                    <div className="text-xs text-emerald-400 font-medium mt-0.5">Data Enrichment</div>
+                    <div className="text-xs text-blue-400 font-medium mt-0.5">Data Enrichment</div>
                   </div>
                 </div>
                 <div 
-                  className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10 cursor-pointer transition-all duration-300 hover:bg-emerald-500/20 hover:border-emerald-500/30"
-                  onClick={() => setShowERPInfo(true)}
-                  title="ERP Landscape Overview"
+                  className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-blue-500/10 cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500/30"
+                  onClick={() => setShowEnergyInfo(true)}
+                  title="Building Energy Overview"
                 >
                   <MdInfoOutline className="text-xl text-white/70" />
                 </div>
               </div>
               
-              <h3 className="text-lg font-bold text-white mb-2">ERP Intelligence</h3>
+              <h3 className="text-lg font-bold text-white mb-2">Energy Intelligence</h3>
               
               {/* Data Enrichment Progress */}
-              <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 mb-3 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-blue-500/10 mb-3 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <h3 className="text-white text-xs font-medium mb-3">Data Enrichment Pipeline</h3>
                   <div className="space-y-2.5">
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-slate-300 text-xs">Company Financials</span>
-                        <span className="text-emerald-400 text-xs font-medium">98%</span>
+                        <span className="text-slate-300 text-xs">Building Age & Type</span>
+                        <span className="text-blue-400 text-xs font-medium">98%</span>
                       </div>
                       <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '98%' }}></div>
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style={{ width: '98%' }}></div>
                       </div>
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-slate-300 text-xs">Tech Stack Analysis</span>
-                        <span className="text-emerald-400 text-xs font-medium">95%</span>
+                        <span className="text-slate-300 text-xs">Window Analysis</span>
+                        <span className="text-blue-400 text-xs font-medium">95%</span>
                       </div>
                       <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '95%' }}></div>
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style={{ width: '95%' }}></div>
                       </div>
                     </div>
                     
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-slate-300 text-xs">Decision Maker Profiles</span>
-                        <span className="text-emerald-400 text-xs font-medium">92%</span>
+                        <span className="text-slate-300 text-xs">Energy Efficiency</span>
+                        <span className="text-blue-400 text-xs font-medium">92%</span>
                       </div>
                       <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '92%' }}></div>
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style={{ width: '92%' }}></div>
                       </div>
                     </div>
                   </div>
@@ -966,8 +966,8 @@ const Home = () => {
               </div>
 
               {/* Key Metrics */}
-              <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 mb-3 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-blue-500/10 mb-3 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <h3 className="text-white text-xs font-medium mb-3">Enrichment Metrics</h3>
@@ -975,63 +975,63 @@ const Home = () => {
                   {/* Metrics data - Simple grid with key metrics */}
                   <div className="grid grid-cols-3 gap-x-3 gap-y-3">
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Contact Data</div>
+                      <div className="text-blue-400 text-xs font-medium">Window Count</div>
                       <div className="text-white text-lg font-bold">2.8<span className="text-sm">M</span></div>
                     </div>
                     
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Tech Signals</div>
+                      <div className="text-blue-400 text-xs font-medium">Energy Loss</div>
                       <div className="text-white text-lg font-bold">1.2<span className="text-sm">M</span></div>
                     </div>
                     
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Firmographics</div>
+                      <div className="text-blue-400 text-xs font-medium">Building Data</div>
                       <div className="text-white text-lg font-bold">3.1<span className="text-sm">M</span></div>
                     </div>
 
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Revenue Data</div>
+                      <div className="text-blue-400 text-xs font-medium">Age Analysis</div>
                       <div className="text-white text-lg font-bold">2.5<span className="text-sm">M</span></div>
                     </div>
 
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Employee Count</div>
+                      <div className="text-blue-400 text-xs font-medium">Square Footage</div>
                       <div className="text-white text-lg font-bold">2.9<span className="text-sm">M</span></div>
                     </div>
 
                     <div>
-                      <div className="text-emerald-400 text-xs font-medium">Industry Data</div>
+                      <div className="text-blue-400 text-xs font-medium">Climate Data</div>
                       <div className="text-white text-lg font-bold">3.2<span className="text-sm">M</span></div>
                     </div>
                   </div>
 
                   <div className="mt-3 text-center">
-                    <span className="text-emerald-400 text-xs font-medium">+ 15 more data points</span>
+                    <span className="text-blue-400 text-xs font-medium">+ 15 more data points</span>
                   </div>
                 </div>
               </div>
               
               {/* Data Quality */}
-              <div className="flex-1 bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+              <div className="flex-1 bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-blue-500/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                 
                 <div className="relative z-10">
                   <h3 className="text-white text-xs font-medium mb-3">Data Quality Metrics</h3>
                   
                   <div className="space-y-2">
-                    <div className="bg-[rgba(15,23,42,0.4)] backdrop-blur-sm rounded-lg border border-emerald-500/10 p-2">
-                      <div className="text-emerald-400 text-xs font-medium">Accuracy Rate</div>
+                    <div className="bg-[rgba(15,23,42,0.4)] backdrop-blur-sm rounded-lg border border-blue-500/10 p-2">
+                      <div className="text-blue-400 text-xs font-medium">Accuracy Rate</div>
                       <div className="text-white text-lg font-bold">96%</div>
-                      <div className="flex items-center text-emerald-300 text-xs">
+                      <div className="flex items-center text-blue-300 text-xs">
                         <MdTrendingUp className="mr-1" />
                         <span>Verified Monthly</span>
                       </div>
                     </div>
                     
-                    <div className="bg-[rgba(15,23,42,0.4)] backdrop-blur-sm rounded-lg border border-emerald-500/10 p-2">
-                      <div className="text-emerald-400 text-xs font-medium">Update Frequency</div>
+                    <div className="bg-[rgba(15,23,42,0.4)] backdrop-blur-sm rounded-lg border border-blue-500/10 p-2">
+                      <div className="text-blue-400 text-xs font-medium">Update Frequency</div>
                       <div className="text-white text-lg font-bold">24h</div>
-                      <div className="flex items-center text-emerald-300 text-xs">
+                      <div className="flex items-center text-blue-300 text-xs">
                         <MdTrendingUp className="mr-1" />
                         <span>Real-time Signals</span>
                       </div>
@@ -1047,26 +1047,26 @@ const Home = () => {
         <div className="flex-1 relative h-full flex justify-end items-end">
           {/* Right side widget - positioned at bottom right */}
           <div className="w-2/5 mb-6">
-            <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-emerald-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-visible">
+            <div className="rounded-3xl bg-gradient-to-br from-[#28292b]/60 via-[#28292b]/40 to-[rgba(40,41,43,0.15)] backdrop-blur-xl border border-blue-500/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-visible">
               {/* Background patterns */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 via-emerald-500/15 to-emerald-600/10 opacity-20"></div>
-              <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-emerald-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
-              <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-emerald-500/20 to-transparent rounded-full blur-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-blue-500/15 to-blue-600/10 opacity-20"></div>
+              <div className="absolute -top-24 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-500/30 to-transparent rounded-full blur-3xl transform rotate-45"></div>
+              <div className="absolute bottom-1/3 -right-16 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-2xl"></div>
 
               <div className="p-5 pt-6 relative z-10 bg-gradient-to-br from-white/[0.06] to-transparent rounded-2xl flex flex-col">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
                       <MdOutlineEmail className="text-white text-2xl" />
                     </div>
                     <div className="ml-3">
                       <div className="text-3xl font-bold text-white tracking-tight">42<span className="text-sm font-normal text-white/80">%</span></div>
-                      <div className="text-xs text-emerald-400 font-medium mt-0.5">Response Rate</div>
+                      <div className="text-xs text-blue-400 font-medium mt-0.5">Response Rate</div>
                     </div>
                   </div>
                   <button 
-                    className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-emerald-500/10 cursor-pointer transition-all duration-300 hover:bg-emerald-500/20 hover:border-emerald-500/30"
+                    className="bg-[rgba(30,41,59,0.7)] backdrop-blur-md p-1.5 rounded-full shadow-sm border border-blue-500/10 cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500/30"
                     onClick={() => navigate('/outreach-tracking')}
                     title="Go to Outreach Tracking"
                   >
@@ -1080,27 +1080,27 @@ const Home = () => {
                 <div className="flex space-x-2 mb-3">
                   <button 
                     onClick={() => setCampaignView('weekly')} 
-                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('weekly') ? 'bg-emerald-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
+                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('weekly') ? 'bg-blue-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
                   >
                     Weekly
                   </button>
                   <button 
                     onClick={() => setCampaignView('monthly')} 
-                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('monthly') ? 'bg-emerald-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
+                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('monthly') ? 'bg-blue-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
                   >
                     Monthly
                   </button>
                   <button 
                     onClick={() => setCampaignView('overall')} 
-                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('overall') ? 'bg-emerald-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
+                    className={`text-xs rounded-full px-3 py-1 ${isViewActive('overall') ? 'bg-blue-500 text-white' : 'bg-slate-700/40 text-slate-300 hover:bg-slate-700/60'} transition-all duration-300`}
                   >
                     Overall
                   </button>
                 </div>
                 
                 {/* Email Performance Graph */}
-                <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-emerald-500/10 relative overflow-visible">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-emerald-500/5 to-emerald-600/5 opacity-20"></div>
+                <div className="bg-[rgba(27,34,42,0.5)] backdrop-blur-md rounded-xl p-4 border border-blue-500/10 relative overflow-visible">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-blue-500/5 to-blue-600/5 opacity-20"></div>
                   
                   <div className="relative z-10 overflow-visible">
                     {/* Chart Graph */}
@@ -1161,7 +1161,7 @@ const Home = () => {
                               {/* Hover popup */}
                               {hoverDay === item.day && (
                                 <div 
-                                  className="absolute bottom-full mb-2 bg-emerald-900/40 backdrop-blur-xl rounded-lg p-3 shadow-xl border border-emerald-500/40 w-[180px]" 
+                                  className="absolute bottom-full mb-2 bg-blue-900/40 backdrop-blur-xl rounded-lg p-3 shadow-xl border border-blue-500/40 w-[180px]" 
                                   style={{ 
                                     position: 'absolute', 
                                     left: '50%', 
@@ -1170,11 +1170,11 @@ const Home = () => {
                                     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)'
                                   }}
                                 >
-                                  <div className="text-xs font-medium text-emerald-300 mb-2">{item.day} Breakdown</div>
+                                  <div className="text-xs font-medium text-blue-300 mb-2">{item.day} Breakdown</div>
                                   <div className="space-y-2.5">
                                     <div className="flex justify-between items-center">
-                                      <span className="text-xs text-emerald-100/90 flex items-center">
-                                        <MdEmail className="text-emerald-400 mr-1.5" />Email
+                                      <span className="text-xs text-blue-100/90 flex items-center">
+                                        <MdEmail className="text-blue-400 mr-1.5" />Email
                                       </span>
                                       <span className="text-xs text-white font-medium">{campaignBreakdownData[item.day].email}</span>
                                     </div>
@@ -1370,8 +1370,8 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Render ERP Landscape Info Modal */}
-      <ERPLandscapeInfoModal />
+      {/* Render Building Energy Info Modal */}
+      <BuildingEnergyInfoModal />
 
       {/* Add animation styles as a regular style tag */}
       <style>

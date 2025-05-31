@@ -7,7 +7,8 @@ import EditProfile from './pages/EditProfile';
 import MarketDatabase from './pages/MarketDatabase';
 import SignalScanner from './pages/SignalScanner';
 import DataEnrichment from './pages/DataEnrichment';
-import MigrationInsights from './pages/MigrationInsights';
+import DataAnalytics from './pages/DataAnalytics';
+import WindowReplacementInsights from './pages/MigrationInsights';
 import Outreach from './pages/Outreach';
 import OutreachTracking from './pages/OutreachTracking';
 import Pricing from './pages/Pricing';
@@ -45,10 +46,22 @@ function App() {
             <Route path="/signal-scanner" element={<SignalScanner />} />
             <Route path="/signal-scanner/:facilityId" element={<SignalScanner />} />
             <Route path="/data-enrichment" element={<DataEnrichment />} />
-            <Route path="/migration-insights" element={<MigrationInsights />} />
+            <Route path="/data-enrichment/:facilityId" element={<DataEnrichment />} />
+            <Route path="/data-analytics" element={<DataAnalytics />} />
+            <Route path="/migration-insights" element={<WindowReplacementInsights />} />
             <Route path="/outreach" element={<Outreach />} />
             <Route path="/outreach-tracking" element={<OutreachTracking />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/maps-test" element={
+              <div className="w-full h-screen">
+                <iframe 
+                  src="/external-maps/" 
+                  className="w-full h-full border-none"
+                  title="Maps Test"
+                  allow="geolocation; microphone; camera"
+                />
+              </div>
+            } />
           </Routes>
         </main>
       </div>
