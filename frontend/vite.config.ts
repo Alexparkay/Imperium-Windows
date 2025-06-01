@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
           rewrite: (path) => path.replace(/^\/external-maps/, ''),
           configure: (proxy, _options) => {
             proxy.on('error', (err, _req, _res) => {
-              console.log('Proxy error:', err);
+              console.log('proxy error', err);
             });
             proxy.on('proxyReq', (proxyReq, req, _res) => {
               console.log('Sending Request to the Target:', req.method, req.url);
@@ -41,14 +41,24 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@mui/material', '@mui/icons-material'],
-          charts: ['recharts', 'd3-geo'],
-          utils: ['axios', 'framer-motion', '@tanstack/react-query']
+          'react-vendor': ['react', 'react-dom'],
+          'ui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          'three-vendor': ['@splinetool/react-spline', '@splinetool/runtime'],
+          'chart-vendor': ['recharts'],
+          'router-vendor': ['react-router-dom', '@tanstack/react-query'],
+          'utils-vendor': ['framer-motion', 'axios', 'react-hot-toast']
         }
+      }
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
       }
     }
   },
