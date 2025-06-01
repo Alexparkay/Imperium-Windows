@@ -44,41 +44,124 @@ After pushing, your GitHub repository should show:
 
 ## 🌐 Vercel Deployment
 
-### Option 1: Automatic Deployment (Recommended)
+### Quick Deploy to Vercel
 
-1. **Connect to Vercel**
+### Method 1: Automatic GitHub Integration (Recommended)
+
+1. **Connect to Vercel:**
    - Go to [vercel.com](https://vercel.com)
    - Sign in with your GitHub account
    - Click "New Project"
-   - Select your `Imperium-Windows` repository
+   - Import the `Imperium-Windows` repository
 
-2. **Configure Project Settings**
-   - **Framework Preset**: Vite
-   - **Root Directory**: `./` (leave as default)
-   - **Build Command**: `cd frontend && npm run build`
-   - **Output Directory**: `frontend/dist`
-   - **Install Command**: `cd frontend && npm install`
+2. **Configure Build Settings:**
+   - Framework Preset: **Vite**
+   - Root Directory: **/** (leave as root)
+   - Build Command: `cd frontend && npm ci && npm run build`
+   - Output Directory: `frontend/dist`
+   - Install Command: Leave empty
 
-3. **Deploy**
+3. **Environment Variables:**
+   No environment variables are required for this project.
+
+4. **Deploy:**
    - Click "Deploy"
-   - Wait for deployment to complete (usually 2-3 minutes)
-   - Your application will be available at `https://your-app-name.vercel.app`
+   - Vercel will automatically build and deploy your project
 
-### Option 2: Manual Deployment
+### Method 2: Vercel CLI
 
 ```bash
 # Install Vercel CLI
-npm install -g vercel
-
-# Navigate to frontend directory
-cd frontend
+npm i -g vercel
 
 # Login to Vercel
 vercel login
 
-# Deploy to production
+# Deploy from root directory
 vercel --prod
 ```
+
+## Project Structure
+
+```
+Imperium-Windows/
+├── frontend/              # React + Vite frontend
+│   ├── src/
+│   ├── public/
+│   ├── package.json       # Frontend dependencies
+│   └── dist/             # Build output (generated)
+├── vercel.json           # Vercel configuration
+├── package.json          # Root package.json
+└── README.md
+```
+
+## Vercel Configuration
+
+The `vercel.json` file is configured to:
+- Build from the `frontend` directory
+- Use Vite framework preset
+- Output to `frontend/dist`
+- Handle SPA routing with rewrites
+- Set proper headers for Google Maps integration
+
+## Troubleshooting
+
+### Common Issues:
+
+1. **"Could not read package.json" Error:**
+   - Ensure the build command includes `cd frontend`
+   - Check that `vercel.json` is properly configured
+
+2. **Build Timeout:**
+   - Build takes ~2-3 minutes due to 3D libraries
+   - This is normal and expected
+
+3. **Google Maps Not Loading:**
+   - Check that headers are properly set in `vercel.json`
+   - Ensure Cross-Origin policies are set to "unsafe-none"
+
+4. **Large Bundle Size Warnings:**
+   - These are expected due to 3D libraries (Three.js, Spline)
+   - App still loads efficiently due to code splitting
+
+### Build Process:
+
+1. TypeScript compilation (`tsc`)
+2. Vite build with code splitting
+3. Asset optimization and minification
+4. Deploy to Vercel edge network
+
+## Performance Notes
+
+- Initial load: ~2-3MB (normal for 3D applications)
+- Subsequent loads: Much faster due to caching
+- Assets are automatically optimized by Vercel
+- CDN distribution for global performance
+
+## GitHub Actions (Optional)
+
+The `.github/workflows/deploy.yml` file provides automatic deployment on every push to main branch.
+
+To set up:
+1. Add these secrets to your GitHub repository:
+   - `VERCEL_TOKEN`: Your Vercel API token
+   - `ORG_ID`: Your Vercel organization ID  
+   - `PROJECT_ID`: Your Vercel project ID
+
+## Support
+
+If deployment fails:
+1. Check the build logs in Vercel dashboard
+2. Ensure all files are committed to Git
+3. Verify `frontend/package.json` has all dependencies
+4. Test build locally with `npm run build` in frontend directory
+
+## Production URL
+
+Once deployed, your application will be available at:
+`https://imperium-windows-[hash].vercel.app`
+
+Custom domain can be configured in Vercel dashboard.
 
 ## 📋 Deployment Checklist
 
@@ -122,32 +205,6 @@ The application is already optimized with:
 - ✅ Compressed assets
 - ✅ Tree shaking for unused code
 - ✅ Modern ES modules
-
-## 🐛 Troubleshooting
-
-### Common Issues:
-
-1. **Build fails with "Module not found"**
-   - Ensure all dependencies are installed: `cd frontend && npm install`
-   - Check for typos in import statements
-
-2. **Assets not loading**
-   - Verify assets are in `frontend/public/` directory
-   - Check that file paths are correct (case-sensitive)
-
-3. **Routing issues (404 on refresh)**
-   - Ensure `vercel.json` rewrites are configured correctly
-   - SPA routing should work with the current configuration
-
-4. **Slow build times**
-   - Check if all `node_modules` are properly excluded in `.gitignore`
-   - Consider using Vercel's cache optimization
-
-### Support
-
-- **Vercel Documentation**: [vercel.com/docs](https://vercel.com/docs)
-- **GitHub Issues**: Create an issue in the repository for project-specific problems
-- **Vercel Support**: [vercel.com/support](https://vercel.com/support)
 
 ## 🎉 Success!
 
