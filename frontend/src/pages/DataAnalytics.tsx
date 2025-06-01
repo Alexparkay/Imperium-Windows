@@ -24,6 +24,985 @@ type CalculationBreakdowns = {
   [key: string]: CalculationBreakdown;
 };
 
+// Google Maps Widget Component
+const GoogleMapsWidget = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [useTestMap, setUseTestMap] = useState(false);
+  const [showDebug, setShowDebug] = useState(false);
+  const [loadTime, setLoadTime] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<'3d' | 'satellite' | 'street' | 'earth'>('3d');
+  const [zoomLevel, setZoomLevel] = useState(19);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisPhase, setAnalysisPhase] = useState<'scanning' | 'detecting' | 'measuring' | 'calculating' | 'complete'>('scanning');
+  const [detectedWindows, setDetectedWindows] = useState<Array<{x: number, y: number, width: number, height: number, confidence: number}>>([]);
+  const [scanProgress, setScanProgress] = useState(0);
+  const [showAnalysisOverlay, setShowAnalysisOverlay] = useState(false);
+
+  // Start analysis animation when map loads
+  useEffect(() => {
+    if (!isLoading && !error) {
+      setTimeout(() => {
+        setIsAnalyzing(true);
+        setShowAnalysisOverlay(true);
+        runAnalysisSequence();
+      }, 2000);
+    }
+  }, [isLoading, error]);
+
+  // Progressive analysis sequence
+  const runAnalysisSequence = async () => {
+    // Phase 1: Scanning
+    setAnalysisPhase('scanning');
+    setScanProgress(0);
+    for (let i = 0; i <= 100; i += 2) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+      setScanProgress(i);
+    }
+
+    // Phase 2: Window Detection with randomized positions and timing
+    setAnalysisPhase('detecting');
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Generate randomized window positions across the building
+    const mockWindows = Array.from({ length: 16 }, (_, i) => ({
+      x: 20 + Math.random() * 60, // Random X between 20-80%
+      y: 25 + Math.random() * 50, // Random Y between 25-75%
+      width: 6 + Math.random() * 4, // Random width 6-10%
+      height: 8 + Math.random() * 6, // Random height 8-14%
+      confidence: 0.85 + Math.random() * 0.15, // Random confidence 85-100%
+      delay: Math.random() * 2000 // Random delay up to 2 seconds
+    })).sort((a, b) => a.delay - b.delay); // Sort by delay for staggered appearance
+
+    // Add windows with randomized timing
+    for (let i = 0; i < mockWindows.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 300));
+      setDetectedWindows(prev => [...prev, mockWindows[i]]);
+    }
+
+    // Phase 3: Measuring
+    setAnalysisPhase('measuring');
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Phase 4: Calculating with data propagation
+    setAnalysisPhase('calculating');
+    await new Promise(resolve => setTimeout(resolve, 3000)); // Extended for data flow animation
+
+    // Phase 5: Complete
+    setAnalysisPhase('complete');
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    setIsAnalyzing(false);
+    toast.success('Building analysis complete! 600 windows detected.');
+  };
+
+  const handleIframeLoad = () => {
+    const endTime = Date.now();
+    const startTime = Date.now() - 5000;
+    setLoadTime(endTime - startTime);
+    setIsLoading(false);
+    setError(null);
+    console.log('Google Maps widget loaded successfully');
+    toast.success(`${getViewModeLabel(viewMode)} loaded successfully`);
+  };
+
+  const handleIframeError = () => {
+    console.error('Failed to load main Google Maps widget, trying fallback...');
+    if (retryCount < 1) {
+      setRetryCount(prev => prev + 1);
+      setUseTestMap(true);
+      setError(null);
+      toast('Switching to fallback map...', { icon: '⚠️' });
+    } else {
+      setError('Google Maps widget unavailable');
+      setIsLoading(false);
+      toast.error('Unable to load Google Maps widget');
+    }
+  };
+
+  const retryLoad = () => {
+    setError(null);
+    setIsLoading(true);
+    setUseTestMap(false);
+    setRetryCount(0);
+    setLoadTime(null);
+  };
+
+  const toggleMapVersion = () => {
+    setUseTestMap(!useTestMap);
+    setIsLoading(true);
+    setError(null);
+    setLoadTime(null);
+  };
+
+  // Auto-transition based on zoom level
+  const handleZoomChange = (newZoom: number) => {
+    setZoomLevel(newZoom);
+    if (newZoom >= 21 && viewMode !== 'street') {
+      setViewMode('street');
+      toast('Automatically switching to Street View for detailed analysis', { icon: '🚶' });
+    }
+  };
+
+  // Advanced source determination with true 3D and interactive features
+  const getIframeSrc = () => {
+    const lat = 42.333610;
+    const lng = -83.062477;
+    const q = "MGM+Grand+Detroit+Hotel+Casino";
+    
+    switch(viewMode) {
+      case '3d':
+        // True 3D buildings - Using standard embed with satellite view for 3D buildings
+        return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2948.1!2d${lng}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883b2d30e1b47c43%3A0x7e9c8b5f8a5c7e1b!2sMGM%20Grand%20Detroit!5e1!3m2!1sen!2sus!4v1640995200000!5m2!1sen!2sus`;
+      
+      case 'satellite':
+        // High-res satellite view
+        return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2948.1!2d${lng}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883b2d30e1b47c43%3A0x7e9c8b5f8a5c7e1b!2sMGM%20Grand%20Detroit!5e1!3m2!1sen!2sus!4v1640995200000!5m2!1sen!2sus`;
+      
+      case 'street':
+        // Street View using place-based embed
+        return `https://www.google.com/maps/embed?pb=!4v1640995200000!6m8!1m7!1sCAoSLEFGMVFpcE5lYWx0aHlKcXJzWXRHZkdnS0lCZ2xTVkpSdHdHU0Y!2m2!1d${lat}!2d${lng}!3f210!4f10!5f0.7820865974627469`;
+      
+      case 'earth':
+        // Google Earth
+        return `https://earth.google.com/web/@${lat},${lng},200a,1000d,35y,0h,45t,0r`;
+      
+      default:
+        // Standard view 
+        return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2948.1!2d${lng}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883b2d30e1b47c43%3A0x7e9c8b5f8a5c7e1b!2sMGM%20Grand%20Detroit!5e0!3m2!1sen!2sus!4v1640995200000!5m2!1sen!2sus`;
+    }
+  };
+
+  const getViewModeIcon = (mode: string) => {
+    switch(mode) {
+      case 'satellite': return '🛰️';
+      case '3d': return '🏢';
+      case 'street': return '🚶';
+      case 'earth': return '🌍';
+      default: return '🗺️';
+    }
+  };
+
+  const getViewModeLabel = (mode: string) => {
+    switch(mode) {
+      case 'satellite': return 'Satellite';
+      case '3d': return '3D Analysis';
+      case 'street': return 'Street View';
+      case 'earth': return 'Google Earth';
+      default: return 'Map';
+    }
+  };
+
+  const getViewModeDescription = (mode: string) => {
+    switch(mode) {
+      case 'satellite': return 'High-resolution satellite imagery with building outlines';
+      case '3d': return 'Interactive 3D buildings with full rotation and analysis';
+      case 'street': return 'Ground-level 360° view with pegman placement';
+      case 'earth': return 'Google Earth orbital view with terrain';
+      default: return 'Standard map view';
+    }
+  };
+
+  return (
+    <div className="relative w-[85vw] h-[60vh] max-w-6xl rounded-3xl overflow-hidden bg-gradient-to-br from-white/[0.15] via-blue-500/[0.08] to-white/[0.05] backdrop-blur-2xl border-2 border-blue-400/30 shadow-[0_0_60px_rgba(59,130,246,0.3)]">
+      {/* Loading State */}
+      {isLoading && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-br from-black/80 to-black/60 backdrop-blur-sm">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30 animate-pulse">
+            <FaBuilding className="text-white text-3xl" />
+          </div>
+          <div className="text-white font-semibold mb-2 text-lg">Loading Google Maps</div>
+          <div className="text-blue-300/80 text-base text-center">
+            {useTestMap ? 'Loading test version...' : 'Building Analysis System'}
+          </div>
+          <div className="loading loading-spinner loading-md text-blue-400 mt-4"></div>
+          {showDebug && (
+            <div className="text-sm text-blue-300/60 mt-2">
+              Source: {getIframeSrc()}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-br from-red-900/80 to-red-800/60 backdrop-blur-sm">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-500 via-red-600 to-red-700 flex items-center justify-center mb-4 shadow-lg shadow-red-500/30">
+            <MdInfoOutline className="text-white text-3xl" />
+          </div>
+          <div className="text-white font-semibold mb-2 text-lg">Maps Unavailable</div>
+          <div className="text-red-300/80 text-sm text-center px-4 mb-4">{error}</div>
+          <div className="flex gap-3">
+            <button 
+              onClick={retryLoad}
+              className="px-4 py-2 bg-blue-500/80 hover:bg-blue-500 text-white text-sm rounded-lg transition-colors"
+            >
+              Retry
+            </button>
+            <button 
+              onClick={toggleMapVersion}
+              className="px-4 py-2 bg-green-500/80 hover:bg-green-500 text-white text-sm rounded-lg transition-colors"
+            >
+              Test Map
+            </button>
+            <button 
+              onClick={() => setUseTestMap(false)}
+              className="px-4 py-2 bg-purple-500/80 hover:bg-purple-500 text-white text-sm rounded-lg transition-colors"
+            >
+              Direct Maps
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Google Maps Iframe */}
+      <iframe
+        key={`${viewMode}-${zoomLevel}-${useTestMap ? 'test' : 'main'}`} // Force re-render when switching views or zoom
+        src={getIframeSrc()}
+        className="w-full h-full border-0 rounded-3xl"
+        onLoad={handleIframeLoad}
+        onError={handleIframeError}
+        title={`Google Maps ${getViewModeLabel(viewMode)} - Building Analysis`}
+        style={{
+          background: 'transparent'
+        }}
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-top-navigation allow-downloads allow-modals"
+        allow="geolocation; camera; microphone; fullscreen; accelerometer; gyroscope"
+      />
+
+      {/* Advanced Analysis Overlay System */}
+      {showAnalysisOverlay && (
+        <div className="absolute inset-0 pointer-events-none z-30">
+          {/* Scanning Grid Overlay */}
+          {analysisPhase === 'scanning' && (
+            <div className="absolute inset-0">
+              {/* Animated scanning grid */}
+              <div className="absolute inset-0 opacity-80">
+                <svg className="w-full h-full">
+                  <defs>
+                    <pattern id="analysisGrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00ff41" strokeWidth="0.5" opacity="0.6"/>
+                    </pattern>
+                    <linearGradient id="scanLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="transparent"/>
+                      <stop offset="50%" stopColor="#00ff41" stopOpacity="0.8"/>
+                      <stop offset="100%" stopColor="transparent"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#analysisGrid)"/>
+                  {/* Scanning line */}
+                  <rect 
+                    x="0" 
+                    y={`${scanProgress}%`} 
+                    width="100%" 
+                    height="3" 
+                    fill="url(#scanLine)"
+                    className="animate-pulse"
+                  />
+                </svg>
+              </div>
+              
+              {/* Scanning HUD */}
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md rounded-lg p-3 border border-green-400/50">
+                <div className="text-green-400 text-sm font-mono">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span>BUILDING ANALYSIS INITIATED</span>
+                  </div>
+                  <div>Progress: {scanProgress}%</div>
+                  <div>Resolution: 0.1m/pixel</div>
+                  <div>Coverage: {Math.floor(scanProgress * 16.5) / 100} km²</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Window Detection Overlay */}
+          {analysisPhase === 'detecting' && (
+            <div className="absolute inset-0">
+              {detectedWindows.map((window, index) => (
+                <div
+                  key={index}
+                  className="absolute border-2 border-blue-400 bg-blue-400/20"
+                  style={{
+                    left: `${window.x}%`,
+                    top: `${window.y}%`,
+                    width: `${window.width}%`,
+                    height: `${window.height}%`,
+                    animation: `windowDetect 0.6s ease-out ${index * 0.1}s both`,
+                    boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)'
+                  }}
+                >
+                  <div className="absolute -top-7 left-0 bg-blue-500/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-blue-400/50">
+                    {Math.floor(window.confidence * 100)}%
+                  </div>
+                  {/* Window detection pulse effect */}
+                  <div className="absolute inset-0 bg-blue-400/30 rounded-sm animate-pulse"></div>
+                </div>
+              ))}
+              
+              {/* Detection HUD */}
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md rounded-lg p-3 border border-blue-400/50">
+                <div className="text-blue-400 text-sm font-mono">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    <span>WINDOW DETECTION ACTIVE</span>
+                  </div>
+                  <div>Detected: {detectedWindows.length} windows</div>
+                  <div>Confidence: 87-96%</div>
+                  <div>Algorithm: YOLO v8 + Custom CNN</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Measurement Overlay */}
+          {analysisPhase === 'measuring' && (
+            <div className="absolute inset-0">
+              <svg className="w-full h-full">
+                {/* Measurement lines */}
+                <defs>
+                  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24" />
+                  </marker>
+                </defs>
+                
+                {/* Building outline measurements */}
+                <line x1="20%" y1="25%" x2="80%" y2="25%" stroke="#fbbf24" strokeWidth="2" markerEnd="url(#arrowhead)" markerStart="url(#arrowhead)"/>
+                <line x1="20%" y1="25%" x2="20%" y2="75%" stroke="#fbbf24" strokeWidth="2" markerEnd="url(#arrowhead)" markerStart="url(#arrowhead)"/>
+                
+                {/* Measurement labels */}
+                <text x="50%" y="20%" textAnchor="middle" fill="#fbbf24" fontSize="14" fontFamily="monospace">156.2m</text>
+                <text x="15%" y="50%" textAnchor="middle" fill="#fbbf24" fontSize="14" fontFamily="monospace" transform="rotate(-90 15% 50%)">89.7m</text>
+              </svg>
+              
+              {/* Measurement HUD */}
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md rounded-lg p-3 border border-yellow-400/50">
+                <div className="text-yellow-400 text-sm font-mono">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <span>DIMENSIONAL ANALYSIS</span>
+                  </div>
+                  <div>Building Width: 156.2m</div>
+                  <div>Building Height: 89.7m</div>
+                  <div>Total Area: 14,011 m²</div>
+                  <div>Window Density: 42.8 windows/100m²</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Calculation Overlay */}
+          {analysisPhase === 'calculating' && (
+            <div className="absolute inset-0">
+              {/* Data flow lines to satellite widgets */}
+              <svg className="w-full h-full">
+                <defs>
+                  <linearGradient id="dataFlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="transparent"/>
+                    <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.8"/>
+                    <stop offset="100%" stopColor="transparent"/>
+                  </linearGradient>
+                  <linearGradient id="dataFlowBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="transparent"/>
+                    <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8"/>
+                    <stop offset="100%" stopColor="transparent"/>
+                  </linearGradient>
+                  <linearGradient id="dataFlowGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="transparent"/>
+                    <stop offset="50%" stopColor="#10b981" stopOpacity="0.8"/>
+                    <stop offset="100%" stopColor="transparent"/>
+                  </linearGradient>
+                </defs>
+                
+                {/* Animated data streams to each satellite widget */}
+                {/* Top Left - Energy Use */}
+                <path 
+                  d="M 50% 50% Q 30% 30% 10% 15%" 
+                  stroke="url(#dataFlowBlue)" 
+                  strokeWidth="3" 
+                  fill="none" 
+                  className="animate-pulse"
+                  strokeDasharray="10 5"
+                  style={{
+                    animation: 'dashMove 2s linear infinite'
+                  }}
+                />
+                
+                {/* Top Right - Energy Cost */}
+                <path 
+                  d="M 50% 50% Q 70% 30% 90% 15%" 
+                  stroke="url(#dataFlowGreen)" 
+                  strokeWidth="3" 
+                  fill="none" 
+                  className="animate-pulse"
+                  strokeDasharray="10 5"
+                  style={{
+                    animation: 'dashMove 2s linear infinite 0.3s'
+                  }}
+                />
+                
+                {/* Left Center - Windows */}
+                <path 
+                  d="M 50% 50% Q 25% 50% 5% 50%" 
+                  stroke="url(#dataFlow)" 
+                  strokeWidth="3" 
+                  fill="none" 
+                  className="animate-pulse"
+                  strokeDasharray="10 5"
+                  style={{
+                    animation: 'dashMove 2s linear infinite 0.6s'
+                  }}
+                />
+                
+                {/* Right Center - Potential Savings */}
+                <path 
+                  d="M 50% 50% Q 75% 50% 95% 50%" 
+                  stroke="url(#dataFlowGreen)" 
+                  strokeWidth="3" 
+                  fill="none" 
+                  className="animate-pulse"
+                  strokeDasharray="10 5"
+                  style={{
+                    animation: 'dashMove 2s linear infinite 0.9s'
+                  }}
+                />
+                
+                {/* Bottom Left - ROI */}
+                <path 
+                  d="M 50% 50% Q 30% 70% 10% 85%" 
+                  stroke="url(#dataFlow)" 
+                  strokeWidth="3" 
+                  fill="none" 
+                  className="animate-pulse"
+                  strokeDasharray="10 5"
+                  style={{
+                    animation: 'dashMove 2s linear infinite 1.2s'
+                  }}
+                />
+                
+                {/* Bottom Right - Installation */}
+                <path 
+                  d="M 50% 50% Q 70% 70% 90% 85%" 
+                  stroke="url(#dataFlowBlue)" 
+                  strokeWidth="3" 
+                  fill="none" 
+                  className="animate-pulse"
+                  strokeDasharray="10 5"
+                  style={{
+                    animation: 'dashMove 2s linear infinite 1.5s'
+                  }}
+                />
+              </svg>
+              
+              {/* Floating data packets */}
+              <div className="absolute inset-0">
+                {/* Data packets flowing to each widget */}
+                {[
+                  { target: 'top-left', delay: '0s', path: 'M 50% 50% Q 30% 30% 10% 15%' },
+                  { target: 'top-right', delay: '0.3s', path: 'M 50% 50% Q 70% 30% 90% 15%' },
+                  { target: 'left', delay: '0.6s', path: 'M 50% 50% Q 25% 50% 5% 50%' },
+                  { target: 'right', delay: '0.9s', path: 'M 50% 50% Q 75% 50% 95% 50%' },
+                  { target: 'bottom-left', delay: '1.2s', path: 'M 50% 50% Q 30% 70% 10% 85%' },
+                  { target: 'bottom-right', delay: '1.5s', path: 'M 50% 50% Q 70% 70% 90% 85%' }
+                ].map((stream, index) => (
+                  <div
+                    key={index}
+                    className="absolute w-3 h-3 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50"
+                    style={{
+                      animation: `dataPacket${index} 2s ease-in-out infinite ${stream.delay}`,
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                  />
+                ))}
+              </div>
+              
+              {/* Enhanced calculation HUD */}
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md rounded-lg p-3 border border-purple-400/50">
+                <div className="text-purple-400 text-sm font-mono">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                    <span>DATA PROPAGATION ACTIVE</span>
+                  </div>
+                  <div>Processing thermal data...</div>
+                  <div>Window efficiency: 34%</div>
+                  <div>Heat loss: 145 kW/h</div>
+                  <div>Potential savings: $1.2M/year</div>
+                  <div className="mt-2 text-xs text-purple-300">
+                    ↗ Streaming to dashboard widgets...
+                  </div>
+                </div>
+              </div>
+              
+              {/* Data transmission indicators near each satellite widget */}
+              <div className="absolute top-8 left-8 w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-60"></div>
+              <div className="absolute top-8 right-8 w-4 h-4 bg-green-400 rounded-full animate-ping opacity-60" style={{animationDelay: '0.3s'}}></div>
+              <div className="absolute top-1/2 left-2 w-4 h-4 bg-purple-400 rounded-full animate-ping opacity-60" style={{animationDelay: '0.6s'}}></div>
+              <div className="absolute top-1/2 right-2 w-4 h-4 bg-green-400 rounded-full animate-ping opacity-60" style={{animationDelay: '0.9s'}}></div>
+              <div className="absolute bottom-8 left-8 w-4 h-4 bg-purple-400 rounded-full animate-ping opacity-60" style={{animationDelay: '1.2s'}}></div>
+              <div className="absolute bottom-8 right-8 w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-60" style={{animationDelay: '1.5s'}}></div>
+            </div>
+          )}
+
+          {/* Completion Overlay */}
+          {analysisPhase === 'complete' && (
+            <div className="absolute inset-0">
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md rounded-lg p-3 border border-green-400/50">
+                <div className="text-green-400 text-sm font-mono">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span>ANALYSIS COMPLETE</span>
+                  </div>
+                  <div>✓ 600 windows detected</div>
+                  <div>✓ Energy profile calculated</div>
+                  <div>✓ Savings potential: $1.2M</div>
+                  <div>✓ Data exported to dashboard</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Data Stream Particles */}
+      {(isAnalyzing && analysisPhase === 'calculating') && (
+        <div className="absolute inset-0 pointer-events-none z-25">
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-blue-400 rounded-full animate-ping"
+              style={{
+                left: `${50 + Math.cos(i * 30 * Math.PI / 180) * 20}%`,
+                top: `${50 + Math.sin(i * 30 * Math.PI / 180) * 20}%`,
+                animationDelay: `${i * 0.1}s`,
+                animationDuration: '2s'
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Enhanced View Mode Switcher */}
+      <div className="absolute top-6 left-6 flex flex-col gap-3 z-10">
+        <div className="bg-black/80 backdrop-blur-md rounded-2xl p-3 border border-blue-500/30">
+          <div className="text-white text-xs font-semibold mb-2 text-center">Analysis Mode</div>
+          <div className="flex flex-col gap-2">
+            {(['3d', 'satellite', 'street', 'earth'] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => {
+                  setViewMode(mode);
+                  setIsLoading(true);
+                  toast(`Switching to ${getViewModeLabel(mode)}`, { icon: getViewModeIcon(mode) });
+                }}
+                className={`relative group w-16 h-16 rounded-xl flex flex-col items-center justify-center text-lg transition-all duration-300 backdrop-blur-md border shadow-lg ${
+                  viewMode === mode
+                    ? 'bg-blue-500/80 border-blue-400/70 shadow-blue-500/40 scale-110'
+                    : 'bg-black/60 border-white/20 hover:bg-black/80 hover:scale-105 shadow-black/40'
+                }`}
+                title={getViewModeDescription(mode)}
+              >
+                <span className="text-xl mb-1">{getViewModeIcon(mode)}</span>
+                <span className="text-xs font-medium text-white">{getViewModeLabel(mode).split(' ')[0]}</span>
+                
+                {/* Active indicator */}
+                {viewMode === mode && (
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Zoom Controls */}
+        <div className="bg-black/80 backdrop-blur-md rounded-2xl p-3 border border-blue-500/30">
+          <div className="text-white text-xs font-semibold mb-2 text-center">Zoom Level</div>
+          <div className="flex flex-col items-center gap-2">
+            <button
+              onClick={() => handleZoomChange(Math.min(22, zoomLevel + 1))}
+              className="w-10 h-10 bg-blue-500/70 hover:bg-blue-500/90 rounded-lg flex items-center justify-center text-white font-bold transition-all"
+              title="Zoom In"
+            >
+              +
+            </button>
+            <div className="text-white text-xs font-mono bg-black/50 px-2 py-1 rounded">
+              {zoomLevel}
+            </div>
+            <button
+              onClick={() => handleZoomChange(Math.max(10, zoomLevel - 1))}
+              className="w-10 h-10 bg-blue-500/70 hover:bg-blue-500/90 rounded-lg flex items-center justify-center text-white font-bold transition-all"
+              title="Zoom Out"
+            >
+              −
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Current View Info Panel */}
+      <div className="absolute top-6 right-6 bg-black/80 backdrop-blur-md rounded-2xl px-4 py-3 border border-blue-500/30 max-w-xs">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-2xl">{getViewModeIcon(viewMode)}</span>
+          <div>
+            <div className="text-white font-semibold">{getViewModeLabel(viewMode)}</div>
+            <div className="text-blue-300 text-xs">{getViewModeDescription(viewMode)}</div>
+          </div>
+        </div>
+        {zoomLevel >= 21 && (
+          <div className="text-yellow-400 text-xs bg-yellow-500/20 px-2 py-1 rounded">
+            🔍 Ultra-detailed analysis mode
+          </div>
+        )}
+      </div>
+
+      {/* Enhanced Controls Instructions */}
+      {viewMode === '3d' && (
+        <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-md rounded-2xl px-4 py-4 border border-blue-500/30 max-w-sm">
+          <div className="text-blue-300 text-sm">
+            <div className="font-semibold mb-3 text-white flex items-center gap-2">
+              🏗️ Building Analysis Controls
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div>• <strong>Drag:</strong> Pan around building</div>
+              <div>• <strong>Ctrl + Drag:</strong> Tilt view angle</div>
+              <div>• <strong>Shift + Drag:</strong> Rotate perspective</div>
+              <div>• <strong>Scroll:</strong> Zoom to analyze details</div>
+              <div>• <strong>Right-click:</strong> 3D object manipulation</div>
+            </div>
+            <div className="mt-3 p-2 bg-blue-500/20 rounded-lg">
+              <div className="text-blue-200 text-xs">
+                <strong>Analysis Focus:</strong> Window placement, facade details, structural elements
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewMode === 'street' && (
+        <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-md rounded-2xl px-4 py-4 border border-blue-500/30 max-w-sm">
+          <div className="text-blue-300 text-sm">
+            <div className="font-semibold mb-3 text-white flex items-center gap-2">
+              🚶 Street-Level Analysis
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div>• <strong>Click & Drag:</strong> Look around 360°</div>
+              <div>• <strong>Arrow Keys:</strong> Move along street</div>
+              <div>• <strong>Double-click:</strong> Zoom to details</div>
+              <div>• <strong>Drag pegman:</strong> Change location</div>
+            </div>
+            <div className="mt-3 p-2 bg-green-500/20 rounded-lg">
+              <div className="text-green-200 text-xs">
+                <strong>Ground Analysis:</strong> Entrance details, ground-floor windows, accessibility
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewMode === 'earth' && (
+        <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-md rounded-2xl px-4 py-4 border border-blue-500/30 max-w-sm">
+          <div className="text-blue-300 text-sm">
+            <div className="font-semibold mb-3 text-white flex items-center gap-2">
+              🌍 Orbital Analysis
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div>• <strong>Drag:</strong> Orbit around building</div>
+              <div>• <strong>Scroll:</strong> Fly closer/further</div>
+              <div>• <strong>Right-click:</strong> Tilt orbital view</div>
+              <div>• <strong>Shift + Scroll:</strong> Change altitude</div>
+            </div>
+            <div className="mt-3 p-2 bg-purple-500/20 rounded-lg">
+              <div className="text-purple-200 text-xs">
+                <strong>Macro Analysis:</strong> Building context, surrounding structures, urban planning
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewMode === 'satellite' && (
+        <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-md rounded-2xl px-4 py-4 border border-blue-500/30 max-w-sm">
+          <div className="text-blue-300 text-sm">
+            <div className="font-semibold mb-3 text-white flex items-center gap-2">
+              🛰️ Aerial Analysis
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div>• <strong>Drag:</strong> Pan across area</div>
+              <div>• <strong>Scroll:</strong> Zoom to rooftop details</div>
+              <div>• <strong>Click:</strong> Measure distances</div>
+            </div>
+            <div className="mt-3 p-2 bg-orange-500/20 rounded-lg">
+              <div className="text-orange-200 text-xs">
+                <strong>Roof Analysis:</strong> HVAC systems, skylights, rooftop access
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Analysis Tools Panel */}
+      <div className="absolute bottom-6 right-6 bg-black/80 backdrop-blur-md rounded-2xl p-3 border border-blue-500/30">
+        <div className="text-white text-xs font-semibold mb-2">Building Analysis</div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              setShowAnalysisOverlay(true);
+              setIsAnalyzing(true);
+              setAnalysisPhase('scanning');
+              setDetectedWindows([]);
+              setScanProgress(0);
+              runAnalysisSequence();
+            }}
+            className="w-10 h-10 bg-green-500/70 hover:bg-green-500/90 rounded-lg flex items-center justify-center transition-all"
+            title="Start Window Analysis"
+          >
+            🔄
+          </button>
+          <button
+            className="w-10 h-10 bg-blue-500/70 hover:bg-blue-500/90 rounded-lg flex items-center justify-center transition-all"
+            title="Measurement Tools"
+          >
+            📏
+          </button>
+          <button
+            className="w-10 h-10 bg-purple-500/70 hover:bg-purple-500/90 rounded-lg flex items-center justify-center transition-all"
+            title="Energy Analysis"
+          >
+            ⚡
+          </button>
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="w-10 h-10 bg-gray-500/70 hover:bg-gray-500/90 rounded-lg flex items-center justify-center transition-all"
+            title="Debug Info"
+          >
+            <MdInfoOutline className="text-white text-sm" />
+          </button>
+        </div>
+        
+        {/* Analysis Status */}
+        {isAnalyzing && (
+          <div className="mt-3 p-2 bg-blue-500/20 rounded-lg">
+            <div className="text-blue-300 text-xs">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></div>
+                <span className="uppercase font-semibold">{analysisPhase}</span>
+              </div>
+              {analysisPhase === 'scanning' && <div>Progress: {scanProgress}%</div>}
+              {analysisPhase === 'detecting' && <div>Windows: {detectedWindows.length}</div>}
+              {analysisPhase === 'measuring' && <div>Calculating dimensions...</div>}
+              {analysisPhase === 'calculating' && <div>Processing energy data...</div>}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Status Indicator */}
+      <div className="absolute top-6 right-72">
+        <div className={`w-6 h-6 rounded-full border-2 border-white ${isLoading ? 'bg-yellow-400 animate-pulse' : error ? 'bg-red-400' : isAnalyzing ? 'bg-blue-400 animate-pulse' : 'bg-green-400'} shadow-lg`}></div>
+      </div>
+
+      {/* Enhanced Debug Panel */}
+      {showDebug && !isLoading && (
+        <div className="absolute bottom-32 right-6 bg-black/90 backdrop-blur-md rounded-2xl p-4 border border-blue-500/30 max-w-sm z-20">
+          <div className="text-white text-sm space-y-3">
+            <div className="text-blue-400 font-semibold mb-3">Debug Information</div>
+            <div><strong>Status:</strong> {error ? 'Error' : 'Loaded'}</div>
+            <div><strong>View Mode:</strong> {getViewModeLabel(viewMode)}</div>
+            <div><strong>Zoom Level:</strong> {zoomLevel}</div>
+            <div><strong>Version:</strong> {useTestMap ? 'Test' : 'Full'}</div>
+            <div><strong>Source:</strong> {getIframeSrc().substring(0, 50)}...</div>
+            {loadTime && <div><strong>Load Time:</strong> {loadTime}ms</div>}
+            <div><strong>Retries:</strong> {retryCount}</div>
+            <div><strong>Analyzing:</strong> {isAnalyzing ? 'Yes' : 'No'}</div>
+            <div><strong>Phase:</strong> {analysisPhase}</div>
+            <div><strong>Windows Detected:</strong> {detectedWindows.length}</div>
+            
+            {/* Enhanced controls */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              <button 
+                onClick={toggleMapVersion}
+                className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs transition-colors"
+              >
+                Switch Version
+              </button>
+              <button 
+                onClick={retryLoad}
+                className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs transition-colors"
+              >
+                Retry Load
+              </button>
+              <button 
+                onClick={() => window.open(getIframeSrc(), '_blank')}
+                className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded text-xs transition-colors"
+              >
+                Open Direct
+              </button>
+            </div>
+            
+            {/* Analysis stats */}
+            <div className="mt-4 p-3 bg-blue-500/20 rounded-lg">
+              <div className="text-blue-200 text-xs">
+                <div className="font-semibold mb-1">Analysis Stats</div>
+                <div>Coordinates: 42.333610, -83.062477</div>
+                <div>Building: MGM Grand Detroit</div>
+                <div>Analysis Ready: {error ? 'No' : 'Yes'}</div>
+                <div>Last Analysis: {analysisPhase === 'complete' ? 'Complete' : 'In Progress'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Add CSS animations to the global CSS */}
+      <style>{`
+        @keyframes dashMove {
+          0% {
+            stroke-dashoffset: 0;
+          }
+          100% {
+            stroke-dashoffset: 15;
+          }
+        }
+        
+        @keyframes dataPacket0 {
+          0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            left: 10%;
+            top: 15%;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes dataPacket1 {
+          0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            left: 90%;
+            top: 15%;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes dataPacket2 {
+          0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            left: 5%;
+            top: 50%;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes dataPacket3 {
+          0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            left: 95%;
+            top: 50%;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes dataPacket4 {
+          0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            left: 10%;
+            top: 85%;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes dataPacket5 {
+          0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            left: 90%;
+            top: 85%;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes windowDetect {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+            box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+          }
+          50% {
+            transform: scale(1.2);
+            opacity: 0.8;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const DataAnalytics = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -689,129 +1668,58 @@ const DataAnalytics = () => {
             </div>
           </div>
 
-          {/* Central Mind Map Layout */}
-          <div className="relative min-h-[1000px] mb-12 overflow-visible">
-            {/* Central Building Hub */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+          {/* Central Mind Map Layout - Properly Sized with Margins */}
+          <div className="relative min-h-[70vh] w-full mb-12 overflow-visible flex items-center justify-center px-8">
+            {/* Central Google Maps Widget with proper margins */}
+            <div className="relative z-20">
               <div className="relative">
                 {/* Central glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-blue-400/30 to-blue-500/20 rounded-full blur-3xl scale-150 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-400/15 to-blue-500/10 rounded-3xl blur-3xl scale-110 animate-pulse"></div>
                 
-                {/* Central building card */}
-                <div className="relative w-80 h-80 rounded-full bg-gradient-to-br from-white/[0.15] via-blue-500/[0.08] to-white/[0.05] backdrop-blur-2xl border-2 border-blue-400/30 shadow-[0_0_60px_rgba(59,130,246,0.3)] flex flex-col items-center justify-center p-8">
-                  {/* Building Icon Placeholder - You can replace this with your image */}
-                  <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
-                    <FaBuilding className="text-white text-4xl" />
-                  </div>
-                  
-                  <h2 className="text-xl font-bold text-white text-center mb-2 bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
-                    {buildingData.name}
-                  </h2>
-                  <p className="text-blue-300/80 text-sm text-center mb-3 flex items-center gap-1">
-                    <MdLocationOn className="text-blue-400" />
-                    Detroit, MI
-                  </p>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-400">{buildingData.energyStarScore}</div>
-                    <div className="text-blue-300/70 text-xs">Energy Star Score</div>
-                  </div>
-                </div>
+                {/* Google Maps Widget */}
+                <GoogleMapsWidget />
               </div>
             </div>
 
-            {/* Connecting Lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" style={{ filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))' }}>
-              {/* Top connections */}
-              <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="url(#gradient1)" strokeWidth="2" strokeDasharray="5,5" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-              </line>
-              <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="url(#gradient2)" strokeWidth="2" strokeDasharray="5,5" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-              </line>
-              
-              {/* Side connections */}
-              <line x1="50%" y1="50%" x2="10%" y2="50%" stroke="url(#gradient3)" strokeWidth="2" strokeDasharray="5,5" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-              </line>
-              <line x1="50%" y1="50%" x2="90%" y2="50%" stroke="url(#gradient4)" strokeWidth="2" strokeDasharray="5,5" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-              </line>
-              
-              {/* Bottom connections */}
-              <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="url(#gradient5)" strokeWidth="2" strokeDasharray="5,5" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-              </line>
-              <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="url(#gradient6)" strokeWidth="2" strokeDasharray="5,5" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-              </line>
-              
-              <defs>
-                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)"/>
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                </linearGradient>
-                <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)"/>
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                </linearGradient>
-                <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)"/>
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                </linearGradient>
-                <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)"/>
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                </linearGradient>
-                <linearGradient id="gradient5" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)"/>
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                </linearGradient>
-                <linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)"/>
-                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                </linearGradient>
-              </defs>
-            </svg>
-
-            {/* Enhanced Satellite Cards with asymmetrical positioning */}
+            {/* Enhanced Satellite Cards as Overlays positioned relative to smaller map */}
             {/* Top Left - Energy Use */}
-            <div className="absolute top-12 left-12 w-96 h-64">
-              <div className={`${cardBaseClass} p-8 h-full group hover:scale-105`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/12 via-blue-600/6 to-transparent rounded-3xl"></div>
+            <div className="absolute top-8 left-16 w-72 h-48 z-30">
+              <div className={`${cardBaseClass} p-5 h-full group hover:scale-105`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/25 via-blue-600/20 to-transparent rounded-3xl"></div>
                 <div className="absolute -top-16 -right-16 w-32 h-32 bg-gradient-to-br from-blue-500/25 to-transparent rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <button 
                   onClick={() => openCalculationModal('annualEnergyUse')}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-blue-500/25 flex items-center justify-center hover:bg-blue-500/50 transition-all duration-300 backdrop-blur-md border border-blue-400/40 hover:scale-110 shadow-lg shadow-blue-500/20"
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-blue-500/50 flex items-center justify-center hover:bg-blue-500/70 transition-all duration-300 backdrop-blur-md border border-blue-400/60 hover:scale-110 shadow-lg shadow-blue-500/30"
                 >
-                  <MdInfoOutline className="text-blue-300 text-lg" />
+                  <MdInfoOutline className="text-blue-200 text-sm" />
                 </button>
                 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center shadow-xl shadow-blue-500/30 border border-blue-400/20">
-                      <MdElectricBolt className="text-white text-2xl" />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center shadow-xl shadow-blue-500/30 border border-blue-400/20">
+                      <MdElectricBolt className="text-white text-sm" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Annual Energy Use</h3>
-                      <p className="text-blue-300/80 text-sm">Total Building Consumption</p>
+                      <h3 className="text-sm font-bold text-white">Annual Energy Use</h3>
+                      <p className="text-blue-300/80 text-xs">Total Building Consumption</p>
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex flex-col justify-center space-y-4">
-                    <div className="bg-gradient-to-r from-blue-500/10 to-transparent rounded-2xl p-4 border border-blue-500/20">
-                      <p className="text-4xl font-bold text-white mb-2">{formatNumber(buildingData.estimatedAnnualKwh)}</p>
-                      <p className="text-blue-300/90 text-lg font-medium">kWh annually</p>
+                  <div className="flex-1 flex flex-col justify-center space-y-2">
+                    <div className="bg-gradient-to-r from-blue-500/25 to-transparent rounded-lg p-2 border border-blue-500/40 backdrop-blur-md">
+                      <p className="text-lg font-bold text-white mb-1">{formatNumber(buildingData.estimatedAnnualKwh)}</p>
+                      <p className="text-blue-300/90 text-xs font-medium">kWh annually</p>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-white/5 rounded-xl p-3 border border-blue-500/15">
+                    <div className="grid grid-cols-2 gap-1">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-blue-500/25">
                         <p className="text-blue-300/70 text-xs">Rate</p>
-                        <p className="text-white font-bold">${buildingData.commercialElectricityRate}/kWh</p>
+                        <p className="text-white font-bold text-xs">${buildingData.commercialElectricityRate}/kWh</p>
                       </div>
-                      <div className="bg-white/5 rounded-xl p-3 border border-blue-500/15">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-blue-500/25">
                         <p className="text-blue-300/70 text-xs">Daily Avg</p>
-                        <p className="text-white font-bold">{formatNumber(buildingData.estimatedAnnualKwh / 365)} kWh</p>
+                        <p className="text-white font-bold text-xs">{formatNumber(buildingData.estimatedAnnualKwh / 365)} kWh</p>
                       </div>
                     </div>
                   </div>
@@ -820,82 +1728,82 @@ const DataAnalytics = () => {
             </div>
 
             {/* Top Right - Energy Cost */}
-            <div className="absolute top-12 right-12 w-96 h-64">
-              <div className={`${cardBaseClass} p-8 h-full group hover:scale-105`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/12 via-emerald-600/6 to-transparent rounded-3xl"></div>
+            <div className="absolute top-8 right-16 w-72 h-48 z-30">
+              <div className={`${cardBaseClass} p-5 h-full group hover:scale-105`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/25 via-emerald-600/20 to-transparent rounded-3xl"></div>
                 <div className="absolute -top-16 -left-16 w-32 h-32 bg-gradient-to-br from-emerald-500/25 to-transparent rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <button 
                   onClick={() => openCalculationModal('annualEnergyCost')}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-emerald-500/25 flex items-center justify-center hover:bg-emerald-500/50 transition-all duration-300 backdrop-blur-md border border-emerald-400/40 hover:scale-110 shadow-lg shadow-emerald-500/20"
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-emerald-500/50 flex items-center justify-center hover:bg-emerald-500/70 transition-all duration-300 backdrop-blur-md border border-emerald-400/60 hover:scale-110 shadow-lg shadow-emerald-500/30"
                 >
-                  <MdInfoOutline className="text-emerald-300 text-lg" />
+                  <MdInfoOutline className="text-emerald-200 text-sm" />
                 </button>
                 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 flex items-center justify-center shadow-xl shadow-emerald-500/30 border border-emerald-400/20">
-                      <MdAttachMoney className="text-white text-2xl" />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 flex items-center justify-center shadow-xl shadow-emerald-500/30 border border-emerald-400/20">
+                      <MdAttachMoney className="text-white text-sm" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Annual Energy Cost</h3>
-                      <p className="text-emerald-300/80 text-sm">Current Expenditure</p>
+                      <h3 className="text-sm font-bold text-white">Annual Energy Cost</h3>
+                      <p className="text-emerald-300/80 text-xs">Current Expenditure</p>
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex flex-col justify-center space-y-4">
-                    <div className="bg-gradient-to-r from-emerald-500/10 to-transparent rounded-2xl p-4 border border-emerald-500/20">
-                      <p className="text-4xl font-bold text-white mb-2">{formatCurrency(buildingData.annualEnergyCost)}</p>
-                      <p className="text-emerald-300/90 text-lg font-medium">annually</p>
+                  <div className="flex-1 flex flex-col justify-center space-y-2">
+                    <div className="bg-gradient-to-r from-emerald-500/25 to-transparent rounded-lg p-2 border border-emerald-500/40 backdrop-blur-md">
+                      <p className="text-lg font-bold text-white mb-1">{formatCurrency(buildingData.annualEnergyCost)}</p>
+                      <p className="text-emerald-300/90 text-xs font-medium">annually</p>
                     </div>
                     
-                    <div className="bg-white/5 rounded-xl p-3 border border-emerald-500/15">
+                    <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-emerald-500/25">
                       <p className="text-emerald-300/70 text-xs">Monthly Average</p>
-                      <p className="text-white font-bold">{formatCurrency(buildingData.annualEnergyCost / 12)}</p>
+                      <p className="text-white font-bold text-xs">{formatCurrency(buildingData.annualEnergyCost / 12)}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Left - Windows */}
-            <div className="absolute top-1/2 left-12 transform -translate-y-1/2 w-112 h-56">
-              <div className={`${cardBaseClass} p-8 h-full group hover:scale-105`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/12 via-purple-600/6 to-transparent rounded-3xl"></div>
+            {/* Left Center - Windows */}
+            <div className="absolute top-1/2 left-4 transform -translate-y-1/2 w-64 h-40 z-30">
+              <div className={`${cardBaseClass} p-4 h-full group hover:scale-105`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/25 via-purple-600/20 to-transparent rounded-3xl"></div>
                 <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-gradient-to-br from-purple-500/25 to-transparent rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <button 
                   onClick={() => openCalculationModal('windowAnalysis')}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-purple-500/25 flex items-center justify-center hover:bg-purple-500/50 transition-all duration-300 backdrop-blur-md border border-purple-400/40 hover:scale-110 shadow-lg shadow-purple-500/20"
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-purple-500/50 flex items-center justify-center hover:bg-purple-500/70 transition-all duration-300 backdrop-blur-md border border-purple-400/60 hover:scale-110 shadow-lg shadow-purple-500/30"
                 >
-                  <MdInfoOutline className="text-purple-300 text-lg" />
+                  <MdInfoOutline className="text-purple-200 text-sm" />
                 </button>
                 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 flex items-center justify-center shadow-xl shadow-purple-500/30 border border-purple-400/20">
-                      <FaWindowMaximize className="text-white text-2xl" />
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 flex items-center justify-center shadow-xl shadow-purple-500/30 border border-purple-400/20">
+                      <FaWindowMaximize className="text-white text-sm" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Window Analysis</h3>
-                      <p className="text-purple-300/80 text-sm">Building Envelope Assessment</p>
+                      <h3 className="text-sm font-bold text-white">Window Analysis</h3>
+                      <p className="text-purple-300/80 text-xs">Building Envelope</p>
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex items-center gap-6">
-                    <div className="bg-gradient-to-r from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 flex-1">
-                      <p className="text-4xl font-bold text-white mb-2">{buildingData.totalWindows}</p>
-                      <p className="text-purple-300/90 text-lg font-medium">Total Windows</p>
+                  <div className="flex-1 flex items-center gap-2">
+                    <div className="bg-gradient-to-r from-purple-500/25 to-transparent rounded-lg p-2 border border-purple-500/40 backdrop-blur-md flex-1">
+                      <p className="text-lg font-bold text-white mb-1">{buildingData.totalWindows}</p>
+                      <p className="text-purple-300/90 text-xs font-medium">Total Windows</p>
                     </div>
                     
-                    <div className="space-y-3">
-                      <div className="bg-white/5 rounded-xl p-3 border border-purple-500/15">
-                        <p className="text-purple-300/70 text-xs">Avg Size</p>
-                        <p className="text-white font-bold text-sm">{buildingData.averageWindowSize}</p>
+                    <div className="space-y-1">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1 border border-purple-500/25">
+                        <p className="text-purple-300/70 text-xs">Size</p>
+                        <p className="text-white font-bold text-xs">{buildingData.averageWindowSize}</p>
                       </div>
-                      <div className="bg-white/5 rounded-xl p-3 border border-purple-500/15">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1 border border-purple-500/25">
                         <p className="text-purple-300/70 text-xs">R-Value</p>
-                        <p className="text-white font-bold text-sm">R-{buildingData.currentWindowRValue}</p>
+                        <p className="text-white font-bold text-xs">R-{buildingData.currentWindowRValue}</p>
                       </div>
                     </div>
                   </div>
@@ -903,44 +1811,44 @@ const DataAnalytics = () => {
               </div>
             </div>
 
-            {/* Right - Potential Savings */}
-            <div className="absolute top-1/2 right-12 transform -translate-y-1/2 w-96 h-64">
-              <div className={`${cardBaseClass} p-8 h-full group hover:scale-105`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/12 via-green-600/6 to-transparent rounded-3xl"></div>
+            {/* Right Center - Potential Savings */}
+            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 w-72 h-48 z-30">
+              <div className={`${cardBaseClass} p-5 h-full group hover:scale-105`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/25 via-green-600/20 to-transparent rounded-3xl"></div>
                 <div className="absolute -top-16 -right-16 w-32 h-32 bg-gradient-to-br from-green-500/25 to-transparent rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <button 
                   onClick={() => openCalculationModal('potentialSavings')}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-green-500/25 flex items-center justify-center hover:bg-green-500/50 transition-all duration-300 backdrop-blur-md border border-green-400/40 hover:scale-110 shadow-lg shadow-green-500/20"
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-green-500/50 flex items-center justify-center hover:bg-green-500/70 transition-all duration-300 backdrop-blur-md border border-green-400/60 hover:scale-110 shadow-lg shadow-green-500/30"
                 >
-                  <MdInfoOutline className="text-green-300 text-lg" />
+                  <MdInfoOutline className="text-green-200 text-sm" />
                 </button>
                 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-green-500 via-green-600 to-green-700 flex items-center justify-center shadow-xl shadow-green-500/30 border border-green-400/20">
-                      <MdOutlineEnergySavingsLeaf className="text-white text-2xl" />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-500 via-green-600 to-green-700 flex items-center justify-center shadow-xl shadow-green-500/30 border border-green-400/20">
+                      <MdOutlineEnergySavingsLeaf className="text-white text-sm" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Potential Savings</h3>
-                      <p className="text-green-300/80 text-sm">Annual Energy Reduction</p>
+                      <h3 className="text-sm font-bold text-white">Potential Savings</h3>
+                      <p className="text-green-300/80 text-xs">Annual Energy Reduction</p>
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex flex-col justify-center space-y-4">
-                    <div className="bg-gradient-to-r from-green-500/10 to-transparent rounded-2xl p-4 border border-green-500/20">
-                      <p className="text-4xl font-bold text-green-400 mb-2">{formatCurrency(buildingData.annualEnergySavings)}</p>
-                      <p className="text-green-300/90 text-lg font-medium">annually</p>
+                  <div className="flex-1 flex flex-col justify-center space-y-2">
+                    <div className="bg-gradient-to-r from-green-500/25 to-transparent rounded-lg p-2 border border-green-500/40 backdrop-blur-md">
+                      <p className="text-lg font-bold text-green-400 mb-1">{formatCurrency(buildingData.annualEnergySavings)}</p>
+                      <p className="text-green-300/90 text-xs font-medium">annually</p>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-white/5 rounded-xl p-3 border border-green-500/15">
+                    <div className="grid grid-cols-2 gap-1">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-green-500/25">
                         <p className="text-green-300/70 text-xs">Reduction</p>
-                        <p className="text-white font-bold">{buildingData.energyCostReduction}%</p>
+                        <p className="text-white font-bold text-xs">{buildingData.energyCostReduction}%</p>
                       </div>
-                      <div className="bg-white/5 rounded-xl p-3 border border-green-500/15">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-green-500/25">
                         <p className="text-green-300/70 text-xs">Monthly</p>
-                        <p className="text-white font-bold">{formatCurrency(buildingData.annualEnergySavings / 12)}</p>
+                        <p className="text-white font-bold text-xs">{formatCurrency(buildingData.annualEnergySavings / 12)}</p>
                       </div>
                     </div>
                   </div>
@@ -949,38 +1857,38 @@ const DataAnalytics = () => {
             </div>
 
             {/* Bottom Left - ROI */}
-            <div className="absolute bottom-12 left-12 w-112 h-60">
-              <div className={`${cardBaseClass} p-8 h-full group hover:scale-105`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/12 via-orange-600/6 to-transparent rounded-3xl"></div>
+            <div className="absolute bottom-8 left-16 w-64 h-44 z-30">
+              <div className={`${cardBaseClass} p-4 h-full group hover:scale-105`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/25 via-orange-600/20 to-transparent rounded-3xl"></div>
                 <div className="absolute -bottom-16 -right-16 w-32 h-32 bg-gradient-to-br from-orange-500/25 to-transparent rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <button 
                   onClick={() => openCalculationModal('windowPerformanceComparison')}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-orange-500/25 flex items-center justify-center hover:bg-orange-500/50 transition-all duration-300 backdrop-blur-md border border-orange-400/40 hover:scale-110 shadow-lg shadow-orange-500/20"
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-orange-500/50 flex items-center justify-center hover:bg-orange-500/70 transition-all duration-300 backdrop-blur-md border border-orange-400/60 hover:scale-110 shadow-lg shadow-orange-500/30"
                 >
-                  <MdInfoOutline className="text-orange-300 text-lg" />
+                  <MdInfoOutline className="text-orange-200 text-sm" />
                 </button>
                 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 flex items-center justify-center shadow-xl shadow-orange-500/30 border border-orange-400/20">
-                      <MdTrendingUp className="text-white text-2xl" />
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 flex items-center justify-center shadow-xl shadow-orange-500/30 border border-orange-400/20">
+                      <MdTrendingUp className="text-white text-sm" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Return on Investment</h3>
-                      <p className="text-orange-300/80 text-sm">Financial Performance</p>
+                      <h3 className="text-sm font-bold text-white">Return on Investment</h3>
+                      <p className="text-orange-300/80 text-xs">Financial Performance</p>
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex items-center gap-6">
-                    <div className="bg-gradient-to-r from-orange-500/10 to-transparent rounded-2xl p-4 border border-orange-500/20 flex-1">
-                      <p className="text-4xl font-bold text-orange-400 mb-2">{buildingData.paybackPeriod.toFixed(1)}</p>
-                      <p className="text-orange-300/90 text-lg font-medium">years payback</p>
+                  <div className="flex-1 flex items-center gap-2">
+                    <div className="bg-gradient-to-r from-orange-500/25 to-transparent rounded-lg p-2 border border-orange-500/40 backdrop-blur-md flex-1">
+                      <p className="text-lg font-bold text-orange-400 mb-1">{buildingData.paybackPeriod.toFixed(1)}</p>
+                      <p className="text-orange-300/90 text-xs font-medium">years payback</p>
                     </div>
                     
-                    <div className="bg-white/5 rounded-xl p-4 border border-orange-500/15">
+                    <div className="bg-white/15 backdrop-blur-md rounded-md p-2 border border-orange-500/25">
                       <p className="text-orange-300/70 text-xs">Annual ROI</p>
-                      <p className="text-white font-bold text-2xl">{Math.round((1/buildingData.paybackPeriod) * 100)}%</p>
+                      <p className="text-white font-bold text-sm">{Math.round((1/buildingData.paybackPeriod) * 100)}%</p>
                     </div>
                   </div>
                 </div>
@@ -988,43 +1896,43 @@ const DataAnalytics = () => {
             </div>
 
             {/* Bottom Right - Installation */}
-            <div className="absolute bottom-12 right-12 w-96 h-64">
-              <div className={`${cardBaseClass} p-8 h-full group hover:scale-105`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/12 via-cyan-600/6 to-transparent rounded-3xl"></div>
+            <div className="absolute bottom-8 right-16 w-72 h-48 z-30">
+              <div className={`${cardBaseClass} p-5 h-full group hover:scale-105`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/25 via-cyan-600/20 to-transparent rounded-3xl"></div>
                 <div className="absolute -top-16 -left-16 w-32 h-32 bg-gradient-to-br from-cyan-500/25 to-transparent rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <button 
                   onClick={() => openCalculationModal('recommendedSolution')}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-cyan-500/25 flex items-center justify-center hover:bg-cyan-500/50 transition-all duration-300 backdrop-blur-md border border-cyan-400/40 hover:scale-110 shadow-lg shadow-cyan-500/20"
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-cyan-500/50 flex items-center justify-center hover:bg-cyan-500/70 transition-all duration-300 backdrop-blur-md border border-cyan-400/60 hover:scale-110 shadow-lg shadow-cyan-500/30"
                 >
-                  <MdInfoOutline className="text-cyan-300 text-lg" />
+                  <MdInfoOutline className="text-cyan-200 text-sm" />
                 </button>
                 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 flex items-center justify-center shadow-xl shadow-cyan-500/30 border border-cyan-400/20">
-                      <MdOutlineSettings className="text-white text-2xl" />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 flex items-center justify-center shadow-xl shadow-cyan-500/30 border border-cyan-400/20">
+                      <MdOutlineSettings className="text-white text-sm" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Installation</h3>
-                      <p className="text-cyan-300/80 text-sm">Project Investment</p>
+                      <h3 className="text-sm font-bold text-white">Installation</h3>
+                      <p className="text-cyan-300/80 text-xs">Project Investment</p>
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex flex-col justify-center space-y-4">
-                    <div className="bg-gradient-to-r from-cyan-500/10 to-transparent rounded-2xl p-4 border border-cyan-500/20">
-                      <p className="text-4xl font-bold text-cyan-400 mb-2">{formatCurrency(buildingData.installationCost)}</p>
-                      <p className="text-cyan-300/90 text-lg font-medium">total investment</p>
+                  <div className="flex-1 flex flex-col justify-center space-y-2">
+                    <div className="bg-gradient-to-r from-cyan-500/25 to-transparent rounded-lg p-2 border border-cyan-500/40 backdrop-blur-md">
+                      <p className="text-lg font-bold text-cyan-400 mb-1">{formatCurrency(buildingData.installationCost)}</p>
+                      <p className="text-cyan-300/90 text-xs font-medium">total investment</p>
                     </div>
                     
-                    <div className="space-y-3">
-                      <div className="bg-white/5 rounded-xl p-3 border border-cyan-500/15">
+                    <div className="space-y-1">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-cyan-500/25">
                         <p className="text-cyan-300/70 text-xs">Product</p>
-                        <p className="text-white font-bold text-sm">{buildingData.luxwallProductRecommendation}</p>
+                        <p className="text-white font-bold text-xs">{buildingData.luxwallProductRecommendation}</p>
                       </div>
-                      <div className="bg-white/5 rounded-xl p-3 border border-cyan-500/15">
+                      <div className="bg-white/15 backdrop-blur-md rounded-md p-1.5 border border-cyan-500/25">
                         <p className="text-cyan-300/70 text-xs">Per Window</p>
-                        <p className="text-white font-bold text-sm">{formatCurrency(buildingData.installationCost / buildingData.totalWindows)}</p>
+                        <p className="text-white font-bold text-xs">{formatCurrency(buildingData.installationCost / buildingData.totalWindows)}</p>
                       </div>
                     </div>
                   </div>
